@@ -8,7 +8,7 @@ Per fer que rebi per POST com a parametre un JSON amb el username
 podem posar el username i la password com a headers en el POSTMAN,
 i hi accedim amb req.headers
 
-He provat de posar coses a Params i al Body pero no s'hi pot accedir 
+He provat de posar coses a Params i al Body (de POSTMAN) pero no s'hi pot accedir 
 simplement fent req.params o req.body
 */
 

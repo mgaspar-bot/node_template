@@ -34,3 +34,9 @@ router.post('/', middles.uploadMiddleware, (req, res) => {
 });
 
 module.exports = router;
+
+/*
+TODO
+Si el field del form-data no es diu "userImage",
+multer la lia i envio un 500, com puc fer catch del error?
+*/
