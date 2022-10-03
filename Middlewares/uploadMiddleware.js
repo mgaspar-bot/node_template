@@ -67,15 +67,4 @@ que esperes rebre per POST, la key que te com a value el arxiu
 */
 exports.uploadMiddleware = uploadMiddleware;
 
-exports.checkBody = function (req, res, next) {
-    console.log(Object.getOwnPropertyNames(req));
-    console.log(Object.getOwnPropertyNames(req.body));
-    if (!req.body.userImage) {
-        res.json({
-            "status":"tot Ok però no hi havia res a pujar"
-        });
-        return;
-    }
-    next();
-}
 
