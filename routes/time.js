@@ -13,7 +13,7 @@ simplement fent req.params o req.body
 */
 
 router.post('/', cors(), authMiddleware, cacheControl, (req, res) => {
-    console.log('Im in the last function');
+    // console.log('Im in the last function');
     // console.log(res);
     let now = (new Date()).toISOString();
     now = now.split('T');

@@ -2,18 +2,27 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
+        /* if (!req.body.userImage){
+            console.log('No hi ha res!');
+        } */
         cb(null,'./uploadedFiles');
     },
     filename: function(req, file, cb) {
+        /* if (!req.body.userImage){
+            console.log('No hi ha res!2');
+        } */
         if( !(file.mimetype.match(/.jpeg$/) || file.mimetype.match(/.png$/) || file.mimetype.match(/.gif$/) )) {
             
             // console.log(`Error: i don't like this filetype I'm not posting it`);
             // return; //Aixi la request es queda pendent
 
-            return cb(new Error(`File must be .png, .gif or .jpeg`)); //Si no li poses el return el file es puja igual
+            // return cb(new Error(`File must be .png, .gif or .jpeg`)); //Si no li poses el return el file es puja igual
                                                                                 //i amb el nom que he posat a sota, aixi que esta tornant a cridar cb (ara sense error) i aqui
                                                                                 //ningu es queixa
+            req.res.status(400).json({"bad_request":"file must be .png, .gif or .jpeg`"}) //Tinc acces a res dintre de req whaat
+            return;
         }
+        req.res.status(201);
         cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
@@ -57,4 +66,16 @@ const uploadMiddleware = upload.single('userImage');
 que esperes rebre per POST, la key que te com a value el arxiu
 */
 exports.uploadMiddleware = uploadMiddleware;
+
+exports.checkBody = function (req, res, next) {
+    console.log(Object.getOwnPropertyNames(req));
+    console.log(Object.getOwnPropertyNames(req.body));
+    if (!req.body.userImage) {
+        res.json({
+            "status":"tot Ok però no hi havia res a pujar"
+        });
+        return;
+    }
+    next();
+}
 
