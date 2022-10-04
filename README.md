@@ -4,11 +4,15 @@
 
 ## Enunciat
 ### Nivell 1
-Exercici 1
+<ol>
+<li>
 Crea un servidor amb Express que retorni a una petició GET a l'endpoint /user un json amb el teu nom, edat i l'URL des d'on es fa la petició.
-<br/>
+</li>
+<li>
 Exercici 2
 Afegeix un endpoint /upload per a pujar al servidor un arxiu de tipus png, jpg o gif amb una petició POST i que retorni un missatge d'error en cas que l'extensió de l'arxiu no coincideixi amb aquestes.
+</li>
+</ol>
 
 ### Nivell 2
 Exercici 1
