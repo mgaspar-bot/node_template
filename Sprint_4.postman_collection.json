@@ -36,7 +36,7 @@
 						{
 							"key": "userImage",
 							"type": "file",
-							"src": "/C:/Users/marcg/Desktop/CV/foto_carnet.jpeg"
+							"src": []
 						}
 					]
 				},
@@ -65,7 +65,7 @@
 						{
 							"key": "userImage",
 							"type": "file",
-							"src": "/C:/Users/marcg/Desktop/V2pf8vz0h1gXiWO__bHQpMqxG5CKgeqSs-reto4.pdf"
+							"src": []
 						}
 					]
 				},
@@ -94,7 +94,7 @@
 						{
 							"key": "userImag",
 							"type": "file",
-							"src": "/C:/Users/marcg/Desktop/V2pf8vz0h1gXiWO__bHQpMqxG5CKgeqSs-reto4.pdf"
+							"src": []
 						}
 					]
 				},
@@ -226,7 +226,19 @@
 			"name": "/pokemon_invalidPokemon",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pokemon/garurumon",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pokemon",
+						"garurumon"
+					]
+				}
 			},
 			"response": []
 		}
