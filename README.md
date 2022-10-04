@@ -37,5 +37,9 @@ Afegeix un middleware a l'endpoint anterior que retorni un HTTP Status 401 - Una
 
 ### Nivell 3
 <p>
+    <ul>
+    <li>
     Crea una petició GET a l'endpoint /pokemon/{id} que rebi un número de Pokémon, faci una cerca al Pokémon API i retorni el nom del Pokémon, la seva alçada i el seu pes.
+    </li>
+    </ul>
 </p>
