@@ -1,6 +1,18 @@
 ## Com utilitzar
-
-
+Després de clonar, fer 
+```sh
+   npm install
+   ```
+Per instalar totes les dependències. Per fer correr el server amb nodemon:
+```sh
+   npm run devStart
+   ```
+I per fer-lo correr normal:
+```sh
+   node server.js
+   ```
+Si importes la col·lecció al POSTMAN pots provar que es comporti com hauria de fer-ho.
+Per provar les tres requests del upload has de posar-hi una file de la teva màquina local.
 
 ## Enunciat
 ### Nivell 1
