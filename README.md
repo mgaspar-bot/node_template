@@ -1,4 +1,5 @@
 ## Com utilitzar
+Al directori on hagis clonat el repo, executar:
 ```sh
     npm install
     npm run devStart
