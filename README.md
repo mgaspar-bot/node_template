@@ -3,7 +3,6 @@ Al directori on hagis clonat el repo, executa:
 ```sh
     npm install
     npm run devStart
-
    ```
 Així instal·les les dependències i arrenques el server amb nodemon. Si el vols arrencar sense nodemon:
 ```sh
