@@ -1,18 +1,17 @@
 ## Com utilitzar
-Després de clonar:
 ```sh
-   npm install
+    npm install
     npm run devStart
 
    ```
-Instal·la les dependències i arrenca el server amb nodemon. Si el vols arrencar sense nodemon:
+Així instal·les les dependències i arrenques el server amb nodemon. Si el vols arrencar sense nodemon:
 ```sh
    node server.js
    ```
-Important la col·lecció de requests al Postman pots provar les respostes del server.<br>
-Tingues en compte:_
+Pots importar la col·lecció de requests al Postman per provar les respostes del server.<br>
+Tingues en compte:
 1. Has de posar els arxius corresponents per provar les requests a upload
-2. El "autenticador" de /time llegeix el usuari i la contrasenya del arxiu .env. Si el canvies o el paquet dotenv no funciona, l'autenticació sempre fallarà.
+2. El "autenticador" de /time llegeix el usuari i la contrasenya del arxiu .env. Si  canvies el arxiu o el paquet dotenv no funciona, l'autenticació sempre fallarà.
 
 ## Enunciat
 ### Nivell 1
