@@ -84,35 +84,6 @@
 			"response": []
 		},
 		{
-			"name": "/upload_badFormDataKey",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "userImag",
-							"type": "file",
-							"src": []
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:3000/upload",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"upload"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "/upload_nothing_to_upload",
 			"request": {
 				"method": "POST",

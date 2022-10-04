@@ -1,5 +1,5 @@
 ## Com utilitzar
-Al directori on hagis clonat el repo, executar:
+Al directori on hagis clonat el repo, executa:
 ```sh
     npm install
     npm run devStart
@@ -11,7 +11,7 @@ Així instal·les les dependències i arrenques el server amb nodemon. Si el vol
    ```
 Pots importar la col·lecció de requests al Postman per provar les respostes del server.<br>
 Tingues en compte:
-1. Has de posar els arxius corresponents per provar les requests a upload
+1. Has de posar els arxius corresponents per provar les requests al endpoint /upload
 2. El "autenticador" de /time llegeix el usuari i la contrasenya del arxiu .env. Si  canvies el arxiu o el paquet dotenv no funciona, l'autenticació sempre fallarà.
 
 ## Enunciat
