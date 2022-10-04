@@ -1,0 +1,19 @@
+{
+  "name": "sprint_4.2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mgaspar-bot/node_template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mgaspar-bot/node_template/issues"
+  },
+  "homepage": "https://github.com/mgaspar-bot/node_template#readme"
+}
