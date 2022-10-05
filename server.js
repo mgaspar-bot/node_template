@@ -5,7 +5,7 @@ const db = require('./db_connection/db');
 require('./models/Jugador');
 require('./models/Partida');//Fem nomes els requires pq s'executin els db.define
 const playerRouter = require('./routes/players');
-
+const gamesRouter = require('./routes/')
 
 
 const app = express();
@@ -16,6 +16,7 @@ const app = express();
         console.log('db online');
 
         app.use('/players', playerRouter);
+        app.use('/games',gamesRouter);
 
         app.listen(3000, () => console.log(`Server escoltant al port 3000`))
     } catch (error) {

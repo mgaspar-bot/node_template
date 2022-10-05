@@ -21,7 +21,7 @@ async function validateNom(req, res, next) {
             where: {
                 nom:newUsername
             }
-        });  
+        });
         
         if (!found) {
             next();

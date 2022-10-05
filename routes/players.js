@@ -22,12 +22,20 @@ router.post('/',checkUsernameHeader,validateNom, async (req, res) => {
         })
     }
 })
+/*
+Casos de Post:
+    ·no hi ha header "username" => 400
+    ·el username ja existeix => 403 forbidden, username taken
+    ·el username ve buit => 201 (checkejar que s'ha afegit un "Anonim" a la db)
+    ·el username és vàlid => 201 (donar un crusant al usuari) 
+*/
 
 router.get('/', async (req, res) => { //TODO afegir el percentatge d'exits
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
         all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
         res.status(200).send(all);
+        //TODO es valid tornar-ho en format array al body com estic fent?
     }catch(error) {
         console.log('Select Query failed (get controller)');
         console.log(error.stack);
@@ -35,6 +43,11 @@ router.get('/', async (req, res) => { //TODO afegir el percentatge d'exits
     }
     
 })
+/*
+Casos de GET:
+    Només n'hi ha un, ensenya'm tots els usuaris i winrates
+*/
+
 //No cal validar el id pq el update no falla si no hi es, simplement no canvia res
 router.put('/:id',checkUsernameHeader, validateNom, async (req, res) => {
     const idReceived = req.params.id;  //No cal pasar-lo a number, espera una string
@@ -48,7 +61,7 @@ router.put('/:id',checkUsernameHeader, validateNom, async (req, res) => {
     }
 
     try {
-        const updated = await Jugador.update({
+        const updated = await Jugador.update({//update torna una array amb el numero de rows afectades al index 0
             nom:newUsername
         },
         {
@@ -69,18 +82,13 @@ router.put('/:id',checkUsernameHeader, validateNom, async (req, res) => {
         })
     }
 })
-
+/*
+Casos de PUT:
+    ·missing header => 400
+    ·nom repetit => 403 forbidden
+    ·nom buit => 200 totOk, nothing changed
+    ·id no hi es a la db => 200 totOk, nothing changed
+    ·nom ple i vàlid => 201, croissant
+*/
 module.exports = router;
 
-
-/*
-POST /players: crea un jugador/a.
-
-PUT /players/{id}: modifica el nom del jugador/a.
-
-GET /players: retorna el llistat de tots els 
-    jugadors/es del sistema amb el seu percentatge
-     d’èxits.
-
-     Com s'ha de tornar el llistat de GET??
-*/
