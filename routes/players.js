@@ -2,14 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const Jugador = require('../models/Jugador').Jugador
-const nomUnic = require('../Middlewares/nomUnic')
+const validateNom = require('../Middlewares/validateNom')
 
 
-router.post('/',nomUnic, async (req, res) => { //TODO afegir middleware per validar usernames unics
+router.post('/',validateNom, async (req, res) => { //TODO afegir middleware per validar usernames unics
     const username = req.headers.username;
     try {
         if (username === "") {
-            await Jugador.upsert({});
+            await Jugador.upsert({}); //Amb el upsert buit mysql inserta el valor "Anonim"
         }else {
             await Jugador.upsert({
             nom: username
@@ -27,15 +27,24 @@ router.post('/',nomUnic, async (req, res) => { //TODO afegir middleware per vali
 router.get('/', async (req, res) => { 
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
-        all = all.map((j) => {return j.dataValues}); //les dades insertades a la db estan al camp "dataValues"
-        
-        res.sendStatus(200);
+        all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
+        res.status(200).send(all);
     }catch(error) {
         console.log('Select Query failed');
-        console.log(error);
+        console.log(error.stack);
         res.sendStatus(500);
     }
     
+})
+
+router.put('/:id', async (req, res) => {
+    try {
+        Jugador.findOne({
+            
+        })
+    }catch(error){
+
+    }
 })
 
 module.exports = router;

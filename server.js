@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize').Sequelize;
 const express = require('express');
-const db = require('./db_connection/db'); //TODO canviar aquest export tot raro
+
+const db = require('./db_connection/db'); 
 require('./models/Jugador');
 require('./models/Partida');//Fem nomes els requires pq s'executin els db.define
 const playerRouter = require('./routes/players');
