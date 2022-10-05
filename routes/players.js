@@ -3,7 +3,8 @@ const router = express.Router();
 
 const Jugador = require('../models/Jugador').Jugador
 const validateNom = require('../Middlewares/validateNom')
-
+const validateId = require('../Middlewares/validateId');
+const { json } = require('sequelize');
 
 router.post('/',validateNom, async (req, res) => { //TODO afegir middleware per validar usernames unics
     const username = req.headers.username;
@@ -38,12 +39,31 @@ router.get('/', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
+    const idReceived = req.params.id;  //No cal pasar-lo a number, espera una string
+    console.log(idReceived.constructor.name);
+    console.log(idReceived);
+    const newName = req.headers.newname; //als headers no s'hi poden posar MAJUSCULES!!
+    console.log(newName);
     try {
-        Jugador.findOne({
-            
-        })
+        const u = await Jugador.update({
+            nom:newName
+        },
+        {
+            where: { id:idReceived }
+        });
+        if(u[0] === 0) {
+            res.status(200).json({
+                "msg":"nothing changed"
+            })
+        }else {
+            res.status(201).json({
+                "msg":"name succesfully updated"
+            })
+        }
     }catch(error){
-
+        res.status(500).json({
+            "msg":"update query failed (put controller)"
+        })
     }
 })
 
