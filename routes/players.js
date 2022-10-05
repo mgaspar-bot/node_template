@@ -3,20 +3,18 @@ const router = express.Router();
 
 const Jugador = require('../models/Jugador').Jugador
 const validateNom = require('../Middlewares/validateNom')
-const validateId = require('../Middlewares/validateId');
-const { json } = require('sequelize');
+const checkUsernameHeader = require('../Middlewares/checkUsernameHeader')
 
-router.post('/',validateNom, async (req, res) => { //TODO afegir middleware per validar usernames unics
-    const username = req.headers.username;
+router.post('/',checkUsernameHeader,validateNom, async (req, res) => {
+    const newUsername = req.headers.username;
+
     try {
-        if (username === "") {
-            await Jugador.upsert({}); //Amb el upsert buit mysql inserta el valor "Anonim"
-        }else {
-            await Jugador.upsert({
-            nom: username
-            });
-        }
-        res.sendStatus(201);
+        await Jugador.upsert({
+        nom: newUsername
+        });
+        res.status(201).json({
+            "msg":"user created"
+        })
     } catch (error) {
         console.log(error.stack);
         res.status(500).json({
@@ -25,33 +23,38 @@ router.post('/',validateNom, async (req, res) => { //TODO afegir middleware per 
     }
 })
 
-router.get('/', async (req, res) => { 
+router.get('/', async (req, res) => { //TODO afegir el percentatge d'exits
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
         all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
         res.status(200).send(all);
     }catch(error) {
-        console.log('Select Query failed');
+        console.log('Select Query failed (get controller)');
         console.log(error.stack);
         res.sendStatus(500);
     }
     
 })
-
-router.put('/:id', async (req, res) => {
+//No cal validar el id pq el update no falla si no hi es, simplement no canvia res
+router.put('/:id',checkUsernameHeader, validateNom, async (req, res) => {
     const idReceived = req.params.id;  //No cal pasar-lo a number, espera una string
-    console.log(idReceived.constructor.name);
-    console.log(idReceived);
-    const newName = req.headers.newname; //als headers no s'hi poden posar MAJUSCULES!!
-    console.log(newName);
+    const newUsername = req.headers.username; //als headers no s'hi poden posar MAJUSCULES!!
+    
+    if (newUsername === "Anonim"){
+        res.status(200).json({
+            "msg":"empty username, nothing changed"
+        });
+        return;
+    }
+
     try {
-        const u = await Jugador.update({
-            nom:newName
+        const updated = await Jugador.update({
+            nom:newUsername
         },
         {
             where: { id:idReceived }
         });
-        if(u[0] === 0) {
+        if(updated[0] === 0) {
             res.status(200).json({
                 "msg":"nothing changed"
             })

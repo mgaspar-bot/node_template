@@ -15,7 +15,8 @@ const app = express();
         await db.sync(); //db té les taules que esperem
         console.log('db online');
 
-        app.use('/players', playerRouter)
+        app.use('/players', playerRouter);
+
         app.listen(3000, () => console.log(`Server escoltant al port 3000`))
     } catch (error) {
         console.log(error.message);
