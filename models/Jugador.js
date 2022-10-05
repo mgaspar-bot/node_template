@@ -1,5 +1,4 @@
-const { Partida } = require('./Partida');
-const db = require('../db_connection/db').db;
+const db = require('../db_connection/db');
 const Datatypes = require('sequelize').DataTypes;
 
 const Jugador = db.define('Jugador', {
@@ -7,6 +6,8 @@ const Jugador = db.define('Jugador', {
         type: Datatypes.STRING,
         defaultValue:'Anonim'
     }
+},{
+    timestamps:false
 });
 
 exports.Jugador = Jugador;

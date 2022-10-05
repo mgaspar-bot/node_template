@@ -5,4 +5,4 @@ const db = new Sequelize('daus1','daus', 'dguest', {
     dialect:"mysql",
     logging: console.log
 });
-exports.db = db;
+module.exports = db;
