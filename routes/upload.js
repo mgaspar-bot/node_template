@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/', middles.uploadMiddleware, (req, res) => {
     let status = (res.statusCode == 201) ? 'file uploaded' : 'nothing to upload';
-    res.json({"status":status});    
+    res.json({"msg":status});    
 });
 
 module.exports = router;

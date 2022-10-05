@@ -5,12 +5,12 @@ function validateNumberQuery (req, res, next) {
         next();
     }else if (!dexNumber) {
         res.status(400).json({
-            "error":"We only accept queries for the field 'id"
+            "msg":"We only accept queries for the field 'id"
         });
         return;
     }else {
         res.status(404).json({
-            "error":"invalid pokedex number"
+            "msg":"invalid pokedex number"
         });
         return;
     }
@@ -25,7 +25,7 @@ function validateNumberURL (req, res, next) {
         next();
     }else {
         res.status(404).json({
-            "error":"invalid pokedex number"
+            "msg":"invalid pokedex number"
         });
         return;
     }

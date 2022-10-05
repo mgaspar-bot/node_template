@@ -6,7 +6,7 @@ const authMiddleware = function (req, res, next) {
     const password = req.headers.password;
     if (username !== process.env.USERNAME  || password !== process.env.PASSWORD) {
         res.status(401).json({
-            "error":"wrong user or password"
+            "msg":"wrong user or password"
         });
         return;
     };

@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     },
     filename: function(req, file, cb) {
         if( !(file.mimetype.match(/.jpeg$/) || file.mimetype.match(/.png$/) || file.mimetype.match(/.gif$/) )) {
-            req.res.status(400).json({"bad_request":"file must be .png, .gif or .jpeg`"}) 
+            req.res.status(400).json({"msg":"file must be .png, .gif or .jpeg`"}) 
             return;
         }
         req.res.status(201);

@@ -19,16 +19,23 @@ router.get('/',validateNumberQuery, async (req, res) => {
 
 router.get('/:id', validateNumberURL,  async (req, res) => {
     let dexNumber = req.params.id;
-    var pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${dexNumber}`);
-    pokemon = await pokemon.json(); 
-    let weight = `${pokemon.weight / 10} kg`; 
-    let height = `${pokemon.height / 10} m`;
-    res.status(200).json({
-        "dexNumber":pokemon.id,
-        "name":pokemon.name,
-        "height":height,
-        "weight":weight
-    });
+   try {
+        var pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${dexNumber}`);
+        pokemon = await pokemon.json(); 
+        let weight = `${pokemon.weight / 10} kg`; 
+        let height = `${pokemon.height / 10} m`;
+        res.status(200).json({
+            "dexNumber":pokemon.id,
+            "name":pokemon.name,
+            "height":height,
+            "weight":weight
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(503).json({
+            "msg":"PokeApi unavailable"
+        });
+    }
 });
 
 module.exports = router;
