@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const Jugador = require('../models/Jugador').Jugador
+const Jugador = require('../models/Jugador');
 const validateNom = require('../Middlewares/validateNom')
-const checkUsernameHeader = require('../Middlewares/checkUsernameHeader')
+const checkUsernameBody = require('../Middlewares/checkUsernameBody')
 
-router.post('/',checkUsernameHeader,validateNom, async (req, res) => {
-    const newUsername = req.headers.username;
+router.post('/',checkUsernameBody, validateNom, async (req, res) => {
+    const newUsername = req.body.username;
 
     try {
         await Jugador.upsert({
@@ -18,13 +18,13 @@ router.post('/',checkUsernameHeader,validateNom, async (req, res) => {
     } catch (error) {
         console.log(error.stack);
         res.status(500).json({
-            "msg":"Insert into db failed"
+            "msg":"Insert into db failed (players post controller)"
         })
     }
 })
 /*
 Casos de Post:
-    ·no hi ha header "username" => 400
+    ·no hi ha camp "username" al body => 400
     ·el username ja existeix => 403 forbidden, username taken
     ·el username ve buit => 201 (checkejar que s'ha afegit un "Anonim" a la db)
     ·el username és vàlid => 201 (donar un crusant al usuari) 
@@ -34,12 +34,17 @@ router.get('/', async (req, res) => { //TODO afegir el percentatge d'exits
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
         all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
-        res.status(200).send(all);
-        //TODO es valid tornar-ho en format array al body com estic fent?
+        let allUsers = {
+            "users": all
+        };
+        if (all.length === 0) {
+            allUsers["msg"] = "no users to show";
+        }
+        res.status(200).send(allUsers);
     }catch(error) {
-        console.log('Select Query failed (get controller)');
-        console.log(error.stack);
-        res.sendStatus(500);
+        res.status(500).json({
+            "msg":"select query failed (get controller)"
+        })
     }
     
 })
@@ -49,9 +54,9 @@ Casos de GET:
 */
 
 //No cal validar el id pq el update no falla si no hi es, simplement no canvia res
-router.put('/:id',checkUsernameHeader, validateNom, async (req, res) => {
+router.put('/:id',checkUsernameBody, validateNom, async (req, res) => {
     const idReceived = req.params.id;  //No cal pasar-lo a number, espera una string
-    const newUsername = req.headers.username; //als headers no s'hi poden posar MAJUSCULES!!
+    const newUsername = req.body.username; //als headers no s'hi poden posar MAJUSCULES!!
     
     if (newUsername === "Anonim"){
         res.status(200).json({

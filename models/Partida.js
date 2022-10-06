@@ -1,4 +1,3 @@
-const Jugador = require('./Jugador').Jugador;
 const db = require('../db_connection/db');
 const Datatypes = require('sequelize').DataTypes;
 
@@ -13,7 +12,4 @@ const Partida = db.define('Partida', {
         allowNull:false
     }
 });
-Partida.belongsTo(Jugador);
-
-
-exports.Partida = Partida;
+module.exports = Partida;

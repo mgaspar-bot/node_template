@@ -1,4 +1,4 @@
-const {Jugador} = require('../models/Jugador');
+const Jugador = require('../models/Jugador');
 
 async function validateNom(req, res, next) {
     /*
@@ -6,11 +6,11 @@ async function validateNom(req, res, next) {
     sino es bad request. Podria fer-ho manualment (Object.getOwnPropertyNames...)
     o distingir entre el cas username='' i username=undefined
     */
-    const newUsername = req.headers.username;
+    const newUsername = req.body.username;
     
     if (newUsername === ""){
         // console.log(`Estic al cas Anonim`);
-        req.headers.username = "Anonim";
+        req.body.username = "Anonim";
         next();
         return; //encara que cridi a next, segueix executant-se el middleware si no poso el return
     }
@@ -33,7 +33,7 @@ async function validateNom(req, res, next) {
         }
     }catch(error){
         res.status(500).json({
-            "msg":"Select query failed"
+            "msg":"Select query failed (validateNom)"
         });
         return;
     }

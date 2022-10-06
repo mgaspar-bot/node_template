@@ -5,11 +5,11 @@
 */
 
 function checkUsernameHeader (req, res, next){
-    const username = req.headers.username;
+    const username = req.body.username;
     
     if(username === undefined) {
         res.status(400).json({
-            "msg":"username missing from headers"
+            "msg":"username field missing from body"
         });
         return;
     }

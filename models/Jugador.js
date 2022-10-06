@@ -1,6 +1,7 @@
 const db = require('../db_connection/db');
 const Datatypes = require('sequelize').DataTypes;
 
+
 const Jugador = db.define('Jugador', {
     nom: {
         type: Datatypes.STRING,
@@ -10,4 +11,4 @@ const Jugador = db.define('Jugador', {
     timestamps:false
 });
 
-exports.Jugador = Jugador;
+module.exports = Jugador;
