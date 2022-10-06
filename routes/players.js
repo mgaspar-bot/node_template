@@ -13,7 +13,7 @@ router.post('/',checkUsernameBody, validateNom, async (req, res) => {
         nom: newUsername
         });
         res.status(201).json({
-            "msg":"user created"
+            "msg":`created user: ${newUsername}`
         })
     } catch (error) {
         console.log(error.stack);

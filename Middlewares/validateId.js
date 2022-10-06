@@ -2,12 +2,12 @@ const Jugador = require('../models/Jugador');
 
 async function validateId (req, res, next) {
     const idRebut = req.params.id;
-    req["idRebut"] = idRebut; //Aixo es pq els controllers de games puguin accedir al id rebut, ja que no hi arriben des de params
     try {
         const found = await Jugador.findOne({
             where: {id:idRebut}
         });
         if (found){
+            req["idReceived"] = idRebut; //Aixo es pq els controllers de games puguin accedir al id rebut, ja que no hi arriben des de params
             next();
             return;
         } else {
