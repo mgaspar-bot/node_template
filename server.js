@@ -12,11 +12,9 @@ const globalRouter = require('./routes/routes.js');
 Afegeix un endpoint /login que permeti accedir a un administrador amb usuari/ària i contrasenya 
 i retorni un token i fes obligatòria l'autentificació per JWT en tots els accessos als URL del microservei,
  fent servir middlewares per validar al token.
-
-
 */
 
-
+var errors = 0;
 const app = express();
 async function server () {
     try {
@@ -33,8 +31,13 @@ async function server () {
         //que passa si ja hi ha una instancia de server escoltant en aquest port?
 
     } catch (error) {
-        console.log(error.message);
+        errors++;
+        console.log(`Error.message:${error.message}`);
         console.log(`Ha fallat la sincronització amb db`);
+        if (error.message.match(/Unknown database/) && errors < 1){ //Si trobes el error 'Uknown database' tornaho a provar, pero nomes un cop
+            console.log('Ho tornem a intentar');
+            server();
+        }
     }
 };
 
