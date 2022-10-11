@@ -1,7 +1,7 @@
-const db = require('../db_connection/db');
+const db = require('../db_connection/getSqlizeInstance');
 const Datatypes = require('sequelize').DataTypes;
 
-
+// console.log(db.constructor.name);
 
 const Jugador = db.define('Jugador', {
     nom: {

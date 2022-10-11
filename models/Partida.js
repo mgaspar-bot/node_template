@@ -1,4 +1,4 @@
-const db = require('../db_connection/db');
+const db = require('../db_connection/getSqlizeInstance');
 const Datatypes = require('sequelize').DataTypes;
 
 const Partida = db.define('Partida', {

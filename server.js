@@ -1,7 +1,7 @@
 // const Sequelize = require('sequelize').Sequelize;
 const express = require('express');
 
-const db = require('./db_connection/db') 
+const db = require('./db_connection/getSqlizeInstance') 
 const Jugador = require('./models/Jugador');
 const Partida = require('./models/Partida');
 Partida.belongsTo(Jugador);
@@ -28,14 +28,13 @@ async function server () {
         app.use(globalRouter);
 
         app.listen(3000, () => console.log(`Server escoltant al port 3000`))
-        //que passa si ja hi ha una instancia de server escoltant en aquest port?
 
     } catch (error) {
         errors++;
-        console.log(`Error.message:${error.message}`);
+        console.log(error.message);
         console.log(`Ha fallat la sincronització amb db`);
-        if (error.message.match(/Unknown database/) && errors < 1){ //Si trobes el error 'Uknown database' tornaho a provar, pero nomes un cop
-            console.log('Ho tornem a intentar');
+        if (error.message.match(/Unknown database/) && errors < 2){ //Si trobes el error 'Uknown database' tornaho a provar, pero nomes un cop
+            console.log('Ho tornem a intentar...');
             server();
         }
     }
