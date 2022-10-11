@@ -109,7 +109,7 @@ router.delete('/', async (req, res) => {
                 "msg":`stored games for player with id ${idReceived} were erased`
             })
         }else{
-            res.status(501).json({
+            res.status(500).json({
                 "msg":"l'has liat parda no se ni com"
             })
         }

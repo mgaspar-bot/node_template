@@ -1,8 +1,13 @@
 const Sequelize = require('sequelize').Sequelize;
+require('dotenv').config();
+require('./create')
 
-const db = new Sequelize('daus1','daus', 'dguest', {
-    host: "localhost",
-    dialect:"mysql",
-    logging: false //Posare console.log quan calgui pero es que s'omple la consola de brossa
-});
+
+
+var db = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME,process.env.DB_PASSWORD, {
+    "dialect":"mysql",
+    "host": "localhost",
+    "logging":console.log
+})
+
 module.exports = db;
