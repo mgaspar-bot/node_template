@@ -6,12 +6,12 @@ const Jugador = require('./models/Jugador');
 const Partida = require('./models/Partida');
 Partida.belongsTo(Jugador);
 Jugador.hasMany(Partida); //Poso aqui la relació pq sino Jugador i Partida es requerien mutuament
-const globalRouter = require('./routes/routes.js');
+const globalRouter = require('./routes/global.js');
 
 /*
 Afegeix un endpoint /login que permeti accedir a un administrador amb usuari/ària i contrasenya 
 i retorni un token i fes obligatòria l'autentificació per JWT en tots els accessos als URL del microservei,
- fent servir middlewares per validar al token.
+fent servir middlewares per validar al token.
 */
 
 var errors = 0;
