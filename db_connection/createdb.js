@@ -10,6 +10,7 @@ function createdb () {
     });
     connection.query(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
     connection.end();
+    
 }
 
 

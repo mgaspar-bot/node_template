@@ -18,7 +18,6 @@ var errors = 0;
 const app = express();
 async function server () {
     try {
-        // createdb();
         await db.authenticate(); //tenim connexió amb db
         await db.sync({force: true}); //db té les taules que esperem
         console.log('db online');
