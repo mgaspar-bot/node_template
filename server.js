@@ -6,7 +6,9 @@ const Jugador = require('./models/Jugador');
 const Partida = require('./models/Partida');
 Partida.belongsTo(Jugador);
 Jugador.hasMany(Partida); //Poso aqui la relació pq sino Jugador i Partida es requerien mutuament
+const Admin = require('./models/Admin');
 const globalRouter = require('./routes/global.js');
+const adminLogin = require('./Middlewares/adminLogin');
 
 /*
 Afegeix un endpoint /login que permeti accedir a un administrador amb usuari/ària i contrasenya 
@@ -20,6 +22,18 @@ async function server () {
     try {
         await db.authenticate(); //tenim connexió amb db
         await db.sync({force: true}); //db té les taules que esperem
+        
+        
+        await Admin.upsert({})                                                      //Crea un Admin "admin admin" per poder fer login
+        const t = await Admin.findOne({
+            "where":{
+                "name":"admin",
+            "password":"admin"
+            }
+        })
+        console.log(t.dataValues);
+
+        
         console.log('db online');
 
         app.use(express.json());

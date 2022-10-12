@@ -5,7 +5,8 @@ const Admin = db.define('Admin', {
     name: {
         type: Datatypes.STRING,
         allowNull:false,
-        defaultValue:"admin"    
+        defaultValue:"admin",
+        unique:true  
     },
     password: {
         type: Datatypes.STRING,
@@ -16,4 +17,4 @@ const Admin = db.define('Admin', {
     timestamps:false
 });
 
-module.exports = Jugador;
+module.exports = Admin;

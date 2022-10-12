@@ -10,8 +10,8 @@ const db =  new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME,process.e
         "host": "localhost",
         "logging":false
 });
-
-module.exports = db;
+    
+    module.exports = db;
 
 /*
 No aconsegueixo ni a tiros que les linies de createdb s'acabin 
