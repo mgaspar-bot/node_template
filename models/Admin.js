@@ -11,7 +11,7 @@ const Admin = db.define('Admin', {
     password: {
         type: Datatypes.STRING,
         allowNull:false,
-        defaultValue:"admin"
+        defaultValue:"admin1234"
     }
 },{
     timestamps:false
