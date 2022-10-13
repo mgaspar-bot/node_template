@@ -8,6 +8,7 @@ const postController = async (req, res) => {
         await Jugador.upsert({
         nom: newUsername
         });
+        console.log(`db updated: created user: ${newUsername}`);
         res.status(201).json({
             "msg":`created user: ${newUsername}`
         })
@@ -19,7 +20,7 @@ const postController = async (req, res) => {
     }
 }
 
-const getController = async (req, res) => { //TODO afegir el percentatge d'exits
+const getController = async (req, res) => {
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
         all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
@@ -40,7 +41,7 @@ const getController = async (req, res) => { //TODO afegir el percentatge d'exits
 
 const putController = async (req, res) => {
     const idReceived = req.params.id;  //No cal pasar-lo a number, espera una string
-    const newUsername = req.body.username; //als headers no s'hi poden posar MAJUSCULES!!
+    const newUsername = req.body.username;
     
     if (newUsername === "Anonim"){
         res.status(200).json({
@@ -61,8 +62,9 @@ const putController = async (req, res) => {
                 "msg":"nothing changed"
             })
         }else {
+            console.log(`db updated: player with id ${idReceived} has now nom: ${newUsername}`);
             res.status(201).json({
-                "msg":"name succesfully updated"
+                "msg":`player with id ${idReceived} has now nom: ${newUsername} updated`
             })
         }
     }catch(error){

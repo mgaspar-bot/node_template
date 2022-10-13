@@ -49,13 +49,13 @@ const getAllController = async (req, res) => {
         }
         allUsers = {
             "ranking":allUsers 
-        }
-        //Aquesta assignacio funciona pq sempre al assignar sexecuta primer lo de la dreta i després es fica a la variable de l'esquerra
+        }//Aquesta assignacio funciona pq sempre al assignar sexecuta primer lo de la dreta i després es fica a la variable de l'esquerra
+        
         res.status(200).send(allUsers);
         
     } catch (error) {
        res.status(502).json({
-        "msg":"select query failed (ranking w/l get)"
+        "msg":"select query failed (ranking global get)"
        });
     }
 }

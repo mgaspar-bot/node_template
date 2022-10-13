@@ -1,3 +1,4 @@
+const sequelize = require('../db_connection/getSqlizeInstance');
 const Partida = require('../models/Partida');
 const Jugador = require('../models/Jugador')
 const tirarDaus = require('../utils/tirarDaus');
@@ -6,28 +7,31 @@ const actualizeWinrate = require('../utils/actualizeWinrate');
 const postController = async (req, res) => {
     //getId from the field validateId wrote
     const idReceived = req.idReceived; //Si definim el :id a la ruta global del endpoint, no hi podem accedir des d'aqui
-    
+    console.log(idReceived);
+   
     //throw dices, did you win?
     const tirada = tirarDaus();
     let won = (tirada[0] + tirada[1] === 7) ? 1 : 0;
     let info = won? "you won!":"try again";
-    
     try {
+       
         //Insert partida into db
         await Partida.upsert({ //ojo pq com que no valides ids aqui, pots acabar introduint JugadorId nulls a la db
             dau1:tirada[0],
             dau2:tirada[1],
             JugadorId:idReceived
         });
+        
         //update player data in db
         await Jugador.update({
-            gamesPlayed:sequelize.literal("gamesPlayed + 1"),//sequelize magic IMPORTANT!!
-            gamesWon:sequelize.literal(`gamesWon+${won}`)
+            gamesPlayed: sequelize.literal("gamesPlayed + 1"),//Sequelize magic IMPORTANT!!
+            gamesWon: sequelize.literal(`gamesWon+${won}`)
         },{
             where:{
                 id:idReceived
             }
         });
+        console.log('db updated');
         actualizeWinrate(idReceived); //i'm not waiting for this execute, does it matter?
 
         //respond
@@ -38,6 +42,7 @@ const postController = async (req, res) => {
             "info":info
         });
     } catch (error) {
+        console.log(error);
         res.status(502).json({
             "msg":"insert or update query failed (games POST controller)"
         })
@@ -87,12 +92,13 @@ const deleteController = async (req, res) => {
         });
         actualizeWinrate(idReceived, "reset");
         if (deletedRows === numberOfRows) {
+            console.log(`db updated: stored games for player with id ${idReceived} were erased`);
             res.status(200).json({
                 "msg":`stored games for player with id ${idReceived} were erased`
             })
         }else{
             res.status(500).json({
-                "msg":"l'has liat parda no se ni com"
+                "msg":"somehow you deleted the wrong number of rows in the games table"
             })
         }
     } catch (error) {

@@ -1,4 +1,3 @@
-// const Sequelize = require('sequelize').Sequelize;
 const express = require('express');
 
 const db = require('./db_connection/getSqlizeInstance')
@@ -8,20 +7,16 @@ Partida.belongsTo(Jugador);
 Jugador.hasMany(Partida); //Poso aqui la relació pq sino Jugador i Partida es requerien mutuament
 const Admin = require('./models/Admin');
 const globalRouter = require('./routes/global.js');
-const adminLogin = require('./Middlewares/adminLogin');
+const createdb = require('./db_connection/createdb')
 
-/*
-Afegeix un endpoint /login que permeti accedir a un administrador amb usuari/ària i contrasenya 
-i retorni un token i fes obligatòria l'autentificació per JWT en tots els accessos als URL del microservei,
-fent servir middlewares per validar al token.
-*/
 
+createdb();
 var errors = 0;
 const app = express();
 async function server () {
     try {
         await db.authenticate(); //tenim connexió amb db
-        await db.sync({force: true}); //db té les taules que esperem
+        await db.sync({force: false}); //db té les taules que esperem
         await Admin.upsert({})                                                      //Crea un Admin "admin admin1234" per poder fer login
 
         
@@ -42,18 +37,18 @@ async function server () {
             console.log('Ho tornem a intentar...');
             server();
         }
-        /*
-        Aixi funciona encara que no s'hagi creat la db, pero esta una mica feo...
-        */
+        /*Aixi funciona encara que no s'hagi creat la db, pero esta una mica feo...     */
     }
 };
 
-setTimeout(() =>{ server()} );
+setTimeout( () => {server()} );
 /*
 El setTimeout es la manera que no passi per el if si la baser de dades no esta creada, aixi que la meva logica del que esta passant
 es la següent:
     ·Al executar-se el require('./db_connection/getSqlizeInstance') js fa la crida a createdb() i genera la instaqncia de sequelize.
-        la crida a createdb, amb la query CREATE DATABASE..., es queda a la "cua d'execució" per alguna rao
+        la crida a createdb, amb la query CREATE DATABASE..., es queda a la "cua d'execució" per alguna rao 
+            (segurament pq la db es una mena de "crida externa" com quan fas readFile que js li diu al OS "llegeixme aixo" i segueix amb el seu fil 
+            d'execucio)
     
     ·Segueix la cadena de requires amb la instancia de sqlize creada i la query per crear la db a la "cua". Tot i que no existeix la
     db, la instancia de sqlize es valida, aixi que els seguents requires (els models de Jugador i Partida) s'executen bé.

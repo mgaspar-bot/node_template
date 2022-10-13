@@ -6,7 +6,7 @@ const Admin = db.define('Admin', {
         type: Datatypes.STRING,
         allowNull:false,
         defaultValue:"admin",
-        unique:true  
+        unique:true
     },
     password: {
         type: Datatypes.STRING,
