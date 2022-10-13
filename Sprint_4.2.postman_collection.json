@@ -106,7 +106,7 @@
 				"header": [
 					{
 						"key": "authorization",
-						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluMTIzNCIsImlhdCI6MTY2NTY0NjA2N30.YqJIl1Yi1vdFENyMA84keiZ2Copkhb4uaS6WTNB0fPI",
+						"value": "",
 						"type": "text",
 						"disabled": true
 					}
