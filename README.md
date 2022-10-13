@@ -1,51 +1,73 @@
+## Api Daus
+Aquest projecte és un exercici realitzat pel bootcamp de node.js de la IT academy. Consisteix en un 
+petit servidor amb una API REST que dona suport a un joc de daus. Per poder utilitzar la API cal que 
+rebis primer un JWT del endpoint /login i llavors pots registrar jugadors, tirar els daus, 
+veure els històrics de tirades i victòries de cada jugador o globals i esborrar el històric de jugades.
+<br>
+La aplicació utilitza una base de dades SQL com a persistència, Sequelize com a ORM i express.js per 
+muntar les rutes i aixecar el servidor.
+També tens una col·lecció de postman amb requests preparades per provar el comportament de l'aplicació.
 
-# Node Initial Project
+## Utilització
+### Prerrequisits
+Abans de començar, cal tenir escoltant el servidor local de mysql, ja que l'aplicació provarà de 
+conectar-s'hi. Fet això, clonem el repositori i executem
+```shell
+npm install
+```
+Amb això haurem instal·lat tots els paquets necessaris per la aplicació. 
+### .env
+Seguidament cal que creïs un arxiu .env al mateix directori, que ha de contenir el nom d'usuari i 
+contrasenya que vulguis usar per conectar-te a la base de dades (assegura't que l'usuari té permisos 
+per crear dbs) i una string "secreta" que s'utilitzara per generar els json web tokens. Al arxiu 
+.env.example pots veure el format que ha de tenir el teu .env. 
+### login
+El següent pas és iniciar el servidor i fer login com a admin al endpoint /login. Per iniciar el 
+servidor pots utilitzar dos comandes:
+```shell
+#Per iniciar-lo amb node:
+node server.js
+#Per iniciar-lo amb nodemon:
+npm run devStart
+```
+Apareixeran per consola els missatges "db online" i "server escoltant al port 3000", que indiquen que 
+tot ha anat bé i podem començar a enviar HTTP requests a la aplicació. La primera request haurà 
+de ser un POST a /login que contingui un body amb aquests dos fields:
+```shell
+{
+    "nom":"admin",
+    "password":"admin1234"
+}
+```
+Els valors del nom i la password són per defecte, estàn com a defaultValue al model de la taula 
+"Admins" i són introduïts a la base de dades al iniciar-se el servidor.<br>
+Com a resposta a la request rebras un JWT que serà vàlid fins que el server es torni a iniciar. 
+Has d'afegir-lo al authorization header de les requests a qualsevol altre endpoint amb el format 
+"BEARER token":
+```shell
+#in headers
+"authorizaton":"BEARER 'stringQueHasRebut'"
+```
+### Endpoints
+Ara pots accedir a tots els altres endpoints de la aplicació. Aquí tens una llista amb les seves funcionalitats:
+<ul>
+    <li>/players</li>
+        <ol>
+        <li>POST: crea un jugador/a. Espera el field "username" al body. Si el username està buit, l'usuari es diu "Anonim". Si no està buit, cal que sigui únic.</li>
+        <li>PUT players/:id : modifica el nom del jugador/a. També espera el field "username" al body</li>
+        <li>GET: retorna el llistat de tots els jugadors/es del sistema amb el seu percentatge d’èxits.</li>
+        </ol>
+    <li>/games/:id</li>
+        <ol>
+        <li>POST: un jugador/a específic realitza una tirada.</li>
+        <li>DELETE: elimina les tirades del jugador/a (reseteja el històric de tirades a 0).</li>
+        <li>GET: retorna el llistat de tirades per un jugador/a.</li>
+        </ol>
+    <li>/ranking</li>
+        <ol>
+        <li>GET: retorna un ranking de jugadors/es ordenat per percentatge d'èxits i el percentatge </li>d’èxits mig del conjunt de tots els jugadors/es.
+        <li>GET /loser : retorna el jugador/a amb pitjor percentatge d’èxit.</li>
+        <li>GET /winner: retorna el jugador/a amb millor percentatge d’èxit.</li>
+        </ol>
+</ul>
 
-### Project Structure
-
-Main structure of node.js project. Folders / files:
-
-- <b>\_\_tests__</b>. Tests folder. See [Jest Docs](https://jestjs.io/es-ES/docs/configuration) and [Chai Docs](https://www.chaijs.com/)
-- <b>app</b>:
-    - <b>config</b>
-    - <b>controllers</b>
-    - <b>middlewares</b>
-    - <b>models</b>
-    - <b>routes</b>
-    - <b>helpers</b>
-    - <b>app.js</b>. Entry point.
-- <b>package.json</b>.
-- <b>.env</b>. Environment descriptor. See [dotenv doc](https://www.npmjs.com/package/dotenv).
-
-Extras:
-- <b>.eslintrc</b>. Linter JS, static code analyzer. See [EsLint Docs](https://eslint.org/docs/user-guide/configuring/configuration-files).
-- <b>.prettierignore</b>. Code formatter. See [Prettier Config](https://prettier.io/docs/en/configuration.html) and [Prettier Ignore](https://prettier.io/docs/en/ignore.html).
-- <b>.ecosystem.config.js</b>. Process Manage at runtime. See [PM2 Docs](https://pm2.keymetrics.io/).
-
-### Import project for use with Visual Studio Code
-
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-  ![Open Project](img/VSC_open.png)
-
-
-### Import project for use with WebStorm
-
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-![Open Project](img/webstorm_open.png)
-
-
-### Utilities
-
-* [Node Developers Guide](https://nodejs.dev/learn)
-* **.gitignore file** configuration. See [Official Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files).
-* **Git branches**. See [Official Docs](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
