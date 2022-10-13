@@ -53,8 +53,8 @@ Ara pots accedir a tots els altres endpoints de la aplicació. Aquí tens una ll
 <ul>
     <li>/players</li>
         <ol>
-        <li>POST: crea un jugador/a. Espera el "username" al body. Si el username està buit, l'usuari es diu "Anonim". Si no està buit, cal que sigui únic.</li>
-        <li>PUT players/:id : modifica el nom del jugador/a.</li>
+        <li>POST: crea un jugador/a. Espera el field "username" al body. Si el username està buit, l'usuari es diu "Anonim". Si no està buit, cal que sigui únic.</li>
+        <li>PUT players/:id : modifica el nom del jugador/a. També espera el field "username" al body</li>
         <li>GET: retorna el llistat de tots els jugadors/es del sistema amb el seu percentatge d’èxits.</li>
         </ol>
     <li>/games/:id</li>
