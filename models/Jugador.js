@@ -24,7 +24,8 @@ const Jugador = db.define('Jugador', {
         allowNull:false
     }
 },{
-    timestamps:false
+    timestamps:true,
+    updatedAt:false
 });
 
 module.exports = Jugador;

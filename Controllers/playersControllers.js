@@ -24,6 +24,20 @@ const getController = async (req, res) => {
     try {    
         let all = await Jugador.findAll(); //torna una array amb objectes Jugador que tenen un munt de coses
         all = all.map((j) => j.dataValues); //les dades insertades a la db estan al camp "dataValues"
+       
+        all = all.map((j) => {
+            return {
+                "id": j.id,
+                "nom": j.nom,
+                "winRate":j.winRate
+                /*
+                gamesPlayed:j.gamesPlayed´,
+                gamesWon:j.gamesWon
+
+                Per si vols veure que els winRates es fan correctament
+                */
+            }
+        });
         let allUsers = {
             "users": all
         };
@@ -32,6 +46,7 @@ const getController = async (req, res) => {
         }
         res.status(200).send(allUsers);
     }catch(error) {
+        console.log(error);
         res.status(500).json({
             "msg":"select query failed (get controller)"
         })

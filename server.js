@@ -11,6 +11,7 @@ const createdb = require('./db_connection/createdb')
 
 
 createdb();
+var sessionTimestamp = Date.now();
 var errors = 0;
 const app = express();
 async function server () {
@@ -18,8 +19,6 @@ async function server () {
         await db.authenticate(); //tenim connexió amb db
         await db.sync({force: false}); //db té les taules que esperem
         await Admin.upsert({})                                                      //Crea un Admin "admin admin1234" per poder fer login
-
-        
         console.log('db online');
 
         app.use(express.json());
@@ -65,4 +64,5 @@ es la següent:
 */
 
 
-module.exports = server;
+module.exports =   { server, sessionTimestamp}
+

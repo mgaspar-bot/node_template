@@ -11,5 +11,7 @@ const Partida = db.define('Partida', {
         type: Datatypes.INTEGER,
         allowNull:false
     }
+},{
+        timestamps:false
 });
 module.exports = Partida;

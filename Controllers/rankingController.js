@@ -9,11 +9,14 @@ const getPlaceController = async (req, res) => {
         //extract interesting data and sort it
         allUsers = allUsers.map((j) => j.dataValues); //extract dataValues
         allUsers = allUsers.sort((j1, j2) => (j2.winRate - j1.winRate));
-        console.log(allUsers);
+        // console.log(allUsers);
         
         //respond
         if (allUsers.length === 0) {
-            allUsers["msg"] = "no users to show";
+            allUsers = {
+                "ranking":allUsers
+            }
+            allUsers["msg"] = "no users to show"; //Li estas declarant la prop msg quan encara es una array burro
             res.send(200).send(allUsers);
             return; //Si no poso el return intentara accedir a posicions de la array que no existeixen (allUsers[coses])
         }
@@ -44,12 +47,12 @@ const getAllController = async (req, res) => {
         // console.log(allUsers);
         
         //respond with a json, not an array
-        if (allUsers.length === 0) {
-            allUsers["msg"] = "no users to show";
-        }
         allUsers = {
             "ranking":allUsers 
         }//Aquesta assignacio funciona pq sempre al assignar sexecuta primer lo de la dreta i després es fica a la variable de l'esquerra
+        if (allUsers.ranking.length === 0) {
+            allUsers["msg"] = "no users to show";
+        }
         
         res.status(200).send(allUsers);
         

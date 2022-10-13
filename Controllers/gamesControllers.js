@@ -58,10 +58,25 @@ const getController = async (req, res) => {
             where: {
                 JugadorId: idReceived
             }
-        });     
+        });
+        matches = matches.map((match)=>{
+            return {
+                "dau1":match.dau1,
+                "dau2":match.dau2,
+                "guanyada?": (match.dau1+match.dau2 === 7)? "si":"no"
+            }
+        });
+        let nom = await Jugador.findOne({
+            where:{
+                id:idReceived
+            }
+        });
+        nom = nom.dataValues.nom;
         const allMatches = {
+            "nom":nom,
             "id":idReceived,
             "partides": matches
+            
         }
         if (matches.length === 0) {
             allMatches["msg"] = "no games to show";
