@@ -59,9 +59,9 @@ Ara pots accedir a tots els altres endpoints de la aplicació. Aquí tens una ll
         </ol>
     <li>/games/:id</li>
         <ol>
-        <li>1.POST: un jugador/a específic realitza una tirada.</li>
-        <li>2.DELETE: elimina les tirades del jugador/a (reseteja el històric de tirades a 0).</li>
-        <li>3.GET: retorna el llistat de tirades per un jugador/a.</li>
+        <li>POST: un jugador/a específic realitza una tirada.</li>
+        <li>DELETE: elimina les tirades del jugador/a (reseteja el històric de tirades a 0).</li>
+        <li>GET: retorna el llistat de tirades per un jugador/a.</li>
         </ol>
     <li>/ranking</li>
         <ol>
