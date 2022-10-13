@@ -44,11 +44,14 @@ const getAllController = async (req, res) => {
         //extract interesting data and sort it
         allUsers = allUsers.map((j) => j.dataValues); //extract dataValues
         allUsers = allUsers.sort((j1, j2) => (j2.winRate - j1.winRate));
-        // console.log(allUsers);
+        let winRates = allUsers.map((j)=> j.winRate);
+        let meanWinRate = (winRates.reduce((pv, cv) => pv+cv, 0)) / winRates.length; //En principi winRates.length no sera mai 0, aixi que no hi ha risc de destruir el univers
+        //bueno si no hi ha jugadors torna null i punto, tampoc esta mal
         
         //respond with a json, not an array
         allUsers = {
-            "ranking":allUsers 
+            "ranking":allUsers,
+            "meanWinRate":meanWinRate
         }//Aquesta assignacio funciona pq sempre al assignar sexecuta primer lo de la dreta i després es fica a la variable de l'esquerra
         if (allUsers.ranking.length === 0) {
             allUsers["msg"] = "no users to show";

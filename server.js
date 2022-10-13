@@ -17,7 +17,7 @@ const app = express();
 async function server () {
     try {
         await db.authenticate(); //tenim connexió amb db
-        await db.sync({force: false}); //db té les taules que esperem
+        await db.sync({force: true}); //db té les taules que esperem
         await Admin.upsert({})                                                      //Crea un Admin "admin admin1234" per poder fer login
         console.log('db online');
 

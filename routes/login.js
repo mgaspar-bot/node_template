@@ -17,7 +17,7 @@ loginRouter.post('/', (req, res) => {
         "timestamp":lastServerInit
     };
 
-    console.log('timestamp in the json i signed the token with:'+idJson.timestamp);
+    // console.log('timestamp in the json i signed the token with:'+idJson.timestamp);
 
     const accessToken = jwt.sign(idJson, process.env.AUTH_TOKEN_SECRET);
     // console.log(accessToken);

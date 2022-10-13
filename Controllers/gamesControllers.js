@@ -7,7 +7,6 @@ const actualizeWinrate = require('../utils/actualizeWinrate');
 const postController = async (req, res) => {
     //getId from the field validateId wrote
     const idReceived = req.idReceived; //Si definim el :id a la ruta global del endpoint, no hi podem accedir des d'aqui
-    console.log(idReceived);
    
     //throw dices, did you win?
     const tirada = tirarDaus();
