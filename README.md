@@ -48,18 +48,26 @@ Has d'afegir-lo al authorization header de les requests a qualsevol altre endpoi
 #in headers
 "authorizaton":"BEARER 'stringQueHasRebut'"
 ```
-### endpoints
+### Endpoints
 Ara pots accedir a tots els altres endpoints de la aplicació. Aquí tens una llista amb les seves funcionalitats:
-    -/players
-        1.POST: crea un jugador/a. Espera el "username" al body. Si el username està buit, l'usuari es diu "Anonim". Si no està buit, cal que sigui únic.
-        2.PUT players/:id : modifica el nom del jugador/a.
-        3.GET: retorna el llistat de tots els jugadors/es del sistema amb el seu percentatge d’èxits.
-    -/games/:id
-        1.POST: un jugador/a específic realitza una tirada.
-        2.DELETE: elimina les tirades del jugador/a (reseteja el històric de tirades a 0).
-        3.GET: retorna el llistat de tirades per un jugador/a.
-    -ranking
-        1.GET: retorna un ranking de jugadors/es ordenat per percentatge d'èxits i el percentatge d’èxits mig del conjunt de tots els jugadors/es.
-        2.GET /loser : retorna el jugador/a amb pitjor percentatge d’èxit.
-        3.GET /winner: retorna el jugador/a amb millor percentatge d’èxit.
+<ul>
+    <li>-/players</li>
+        <ol>
+        <li>1.POST: crea un jugador/a. Espera el "username" al body. Si el username està buit, l'usuari es diu "Anonim". Si no està buit, cal que sigui únic.</li>
+        <li>2.PUT players/:id : modifica el nom del jugador/a.</li>
+        <li>3.GET: retorna el llistat de tots els jugadors/es del sistema amb el seu percentatge d’èxits.</li>
+        </ol>
+    <li>-/games/:id</li>
+        <ol>
+        <li>1.POST: un jugador/a específic realitza una tirada.</li>
+        <li>2.DELETE: elimina les tirades del jugador/a (reseteja el històric de tirades a 0).</li>
+        <li>3.GET: retorna el llistat de tirades per un jugador/a.</li>
+        </ol>
+    <li>ranking</li>
+        <ol>
+        <li>1.GET: retorna un ranking de jugadors/es ordenat per percentatge d'èxits i el percentatge </li>d’èxits mig del conjunt de tots els jugadors/es.
+        <li>2.GET /loser : retorna el jugador/a amb pitjor percentatge d’èxit.</li>
+        <li>3.GET /winner: retorna el jugador/a amb millor percentatge d’èxit.</li>
+        </ol>
+</ul>
 
