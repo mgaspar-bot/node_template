@@ -1,3 +1,4 @@
+const JsonFileManager = require('./Models/JsonFileManager');
 const readline = require('readline');
 const rl = readline.createInterface( {
 	input : process.stdin,
@@ -44,7 +45,21 @@ async function menu (id) {
 };
 
 async function whoThis() {
+    let jfm = new JsonFileManager('./models/prova.json');    
     let username = await ask("Who dis??!!\n");
+    let obj = jfm.getObjFromFile(this);
+    let found = obj.users.filter((user) => user.username === username);
+    if (!found){
+       console.log(`Ur not in our registers, im writing you down...`);
+       let lastId = obj.users[obj.users.length -1].id;
+       obj.users.push({
+        "id":lastId++,
+        "username":username
+       });
+       jfm.rewriteFile(this, obj);
+
+    }
+    
     /*
     Search for the username in the Json (or whatever)
     if you're registered you enter with ur id
