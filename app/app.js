@@ -40,6 +40,7 @@ async function menu (id) {
                 //veure totes les tasques d'un usuari
             }
     } while (res != 0)
+    process.exit();
 };
 
 async function whoThis() {
@@ -49,7 +50,7 @@ async function whoThis() {
     if you're registered you enter with ur id
     if you're not, you must register and you're given an id
     */
-   menu(id);
+   menu();
 }
 
 whoThis();
