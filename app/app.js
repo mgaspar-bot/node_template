@@ -3,7 +3,7 @@ const readline = require('readline');
 const rl = readline.createInterface( {
 	input : process.stdin,
 	output : process.stdout
-}); 
+});
 function ask (str) {
 	return new Promise ( (res, rej) => {
 		rl.setPrompt(str);
@@ -57,7 +57,6 @@ async function whoThis() {
         "username":username
        });
        jfm.rewriteFile(this, obj);
-
     }
     
     /*
