@@ -1,4 +1,5 @@
 const fs = require('fs/promises');
+const { userInfo } = require('os');
 
 class JsonFileManager {
     constructor (path) {
@@ -74,16 +75,21 @@ class JsonFileManager2 {
 
     getObjFromFile() { //pots canviar coses passant-li el teu this        
         let obj = require(this.path);
-        if (!obj) {
-            console.log('There is no object yet my friend');
+       
+        /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
+            console.log('There is no object yet my friend');  
             return -1;
-        }
+        } */
         return obj;
     }
 
     async rewriteFile(obj) {      
         try {
-            await fs.writeFile(this.path, JSON.stringify(obj));
+            console.log(`Im going to writeFile this:`);
+            console.log(obj);
+            console.log(`into here`);
+            console.log(this.path);
+            await fs.writeFile(this.path, JSON.stringify(obj), 'utf-8');
             return;
         } catch (error) {
             console.log(`JsonFileManager: I messed up the file writing, we're basically dead now`);
@@ -94,7 +100,4 @@ class JsonFileManager2 {
 }
 
 module.exports = JsonFileManager2;
-
-
-
 

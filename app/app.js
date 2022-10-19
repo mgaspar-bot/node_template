@@ -49,21 +49,20 @@ async function whoThis() {
     let userId;
     
     let username = await ask("Who dis??!!\n");
-    let obj = jfm.getObjFromFile(this);
+    let obj = jfm.getObjFromFile();
     let found = obj.users.filter((user) => user.username === username);
-    if (!found){
+    if (!found.id){
        console.log(`Ur not in our registers, im writing you down...`);
-       let lastId = obj.users[obj.users.length -1].id;
-       userId = lastId+1;
+       userId = obj.users.length + 1;
+       console.log('userId '+userId);
        obj.users.push({
         "id":userId,
         "username":username
        });
-       jfm.rewriteFile(this, obj);
+       jfm.rewriteFile(obj);
     }else {
         userId = obj.users.filter((user) => user.username === username)[0];
     }
-    
    menu(userId);
 }
 
