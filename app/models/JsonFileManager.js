@@ -47,7 +47,40 @@ class JsonFileManager {
     }
 }
 
-module.exports = JsonFileManager;
+class JsonFileManager2 {
+    constructor () {
+        if (JsonFileManager.instance instanceof JsonFileManager) {
+            console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
+            return JsonFileManager.instance
+        }
+        this.path = "./appData.json";
+
+        JsonFileManager.instance = this;
+        Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
+    }
+
+    getObjFromFile() { //pots canviar coses passant-li el teu this        
+        let obj = require(this.path);
+        if (!obj) {
+            console.log('There is no object yet my friend');
+            return -1;
+        }
+        return obj;
+    }
+
+    async rewriteFile(obj) {      
+        try {
+            await fs.writeFile(this.path, JSON.stringify(obj));
+            return;
+        } catch (error) {
+            console.log(`JsonFileManager: I messed up the file writing, we're basically dead now`);
+            console.log(error);
+            return;
+        }
+    }
+}
+
+module.exports = JsonFileManager2;
 /*
 This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
 rewrites the changed object into the same file.
