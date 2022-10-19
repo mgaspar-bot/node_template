@@ -47,6 +47,19 @@ class JsonFileManager {
     }
 }
 
+/*
+This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
+rewrites the changed object into the same file.
+
+To get the object you call the manager sending a password as a parameter. The object which was written at the file at that 
+time is returned, and the password you sent is set. Now the rewriteFile function can be used, but you need to identify yourself
+with the password.
+
+In short: the only option you have to change the file is to call getObject, set a password and then rewriteFile with the password.
+
+This way i feel it will be much more difficult to mess up the file inadvertently, or to lose changes.
+*/
+
 class JsonFileManager2 {
     constructor () {
         if (JsonFileManager.instance instanceof JsonFileManager) {
@@ -81,18 +94,7 @@ class JsonFileManager2 {
 }
 
 module.exports = JsonFileManager2;
-/*
-This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
-rewrites the changed object into the same file.
 
-To get the object you call the manager sending a password as a parameter. The object which was written at the file at that 
-time is returned, and the password you sent is set. Now the rewriteFile function can be used, but you need to identify yourself
-with the password.
-
-In short: the only option you have to change the file is to call getObject, set a password and then rewriteFile with the password.
-
-This way i feel it will be much more difficult to mess up the file inadvertently, or to lose changes.
-*/
 
 
 
