@@ -1,0 +1,30 @@
+{
+    "users": [
+        {
+            "id": 0,
+            "username": "Pere"
+        }
+    ],
+    "tasks": [
+        {
+            "id": 0,
+            "text": "eat dinner",
+            "createdDate": 2,
+            "updatedDate": 3,
+            "state": "pending",
+            "user_id": 0
+        },
+        {
+            "text": "si"
+        },
+        {
+            "text": "si"
+        },
+        {
+            "text": "si"
+        },
+        {
+            "text": "si"
+        }
+    ]
+}
