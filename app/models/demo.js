@@ -14,5 +14,3 @@ obj.tasks.push({"text":"si"});
 jfm.rewriteFile(obj);
 jfm.rewriteFile(this, obj);
 
-
-
