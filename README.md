@@ -3,15 +3,15 @@
 ## Documents:
 - appData.json (contains):
     - User array (contains):
-        - User id
-        - Username
+        - id
+        - username
     - Task array (contains):
-        - Task id
-        - User (creator) id
-        - Task info
-        - Created date
-        - Status
-        - Closed date
+        - id
+        - user_id
+        - description
+        - create_date
+        - status
+        - closed_date
 - jsonFileManager.js (contains):
     - Path constructor
     - `function` Require JSON 
