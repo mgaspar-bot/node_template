@@ -46,7 +46,7 @@ class JsonFileManager {
             return;
         } 
     }
-} */
+} 
 
 
 This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
