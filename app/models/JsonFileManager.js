@@ -73,14 +73,30 @@ class JsonFileManager {
         Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
     }
 
-    getObjFromFile() { //pots canviar coses passant-li el teu this        
-        let obj = require(this.path);
-       
-        /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
-            console.log('There is no object yet my friend');  
-            return -1;
-        } */
-        return obj;
+    async getObjFromFile(retried) { //pots canviar coses passant-li el teu this        
+        let obj;
+        try {
+            obj = require(this.path);
+            return obj;
+            
+        } catch (error) {
+            console.log(`I found an error when requiring the json file, i'll rewrite the file and try again`); //It would be cool to check here for the type of error we're expecting. I mean the catch part always writes a blank json file, regardless of which error was thrown
+            if (retried === true) {
+                console.log(error);
+                return;
+            }
+            try {
+                await fs.writeFile(this.path, JSON.stringify({
+                    "users":[],
+                    "tasks":[]
+                }))
+            } catch (error) {
+                console.log(`After failing to require the json file, an error was thrown when trying to write a blank json file:`);
+                console.log(error);
+            }
+
+            return this.getObjFromFile(true);
+        }   
     }
 
     async rewriteFile(obj) {      

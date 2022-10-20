@@ -62,7 +62,7 @@ async function whoThis() {
     
     let username = await ask("Who dis??!!\n");
     // console.log(username);
-    let obj = jfm.getObjFromFile(); 
+    let obj = await jfm.getObjFromFile(); 
     let found = obj.users.filter((user) => user.userName == username);
     // console.log(found);
     if (found.length == 0){ //filter always returns an array, so it should always be safe to do found.length
