@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 const { userInfo } = require('os');
-
+ /*
 class JsonFileManager {
     constructor (path) {
         if (JsonFileManager.instance instanceof JsonFileManager) {
@@ -48,7 +48,7 @@ class JsonFileManager {
     }
 }
 
-/*
+
 This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
 rewrites the changed object into the same file.
 
@@ -61,20 +61,20 @@ In short: the only option you have to change the file is to call getObject, set 
 This way i feel it will be much more difficult to mess up the file inadvertently, or to lose changes.
 */
 
-class JsonFileManager2 {
+class JsonFileManager {
     constructor () {
         if (JsonFileManager.instance instanceof JsonFileManager) {
             console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
             return JsonFileManager.instance
         }
-        this.path = "./appData.json";
+        this.path = appRoot +"/appData.json";
 
         JsonFileManager.instance = this;
         Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
     }
 
     getObjFromFile() { //pots canviar coses passant-li el teu this        
-        let obj = require('.'+this.path);
+        let obj = require(this.path);
        
         /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
             console.log('There is no object yet my friend');  
@@ -99,5 +99,5 @@ class JsonFileManager2 {
     }
 }
 
-module.exports = JsonFileManager2;
+module.exports = JsonFileManager;
 

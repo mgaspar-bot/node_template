@@ -1,5 +1,8 @@
-const CONSTANTS = require('./constants.js')
-const JsonData = require('../Models/appData.json');
+const CONSTANTS = require(appRoot + '/helpers/constants.js')
+const JsonData = require(appRoot + '/appData.json');
+const JsonFileManager = require(appRoot + '/models/JsonFileManager');
+const jfm = new JsonFileManager()
+
 const readline = require('readline');
 const rl = readline.createInterface( {
 	input : process.stdin,
@@ -23,23 +26,26 @@ function getDate() {
 
 async function createTask () {
 let task = ""
-let taskId = JsonData.lenght +1
+let taskId = JsonData.tasks.length +1
 
 task = await ask(
     `Type your task :)`
 );
 
-let taskToPush = {
+
+let obj = jfm.getObjFromFile()
+
+obj.tasks.push({
     "task_id" : taskId,
     "creator_id": "",
     "description": task,
     "create_date": getDate(),
     "status": CONSTANTS.STATUS_TODO,
     "closed_date": ""
+   })
+
+jfm.rewriteFile(obj)
+process.exit()
 }
 
-console.log(taskToPush)
-
-}
-
-createTask ()
+module.exports = createTask()
