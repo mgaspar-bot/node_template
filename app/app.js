@@ -34,7 +34,7 @@ async function menu (id) {
                 0. Bye!
                 `);
             if (res == 1){
-                //crearTasca(id)
+                createTask(id);
             } else if (res == 2) {
                 //modificaTasca(id)
             }else if (res == 3) {
@@ -49,7 +49,7 @@ async function menu (id) {
 };
 
 async function whoThis() {
-    let jfm = new JsonFileManager('./models/prova.json');
+    let jfm = new JsonFileManager();
     let userId;
     
     let username = await ask("Who dis??!!\n");
@@ -70,5 +70,4 @@ async function whoThis() {
    menu(userId);
 }
 
-//whoThis();
-createTask;
+whoThis();

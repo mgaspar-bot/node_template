@@ -18,34 +18,34 @@ function ask (str) {
 }
 
 function getDate() {
- const date = new Date()
- const currentDate = `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
+    const date = new Date()
+    const currentDate = `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
 
- return currentDate
+    return currentDate
 }
 
 async function createTask () {
-let task = ""
-let taskId = JsonData.tasks.length +1
+    let task = ""
+    let taskId = JsonData.tasks.length +1
 
-task = await ask(
-    `Type your task :)`
-);
+    task = await ask(
+        `Type your task :)`
+    );
 
 
-let obj = jfm.getObjFromFile()
+    let obj = jfm.getObjFromFile()
 
-obj.tasks.push({
-    "task_id" : taskId,
-    "creator_id": "",
-    "description": task,
-    "create_date": getDate(),
-    "status": CONSTANTS.STATUS_TODO,
-    "closed_date": ""
-   })
+    obj.tasks.push({
+        "task_id" : taskId,
+        "creator_id": "",
+        "description": task,
+        "create_date": getDate(),
+        "status": CONSTANTS.STATUS_TODO,
+        "closed_date": ""
+    })
 
-jfm.rewriteFile(obj)
-process.exit()
+    jfm.rewriteFile(obj)
+
 }
 
-module.exports = createTask()
+module.exports = createTask;
