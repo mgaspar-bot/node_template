@@ -1,0 +1,52 @@
+{
+    "users":[
+        {
+            "id":1,
+            "userName":"Alex"
+        },{
+            "id":2,
+            "userName":"Marçal"
+        },{
+            "id":3,
+            "userName":"Marc"
+        }
+    ],
+    "tasks":[
+        {
+            "id":1,
+            "text":"teach gitflow to boneheads",
+            "createdDate":6,
+            "updatedDate":7,
+            "status":"in progress",
+            "user_id":2
+        },{
+            "id":2,
+            "text":"clean dishes",
+            "createdDate":6,
+            "updatedDate":7,
+            "status":"to do",
+            "user_id":3
+        },{
+            "id":3,
+            "text":"fix door",
+            "createdDate":6,
+            "updatedDate":7,
+            "status":"in progress",
+            "user_id":1
+        },{
+            "id":4,
+            "text":"walk dogs",
+            "createdDate":6,
+            "updatedDate":7,
+            "status":"in progress",
+            "user_id":1
+        },{
+            "id":5,
+            "text":"abolish democracy, establish medieval regime",
+            "createdDate":6,
+            "updatedDate":7,
+            "status":"to do",
+            "user_id":3
+        }
+    ]
+}
