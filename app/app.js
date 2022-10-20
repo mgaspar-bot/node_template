@@ -11,10 +11,15 @@ const rl = readline.createInterface( {
 function ask (str) {
 	return new Promise ( (res, rej) => {
 		rl.setPrompt(str);
-		rl.prompt();
-		rl.on('line', (resposta) => {res(resposta)});
+		rl.prompt(false);
+        if (rl.listenerCount('line') > 0) {//Just trying to avoid a warning which appeared when you answered a lot of prompts
+            rl.removeAllListeners('line');
+        }//It would be cool to reuse the same listener over and over, but i dont know how to do it
+
+        rl.on('line', (resposta) => {res(resposta)});
     })
 }
+const seeAllTasksId = require('./controllers/seeAllTasksId');
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
 el seu estat (pendents, en execució o acabades) i l'hora d'inici i final de la tasca, així com l'usuari/ària que la va donar d'alta
@@ -42,7 +47,7 @@ async function menu (id) {
             } else if (res == 4) {
                 //veure una tasca
             } else if (res == 5) {
-                //veure totes les tasques d'un usuari
+                console.log(seeAllTasksId(id));
             }
     } while (res != 0)
     process.exit();
@@ -53,9 +58,11 @@ async function whoThis() {
     let userId;
     
     let username = await ask("Who dis??!!\n");
+    // console.log(username);
     let obj = jfm.getObjFromFile();
-    let found = obj.users.filter((user) => user.username === username);
-    if (!found.id){
+    let found = obj.users.filter((user) => user.userName == username);
+    console.log(found);
+    if (!found[0].id){
        console.log(`Ur not in our registers, im writing you down...`);
        userId = obj.users.length + 1;
        console.log('userId '+userId);
@@ -65,8 +72,9 @@ async function whoThis() {
        });
        jfm.rewriteFile(obj);
     }else {
-        userId = obj.users.filter((user) => user.username === username)[0];
+        userId = obj.users.filter((user) => user.userName === username)[0].id;
     }
+    console.log(userId);
    menu(userId);
 }
 
