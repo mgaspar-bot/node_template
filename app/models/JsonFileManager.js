@@ -64,7 +64,7 @@ This way i feel it will be much more difficult to mess up the file inadvertently
 class JsonFileManager {
     constructor () {
         if (JsonFileManager.instance instanceof JsonFileManager) {
-            console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
+            // console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
             return JsonFileManager.instance
         }
         this.path = appRoot +"/appData.json";
