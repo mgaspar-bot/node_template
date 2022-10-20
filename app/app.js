@@ -1,4 +1,8 @@
-const JsonFileManager = require('./Models/JsonFileManager');
+var path = require('path');
+global.appRoot = path.resolve(__dirname)
+
+const createTask = require (appRoot + '/helpers/helper.js')
+const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const readline = require('readline');
 const rl = readline.createInterface( {
 	input : process.stdin,
@@ -67,4 +71,5 @@ async function whoThis() {
    menu(userId);
 }
 
-whoThis();
+//whoThis();
+createTask;
