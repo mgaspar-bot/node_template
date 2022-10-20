@@ -14,13 +14,13 @@ function seeAllTasksId (id) {
     let tasks = obj.tasks.filter((task) => task.creator_id === id);
     // console.log(tasks);
 
-    let toShow = `Stored tasks for ${user.userName}: \n\n\t`; 
+    let toShow = `Stored tasks for ${user.userName}: \n\n\t`;
     for (task of tasks) {
         toShow += task.description + '\n\t\t';
         toShow += JSON.stringify(task); 
         toShow += '\n\t';
-    }
-    
+    }/*
+    We can make this part display things in a better way, for now it just works */
     return toShow;
 }
 
