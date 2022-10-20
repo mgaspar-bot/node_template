@@ -11,6 +11,7 @@ function ask (str) {
 		rl.on('line', (resposta) => {res(resposta)});
     })
 }
+const seeAllTasksId = require('./controllers/seeAllTasksId');
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
 el seu estat (pendents, en execució o acabades) i l'hora d'inici i final de la tasca, així com l'usuari/ària que la va donar d'alta
@@ -38,7 +39,7 @@ async function menu (id) {
             } else if (res == 4) {
                 //veure una tasca
             } else if (res == 5) {
-                //veure totes les tasques d'un usuari
+                console.log(seeAllTasksId(id));
             }
     } while (res != 0)
     process.exit();

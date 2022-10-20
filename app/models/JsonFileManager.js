@@ -1,7 +1,6 @@
 const fs = require('fs/promises');
-const { userInfo } = require('os');
 
-class JsonFileManager {
+/* class JsonFileManager {
     constructor (path) {
         if (JsonFileManager.instance instanceof JsonFileManager) {
             console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
@@ -46,7 +45,7 @@ class JsonFileManager {
             return;
         } 
     }
-}
+} */
 
 /*
 This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
