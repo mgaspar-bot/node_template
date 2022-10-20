@@ -74,7 +74,12 @@ class JsonFileManager {
     }
 
     getObjFromFile() { //pots canviar coses passant-li el teu this        
+        try {
         let obj = require(this.path);
+        }
+        catch {
+            
+        }
        
         /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
             console.log('There is no object yet my friend');  

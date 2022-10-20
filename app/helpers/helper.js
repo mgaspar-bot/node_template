@@ -32,8 +32,11 @@ task = await ask(
     `Type your task :)`
 );
 
-
 let obj = jfm.getObjFromFile()
+
+if (obj.tasks === undefined) {
+    obj.tasks = []
+}
 
 obj.tasks.push({
     "task_id" : taskId,
