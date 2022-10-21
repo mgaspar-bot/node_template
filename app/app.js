@@ -1,5 +1,6 @@
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
+const fs = require('fs/promises')
 
 const createTask = require (appRoot + '/helpers/helper.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
@@ -40,6 +41,12 @@ async function menu (id) {
 };
 
 async function whoThis() {
+    //Check dependencies
+
+    
+    
+    
+    
     let jfm = new JsonFileManager();
     let userId;
     
@@ -64,4 +71,33 @@ async function whoThis() {
    menu(userId);
 }
 
+async function checkDependencies() {
+    //Check if json file exists
+    //if not, copy template
+    try {
+        const filesInDir = await fs.readdir(global.appRoot);
+        if (!filesInDir.includes("appData.json")){
+        }
+        
+    } catch (error) {
+        
+    }
+}
+
+async function writeJsonFromTemplate() {
+    const templateData = await fs.readFile(global.appRoot+'/template.json');
+    console.log(typeof templateData); //is this a string or a buffer? does it matter?
+    await fs.writeFile(global.appRoot + '/appData.json', templateData);
+    return;
+
+}
+
+
+
+
+
+
+
+
+await checkDependencies();
 whoThis();
