@@ -40,13 +40,7 @@ async function menu (id) {
     process.exit();
 };
 
-async function whoThis() {
-    //Check dependencies
-
-    
-    
-    
-    
+async function whoThis() {  
     let jfm = new JsonFileManager();
     let userId;
     
@@ -70,22 +64,6 @@ async function whoThis() {
     // console.log(userId);
    menu(userId);
 }
-
-/*
-Im not catching errors from this read and write files.
-Neither here nor above where its called
-
-Ok so with this ugly catch I expect that if theres ever an error in the 
-writeFileFromTemplate, it will at most try again one time (if it threw inside
-the little "try" of checkDependecies). In any case the bigger catch of 
-checkDependencies (the one that says have fun debugging) should work, show you
-the error and know where it came from
-*/
-
-
-
-
-
 
 checkDependencies().then( () =>{
     // console.log(`I'm in the .then`);

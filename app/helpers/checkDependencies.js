@@ -1,5 +1,5 @@
 const fs = require('fs/promises')
-
+//Did i make trycatch hell??
 async function checkDependencies() {
     /*
     Check if json file exists
@@ -56,6 +56,17 @@ async function writeJsonFromTemplate() {
         throw error;
     }
     
-}
+}/*
+Im not catching errors from this read and write files.
+Neither here nor above where its called
+
+Ok so with this ugly catch I expect that if theres ever an error in the 
+writeFileFromTemplate, it will at most try again one time (if it threw inside
+the little "try" of checkDependecies). In any case the bigger catch of 
+checkDependencies (the one that says have fun debugging) should work, show you
+the error and know where it came from
+*/
 
 module.exports = checkDependencies;
+
+
