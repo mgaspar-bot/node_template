@@ -29,7 +29,7 @@ let task = ""
 let taskId = JsonData.tasks.length +1
 
 task = await ask(
-    `Type your task :)`
+    `Type your task :)\n`
 );
 
 

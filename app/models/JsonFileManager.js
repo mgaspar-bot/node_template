@@ -74,7 +74,23 @@ class JsonFileManager {
     }
 
     getObjFromFile() { //pots canviar coses passant-li el teu this        
-        let obj = require(this.path);
+        try {
+            let obj = require(this.path);
+            console.log(obj);
+            return obj
+        }
+        
+        catch {
+            let JSON = {
+                "users": [],
+                "tasks": []
+            };
+
+            fs.writeFile(this.path, JSON.stringify(JSON), 'utf-8');
+            let obj = require(this.path);
+            console.log(obj);
+            return obj
+        }
        
         /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
             console.log('There is no object yet my friend');  

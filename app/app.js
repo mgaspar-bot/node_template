@@ -70,5 +70,4 @@ async function whoThis() {
    menu(userId);
 }
 
-//whoThis();
-createTask;
+whoThis();
