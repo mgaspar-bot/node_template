@@ -2,7 +2,7 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
 const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
-const createTask = require (appRoot + '/helpers/helper.js');
+const createTask = require(appRoot + '/helpers/createTask.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
 const ask = require(appRoot + '/helpers/ask');
@@ -26,7 +26,7 @@ async function menu (id) {
                 0. Bye!
                 `);
             if (res == 1){
-                createTask(id);
+                await createTask(id);
             } else if (res == 2) {
                 //modificaTasca(id)
             }else if (res == 3) {
