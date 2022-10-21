@@ -46,7 +46,7 @@ class JsonFileManager {
             return;
         } 
     }
-}
+} 
 
 
 This class tries to be a singleton to manage the JSON file, it only gives you the Javascript Object from the file and 
@@ -64,7 +64,7 @@ This way i feel it will be much more difficult to mess up the file inadvertently
 class JsonFileManager {
     constructor () {
         if (JsonFileManager.instance instanceof JsonFileManager) {
-            console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
+            // console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
             return JsonFileManager.instance
         }
         this.path = appRoot +"/appData.json";
@@ -73,19 +73,30 @@ class JsonFileManager {
         Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
     }
 
-    getObjFromFile() { //pots canviar coses passant-li el teu this        
+    async getObjFromFile(retried) { //pots canviar coses passant-li el teu this        
+        let obj;
         try {
-        let obj = require(this.path);
-        }
-        catch {
+            obj = require(this.path);
+            return obj;
             
-        }
-       
-        /* if(!obj.length) {    //Millor obliguem a que el object sempre tingui com a minim les dues arrays buides, en comptes de fer aquest check
-            console.log('There is no object yet my friend');  
-            return -1;
-        } */
-        return obj;
+        } catch (error) {
+            console.log(`I found an error when requiring the json file, i'll rewrite the file and try again`); //It would be cool to check here for the type of error we're expecting. I mean the catch part always writes a blank json file, regardless of which error was thrown
+            if (retried === true) {
+                console.log(error);
+                return;
+            }
+            try {
+                await fs.writeFile(this.path, JSON.stringify({
+                    "users":[],
+                    "tasks":[]
+                }))
+            } catch (error) {
+                console.log(`After failing to require the json file, an error was thrown when trying to write a blank json file:`);
+                console.log(error);
+            }
+
+            return this.getObjFromFile(true);
+        }   
     }
 
     async rewriteFile(obj) {      
