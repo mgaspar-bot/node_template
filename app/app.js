@@ -1,7 +1,7 @@
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
-const fs = require('fs/promises')
 
+const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
 const createTask = require (appRoot + '/helpers/helper.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
@@ -71,33 +71,23 @@ async function whoThis() {
    menu(userId);
 }
 
-async function checkDependencies() {
-    //Check if json file exists
-    //if not, copy template
-    try {
-        const filesInDir = await fs.readdir(global.appRoot);
-        if (!filesInDir.includes("appData.json")){
-        }
-        
-    } catch (error) {
-        
-    }
-}
+/*
+Im not catching errors from this read and write files.
+Neither here nor above where its called
 
-async function writeJsonFromTemplate() {
-    const templateData = await fs.readFile(global.appRoot+'/template.json');
-    console.log(typeof templateData); //is this a string or a buffer? does it matter?
-    await fs.writeFile(global.appRoot + '/appData.json', templateData);
-    return;
-
-}
+Ok so with this ugly catch I expect that if theres ever an error in the 
+writeFileFromTemplate, it will at most try again one time (if it threw inside
+the little "try" of checkDependecies). In any case the bigger catch of 
+checkDependencies (the one that says have fun debugging) should work, show you
+the error and know where it came from
+*/
 
 
 
 
 
 
-
-
-await checkDependencies();
-whoThis();
+checkDependencies().then( () =>{
+    // console.log(`I'm in the .then`);
+    whoThis();
+})
