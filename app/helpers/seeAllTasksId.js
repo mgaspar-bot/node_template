@@ -1,9 +1,10 @@
 const JsonFileManager = require('../models/JsonFileManager')
 
-function seeAllTasksId (id) {
+async function seeAllTasksId (id) {
     const jfm = new JsonFileManager();
 
-    let obj = jfm.getObjFromFile();
+    let obj = await jfm.getObjFromFile();
+
 
     let user = obj.users.find((user)=> user.id === id);
     // console.log(user);
