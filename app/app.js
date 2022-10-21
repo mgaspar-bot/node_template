@@ -33,7 +33,7 @@ async function menu (id) {
             } else if (res == 4) {
                 //veure una tasca
             } else if (res == 5) {
-                console.log(seeAllTasksId(id));
+                console.log(await seeAllTasksId(id));
             }
     } while (res != 0)
     process.exit();
