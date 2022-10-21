@@ -1,21 +1,9 @@
 const CONSTANTS = require(appRoot + '/helpers/constants.js')
 const JsonData = require(appRoot + '/appData.json');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
-const jfm = new JsonFileManager()
+const ask = require(appRoot + '/helpers/ask');
+const jfm = new JsonFileManager();
 
-const readline = require('readline');
-const rl = readline.createInterface( {
-	input : process.stdin,
-	output : process.stdout
-});
-
-function ask (str) {
-	return new Promise ( (res, rej) => {
-		rl.setPrompt(str);
-		rl.prompt();
-		rl.on('line', (resposta) => {res(resposta)});
-    })
-}
 
 function getDate() {
     const date = new Date()

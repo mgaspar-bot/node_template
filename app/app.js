@@ -1,27 +1,10 @@
 var path = require('path');
-global.appRoot = path.resolve(__dirname)
+global.appRoot = path.resolve(__dirname);
 
-const createTask = require (appRoot + '/helpers/helper.js')
+const createTask = require (appRoot + '/helpers/helper.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
-const seeAllTasksId = require('./helpers/seeAllTasksId');
-
-const readline = require('readline');
-const rl = readline.createInterface( {
-	input : process.stdin,
-	output : process.stdout
-});
-function ask (str) {
-	return new Promise ( (res, rej) => {
-		rl.setPrompt(str);
-		rl.prompt();
-
-        if (rl.listenerCount('line') > 0) {//Just trying to avoid a warning which appeared when you answered a lot of prompts
-            rl.removeAllListeners('line');
-        }//It would be cool to reuse the same listener over and over, but i dont know how to do it
-
-        rl.on('line', (resposta) => {res(resposta)});
-    })
-}
+const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
+const ask = require(appRoot + '/helpers/ask');
 
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
