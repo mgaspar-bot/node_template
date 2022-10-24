@@ -13,28 +13,28 @@ Methods:
 - save
 */
 class User {
-    username = "";
-    id = -0;
     constructor(username) {
         //Check user if user exists already, i.e. if 
         //i have to return an existing
-        if (typeof username !== "string" || username.length < 1) {
-            console.log(`Invalid username`);
-            return -1;
+        
+        if (!username  || typeof username !== "string" || username.length < 1) {
+            console.log(`Invalid username in constructor`);
+            throw new Error(`invalid username in constructor`);
         }
         
         this.username = username;
+        this.id;
+        return this;
     }
     async syncUserWithDb(){
         const jfm = new JsonFileManager();
         let obj = await jfm.getObjFromFile();
-        await jfm.getObjFromFile();
         let found = obj.users.find((user) => user.userName === this.username);
         if (found !== undefined) {
             this.id = found.id;
             return;
         }
-        this.id = this.getNextId();
+        this.id = await this.getNextId();
         obj.users.push({
             "id":this.id,
             "userName":this.username
@@ -55,15 +55,15 @@ class User {
             return -1;
         }
     }
-    setId(id) {
-        if (typeof id === "number"){
+    setId(id) { //i'm not sure this should have a setter
+        if (typeof id === "number" && id > 0 && id >= this.getNextId()){
             this.id = id;
         } else {
             console.log(`Bad id, cannot set`);
             return -1;
         }
     }
-    async saveToDb(userObject) {
+    async saveToDb(userObject) {//TODO
         //check this object has an id type number and a username type string
         const jfm = new JsonFileManager();
         let obj = await jfm.getObjFromFile();
@@ -80,7 +80,7 @@ class User {
         if (obj.users.length === 0) {
             return 1;
         }
-        return obj.users[length -1].id + 1;
+        return obj.users[obj.users.length -1].id + 1;
     }
 }
 

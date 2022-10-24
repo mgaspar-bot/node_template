@@ -1,6 +1,6 @@
 const fs = require('fs/promises')
 //Did i make trycatch hell??
-async function checkDependencies() {
+async function checkDependencies(reset) {
     /*
     Check if json file exists
     if not, copy template
@@ -12,6 +12,10 @@ async function checkDependencies() {
             not a Json
             a Json without the right structure (properties "users" and "tasks" with arrays in them)
     */
+   if (reset === "reset"){
+    await writeJsonFromTemplate();
+    return;
+   }
     try {
         const filesInDir = await fs.readdir(global.appRoot);
         if (!filesInDir.includes("appData.json")){                     //File doesn't exist

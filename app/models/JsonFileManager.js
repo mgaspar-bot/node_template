@@ -92,10 +92,10 @@ class JsonFileManager {
 
     async rewriteFile(obj) {      
         try {
-            console.log(`Im going to writeFile this:`);
-            console.log(obj);
-            console.log(`into here`);
-            console.log(this.path);
+            // console.log(`Im going to writeFile this:`);
+            // console.log(obj);
+            // console.log(`into here`);
+            // console.log(this.path);
             await fs.writeFile(this.path, JSON.stringify(obj), 'utf-8');
             return;
         } catch (error) {
