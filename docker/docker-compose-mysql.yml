@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+   db:
+     image: mariadb:10.5.8
+    #  volumes:
+    #    - db_data:/var/lib/mysql
+     ports:
+       - "33060:3306"
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: todo
+       MYSQL_USER: node
+       MYSQL_PASSWORD: todo_project
+
+# volumes:
+#     db_data: {}
