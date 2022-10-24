@@ -1,6 +1,7 @@
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
 const createTask = require(appRoot + '/helpers/createTask.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
@@ -39,7 +40,7 @@ async function menu (id) {
     process.exit();
 };
 
-async function whoThis() {
+async function whoThis() {  
     let jfm = new JsonFileManager();
     let userId;
     
@@ -64,4 +65,7 @@ async function whoThis() {
    menu(userId);
 }
 
-whoThis();
+checkDependencies().then( () =>{
+    // console.log(`I'm in the .then`);
+    whoThis();
+})

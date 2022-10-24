@@ -1,8 +1,13 @@
-const JsonFileManager = require('../models/JsonFileManager')
+const JsonFileManager = require(appRoot+ '/models/JsonFileManager');
+const  {STATUS_DONE} = require(appRoot + '/helpers/constants.js');
+
+/*
+mostrar el seu estat (pendents, en execució o acabades) i l'hora d'inici i final de la tasca, així com l'usuari/ària que la va donar d'alta
+*/
 
 async function seeAllTasksId (id) {
     const jfm = new JsonFileManager();
-
+    
     let obj = await jfm.getObjFromFile();
 
 
@@ -18,7 +23,12 @@ async function seeAllTasksId (id) {
     let toShow = `Stored tasks for ${user.userName}: \n\n\t`;
     for (task of tasks) {
         toShow += task.description + '\n\t\t';
-        toShow += JSON.stringify(task); 
+        toShow += 'status: '+task.status +'\n\t\t';
+        toShow += 'started: '+task.create_date;
+        if(task.status === STATUS_DONE) {
+            toShow += '\n\t\tfinished: '+task.closed_date;
+        }
+        // toShow += JSON.stringify(task); 
         toShow += '\n\t';
     }/*
     We can make this part display things in a better way, for now it just works */
