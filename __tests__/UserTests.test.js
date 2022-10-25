@@ -13,29 +13,32 @@ describe(`Classe User: `, () =>{
             const user = new User(`H`);
             expect(user).toBeInstanceOf(User);
         });
-        test(`Constructor only takes valid usernames`, () => {
+        test(`Constructor called with no params throws an error`, () => {
             try {
                 new User();
             } catch (error) {
                 expect(error.message).toBe(`invalid username in constructor`);
             }
         });
-        test(`Constructor only takes valid usernames`, () => {
+        test(`Number as param throws an error`, () => {
             try {
                 new User(87);
             } catch (error) {
                 expect(error.message).toBe(`invalid username in constructor`);
             }
         });
-        test(`Constructor only takes valid usernames`, () => {
+        test(`Empty string as param throws an errorr`, () => {
             try {
                 new User("");
             } catch (error) {
                 expect(error.message).toBe(`invalid username in constructor`);
             }
         });
-        test(`Constructor only takes valid usernames`, () => {
-            expect(new User(`Pere`)).toBeInstanceOf(User);
+        test(`Valid username correctly instantiates user`, () => {
+            let pere = new User(`Pere`)
+            expect(pere).toBeInstanceOf(User);
+            expect(pere.username).toBe(`Pere`);
+
         });
     });
     describe(`SyncUserWithDb`, () => {
@@ -80,16 +83,14 @@ describe(`Classe User: `, () =>{
             await checkDependencies("reset");
             let userTest = new User(`test`);
             await userTest.syncUserWithDb();
-            
-
+                        
             expect(userTest.getId()).toBe(5);
-            expect(userTest.setId("patata")).toBe(-1);
-            expect(userTest.setId(1)).toBe(-1)
-            expect(userTest.setId(-2)).toBe(-1);
-            expect(userTest.getId()).toBe(5);
+            userTest.setUsername(`Alex`);
+            await userTest.syncUserWithDb();
+            expect(userTest.getId()).toBe(1);
             /*
             setId is not working, plus the "test" user is given an id of 5 instead of 4, why?
             */
-        })
+        });
     })
 })

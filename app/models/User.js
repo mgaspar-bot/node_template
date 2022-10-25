@@ -55,14 +55,14 @@ class User {
             return -1;
         }
     }
-    setId(id) { //i'm not sure this should have a setter
+   /*  setId(id) { //i'm not sure this should have a setter
         if (typeof id === "number" && id > 0 && id >= this.getNextId()){
             this.id = id;
         } else {
             console.log(`Bad id, cannot set`);
             return -1;
         }
-    }
+    } */
     async saveToDb(userObject) {//TODO
         //check this object has an id type number and a username type string
         const jfm = new JsonFileManager();
