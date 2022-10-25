@@ -2,10 +2,11 @@ var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
 const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
-const createTask = require(appRoot + '/helpers/createTask.js');
+const Task = require(appRoot + '/models/task.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
 const ask = require(appRoot + '/helpers/ask');
+let task = new Task()
 
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
@@ -26,7 +27,7 @@ async function menu (id) {
                 0. Bye!
                 `);
             if (res == 1){
-                await createTask(id);
+                await task.createTask(id);
             } else if (res == 2) {
                 //modificaTasca(id)
             }else if (res == 3) {
@@ -34,7 +35,7 @@ async function menu (id) {
             } else if (res == 4) {
                 //veure una tasca
             } else if (res == 5) {
-                console.log(await seeAllTasksId(id));
+                await task.seeAll()
             }
     } while (res != 0)
     process.exit();
