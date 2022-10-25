@@ -48,6 +48,17 @@ class Task {
         console.table(newTask)
     }
 
+    async seeTask() {
+        let jfm = new JsonFileManager()
+        let obj = await jfm.getObjFromFile()
+
+        let taskId = await ask(
+            (`Type task ID to check :)\n`)
+        );
+        
+        console.table(obj.tasks[taskId -1])
+    }
+
     async seeAll() {
     let jfm = new JsonFileManager()
     let obj = await jfm.getObjFromFile()

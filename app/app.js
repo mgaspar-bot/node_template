@@ -33,7 +33,7 @@ async function menu (id) {
             }else if (res == 3) {
                 //borraTasca(id)
             } else if (res == 4) {
-                //veure una tasca
+                await task.seeTask() 
             } else if (res == 5) {
                 await task.seeAll()
             }
