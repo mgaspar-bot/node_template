@@ -65,15 +65,12 @@ describe(`Classe User: `, () =>{
             
             expect(length2 - length1).toBe(1);
             expect(jsonData.users[length2-1].userName).toBe(`Pere`);
-            expect(jsonData.users[length2 -1].id).toBe(4)
-        })
+            expect(jsonData.users[length2-1].id).toBe(4);
+        });
     });
     describe(`Getters and Setters`, () => {
-       
         test(`username`, async () => {
-            await checkDependencies("reset");
             let userTest = new User(`test`);
-            await userTest.syncUserWithDb();
 
             expect(userTest.getUserName()).toBe(`test`);
             userTest.setUsername(`test1`);
@@ -83,14 +80,15 @@ describe(`Classe User: `, () =>{
             await checkDependencies("reset");
             let userTest = new User(`test`);
             await userTest.syncUserWithDb();
-                        
+            // let jfm = new JsonFileManager();
+            // let obj = await jfm.getObjFromFile();
+            // console.log(obj.users.find((user)=>user.id===4)); //somehow, 'Pere' is still in the file so the expected id for 'test' is 5???
+            
             expect(userTest.getId()).toBe(5);
             userTest.setUsername(`Alex`);
             await userTest.syncUserWithDb();
             expect(userTest.getId()).toBe(1);
-            /*
-            setId is not working, plus the "test" user is given an id of 5 instead of 4, why?
-            */
+            /*  setId is not working, plus the "test" user is given an id of 5 instead of 4, why?   */
         });
     })
 })

@@ -18,7 +18,7 @@ class User {
         //i have to return an existing
         
         if (!username  || typeof username !== "string" || username.length < 1) {
-            console.log(`Invalid username in constructor`);
+            // console.log(`Invalid username in constructor`);
             throw new Error(`invalid username in constructor`);
         }
         
@@ -26,7 +26,9 @@ class User {
         this.id;
         return this;
     }
-    async syncUserWithDb(){
+    async syncUserWithDb(){ //this method should only be used after the log in, when you received the username
+        //if the username doesnt exist, it creates it in db
+        //if it exists, just fetch the correct id.
         const jfm = new JsonFileManager();
         let obj = await jfm.getObjFromFile();
         let found = obj.users.find((user) => user.userName === this.username);
@@ -55,24 +57,34 @@ class User {
             return -1;
         }
     }
-   /*  setId(id) { //i'm not sure this should have a setter
-        if (typeof id === "number" && id > 0 && id >= this.getNextId()){
+    setId(id) { //i'm not sure this should have a setter
+        if (typeof id === "number"){
             this.id = id;
         } else {
             console.log(`Bad id, cannot set`);
             return -1;
         }
-    } */
-    async saveToDb(userObject) {//TODO
-        //check this object has an id type number and a username type string
-        const jfm = new JsonFileManager();
-        let obj = await jfm.getObjFromFile();
+    }
+    async saveToDb() {//this just writes the runtime object to memory. If the a user with the same id already existed, it just changes the username
+        let jfm = new JsonFileManager();
+        let obj = jfm.getObjFromFile();
+
         let found = obj.users.find((user) => user.id === this.id);
-        if (found === undefined){
-            
+        if (found === undefined) { //if the id is not in the db, just add it to the file
+            obj.users.push({
+                "id":this.id,
+                "userName":this.username                
+            });
+            await jfm.rewriteFile(obj);
+            return;
         }
-
-
+        //if the id already exists, just change the username
+        obj.users = obj.users.map((user) => {
+            if(user.id === this.id) {
+                user.userName = this.username;
+            }
+        })
+        await jfm.rewriteFile(obj);
     }
     async getNextId() {
         const jfm = new JsonFileManager();
