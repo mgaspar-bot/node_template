@@ -1,6 +1,7 @@
 var path = require('path');
 global.appRoot = path.resolve(__dirname);
 
+const User = require('./models/User');
 const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
 const Task = require(appRoot + '/models/task.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
@@ -46,6 +47,11 @@ async function whoThis() {
     let userId;
     
     let username = await ask("Who dis??!!\n");
+    let o = new User(username);
+    await o.loadUser();
+    o.getObjFromFile();
+    o.jfm.getObjFromFile();
+    console.log(o);
     // console.log(username);
     let obj = await jfm.getObjFromFile(); 
     let found = obj.users.filter((user) => user.userName == username);
