@@ -19,8 +19,10 @@ function ask (str) {
         }
         rl.on('line', (resposta) => {res(resposta)});
         process.stdin.on("keypress", (str,key) => {
-            console.log(key);
-            if(key.name === "escape") console.log("saved");
+            // console.log(key);
+            if(key.name === "escape") {
+                console.log(`Escape was pressed`);
+            }
         })
     })
 }

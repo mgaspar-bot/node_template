@@ -4,6 +4,7 @@ const ask = require(appRoot+'/helpers/ask')
 
 class TodoApp {
     user = "";
+    menuposition = -1;
     constructor() {
         //yes?
     }
