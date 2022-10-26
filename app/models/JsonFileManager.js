@@ -1,5 +1,4 @@
 const fs = require('fs/promises');
-const { userInfo } = require('os');
 
  /*
 class JsonFileManager {
@@ -63,7 +62,7 @@ This way i feel it will be much more difficult to mess up the file inadvertently
 */
 
 class JsonFileManager {
-    constructor () {
+    /* constructor () {
         if (JsonFileManager.instance instanceof JsonFileManager) {
             // console.log(`There can only be one JsonFileManager, ill give you a reference to the instance`);
             return JsonFileManager.instance
@@ -71,7 +70,10 @@ class JsonFileManager {
         this.path = appRoot +"/appData.json";
 
         JsonFileManager.instance = this;
-        Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
+        //Object.freeze(this); //Jo el que vull es que ningu pugui tocar el path fent      .path  = "algo" ni  .password etc
+    } */
+    constructor() {
+        this.path = appRoot +"/appData.json";
     }
 
     async getObjFromFile() { //pots canviar coses passant-li el teu this        
@@ -90,10 +92,10 @@ class JsonFileManager {
 
     async rewriteFile(obj) {      
         try {
-            console.log(`Im going to writeFile this:`);
-            console.log(obj);
-            console.log(`into here`);
-            console.log(this.path);
+            // console.log(`Im going to writeFile this:`);
+            // console.log(obj);
+            // console.log(`into here`);
+            // console.log(this.path);
             await fs.writeFile(this.path, JSON.stringify(obj), 'utf-8');
             return;
         } catch (error) {
