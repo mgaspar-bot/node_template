@@ -69,7 +69,7 @@ class User {
     }
     async saveToDb() {//this just writes the  'this' runtime object to memory. If the a user with the same id already existed, it just changes the username
         let jfm = new JsonFileManager();
-        let obj = jfm.getObjFromFile();
+        let obj = await jfm.getObjFromFile();
 
         let found = obj.users.find((user) => user.id === this.id);
         if (found === undefined) { //if the id is not in the db, just add it to the file

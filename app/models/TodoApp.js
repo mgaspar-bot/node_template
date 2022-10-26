@@ -1,7 +1,5 @@
 const Task = require("./task");
-
 const User = require(appRoot+"/models/User");
-
 const ask = require(appRoot+'/helpers/ask')
 
 class TodoApp {
@@ -29,7 +27,7 @@ class TodoApp {
                     1. Create a new task
                     2. Go to my tasks
                     0. Bye!
-                    `);
+`);
                 if (res == 1){
                     await Task.createTask(this.user.id);
                 } else if (res == 2) {
@@ -72,3 +70,5 @@ class TodoApp {
         } while (res != 0)
     }
 }
+
+module.exports = TodoApp;
