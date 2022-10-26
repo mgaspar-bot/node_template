@@ -7,7 +7,8 @@ const Task = require(appRoot + '/models/task.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
 const ask = require(appRoot + '/helpers/ask');
-let task = new Task()
+const TodoApp = require('./models/TodoApp');
+
 
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
@@ -72,7 +73,10 @@ async function whoThis() {
    menu(userId);
 }
 
-checkDependencies().then( () =>{
+checkDependencies().then( async () =>{
     // console.log(`I'm in the .then`);
-    whoThis();
+    let app = new TodoApp();
+
+    await app.init();
+    await app.mainMenu();
 })
