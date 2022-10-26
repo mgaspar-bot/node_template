@@ -123,7 +123,38 @@ class Task {
         } else {
             console.log(`No task found, try another ID`)
         }
-    }
+    };
+
+    async deleteTask(){
+        let jfm = new JsonFileManager()
+        let obj = await jfm.getObjFromFile()
+
+        let taskToDelete = await ask(
+            (`Please, type task ID to delete :)\n`)
+        );
+
+        let indexToDelete = taskToDelete - 1
+        let deleteCheck = await obj.tasks[indexToDelete]
+
+        if (deleteCheck !== undefined) {
+            console.table(obj.tasks[indexToDelete])
+        
+            let confirmation = await ask(
+                `Is this the task you want to delete?
+                    1. Yes 
+                    2. No 
+                `);
+            if (confirmation == 1) {
+                obj.tasks.splice(indexToDelete, 1)
+                jfm.rewriteFile(obj)
+                console.log(`Task deleted!`)
+            } else {
+                console.log(`No changes were registered, have a great day!`)
+            }
+        } else {
+            console.log(`No task found, try another ID`)
+        }
+    };
 
     async seeTask() {
         let jfm = new JsonFileManager()

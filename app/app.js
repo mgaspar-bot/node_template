@@ -32,7 +32,7 @@ async function menu (id) {
             } else if (res == 2) {
                 await task.modify()
             }else if (res == 3) {
-                //borraTasca(id)
+                await task.deleteTask()
             } else if (res == 4) {
                 await task.seeTask() 
             } else if (res == 5) {
