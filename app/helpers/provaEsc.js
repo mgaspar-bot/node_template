@@ -1,7 +1,7 @@
-const ask = require('./ask');
+const ask = require('./ask')
 
 async function t () {
-    let o =  await ask(`Write stuff\n`);
-    process.exit();
+  await ask('Write stuff\n')
+  process.exit()
 };
-t();
+t()
