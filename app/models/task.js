@@ -21,7 +21,7 @@ class Task {
         this.description = description
         this.create_date = getDate()
         this.status = CONSTANTS.STATUS_TODO
-        this.modified_date = ""
+        this.closed_date = ""
 
         this.save()
 
@@ -39,7 +39,7 @@ class Task {
             "description": this.description,
             "create_date": this.create_date,
             "status": this.status,
-            "modified_date": this.modified_date
+            "closed_date": this.closed_date
         }
 
         obj.tasks.push(newTask)
@@ -49,12 +49,12 @@ class Task {
     }
 
     async modify() {
-        let jfm = new JsonFileManager()
-        let obj = await jfm.getObjFromFile()
 
         let taskToModify = await ask(
             (`Please, type task ID to modify :)\n`)
         );
+
+        let indexToModify = taskToModify -1
 
         let modificationType = await ask(
             `Please, select a modification type
@@ -63,13 +63,18 @@ class Task {
                 0. Bye!
             `);
 
-        if (modificationType == 1) {changeStatus(obj, taskToModify)} 
-        else if (modificationType == 2) {changeDescription(obj, taskToModify)}
+        if (modificationType == 1) {this.changeStatus(indexToModify)} 
+        else if (modificationType == 2) {this.changeDescription(indexToModify)}
+        else {console.log(`No changes were registered, have a great day!`)}
         }
 
-        changeStatus(obj, taskToModify) {
-            obj.task.filter(async (task) => {
-                if (task.task_id === taskToModify) {
+        async changeStatus(indexToModify) {
+            let jfm = new JsonFileManager()
+            let obj = await jfm.getObjFromFile()
+
+            let taskToModify = await obj.tasks[indexToModify]
+            
+            if (taskToModify !== undefined) {
                     let newStatus = await ask(
                         `Please, select new status
                             1. To Do
@@ -78,38 +83,44 @@ class Task {
                             0. Bye!
                         `);
                     if (newStatus == 1) {
-                        task.task_id = CONSTANTS.STATUS_TODO
-                        task.modified_date = getDate()
-                        console.table(obj.task[taskToModify])
+                        obj.tasks[indexToModify].status = CONSTANTS.STATUS_TODO
+                        obj.tasks[indexToModify].closed_date = getDate()
+                        console.table(obj.tasks[indexToModify])
+                        jfm.rewriteFile(obj)
                     } else if (newStatus == 2) {
-                        task.task_id = CONSTANTS.STATUS_INPROGRESS
-                        task.modified_date = getDate()
-                        console.table(obj.task[taskToModify])
+                        obj.tasks[indexToModify].status = CONSTANTS.STATUS_INPROGRESS
+                        obj.tasks[indexToModify].closed_date = getDate()
+                        console.table(obj.tasks[indexToModify])
+                        jfm.rewriteFile(obj)
                     } else if (newStatus == 3) {
-                        task.task_id = CONSTANTS.STATUS_DONE
-                        task.modified_date = getDate()
-                        console.table(obj.task[taskToModify])
+                        obj.tasks[indexToModify].status = CONSTANTS.STATUS_DONE
+                        obj.tasks[indexToModify].closed_date = getDate()
+                        console.table(obj.tasks[indexToModify])
+                        jfm.rewriteFile(obj)
                     } else {
                         console.log(`No changes were registered, have a great day!`)
                     }
                 } else {
                     console.log(`No task found, try another ID`)
                 }
-            })
-        }
+            }
 
-        async changeDescription(obj) {
+        async changeDescription(indexToModify) {
+            let jfm = new JsonFileManager()
+            let obj = await jfm.getObjFromFile()
+
+            let taskToModify = await obj.tasks[indexToModify]
+
+            if (taskToModify !== undefined) {
             let newDescription = await ask(
                 (`Please, type the new task description :)\n`)
             );
-
-            obj.task.filter((task) => {
-                    if (task.task_id === taskToModify) {
-                        task.description = newDescription
-                    } else {
-                        console.log(`No task found, try another ID`)
-                    }
-                })
+            obj.tasks[indexToModify].description = newDescription
+            console.table(obj.tasks[indexToModify])
+            jfm.rewriteFile(obj)
+            } else {
+                console.log(`No task found, try another ID`)
+            }
         }
 
         async seeTask() {

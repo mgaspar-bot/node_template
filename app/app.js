@@ -29,7 +29,7 @@ async function menu (id) {
             if (res == 1){
                 await task.createTask(id);
             } else if (res == 2) {
-                //modificaTasca(id)
+                await task.modify()
             }else if (res == 3) {
                 //borraTasca(id)
             } else if (res == 4) {
