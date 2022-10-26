@@ -74,5 +74,7 @@ async function whoThis() {
 
 checkDependencies().then( () =>{
     // console.log(`I'm in the .then`);
+    
+
     whoThis();
 })

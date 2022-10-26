@@ -1,3 +1,5 @@
+const Task = require("./task");
+
 const User = require(appRoot+"/models/User");
 
 const ask = require(appRoot+'/helpers/ask')
@@ -16,7 +18,7 @@ class TodoApp {
         // let userNameWasInDb = await this.user.syncUserWithDb();
         if(!(await this.user.syncUserWithDb())){
             console.log(`${username} registered correctly`);
-        }      
+        }
     }
     async mainMenu (){
         console.log(`Welcome ${this.user.username}`);
@@ -29,17 +31,44 @@ class TodoApp {
                     0. Bye!
                     `);
                 if (res == 1){
-                    await createTask(id);
+                    await Task.createTask(this.user.id);
                 } else if (res == 2) {
-                    //modificaTasca(id)
+                    Task.prototype.seeAll(); //podem fer que tensenyi nomes les teves
+                    this.taskMenu();
                 }else if (res == 3) {
                     //borraTasca(id)
                 } else if (res == 4) {
                     //veure una tasca
                 } else if (res == 5) {
-                    console.log(await seeAllTasksId(id));
+                    
                 }
         } while (res != 0)
         process.exit();
+    }
+    async taskMenu() {
+        let res = "";
+        
+        do {
+            res = await ask(
+                `What do you want to do? 
+                    1. Create new task
+                    2. Update existing task
+                    3. Erase task
+                    4. Check a task
+                    5. Check all my tasks
+                    0. Bye!
+                    `);
+                if (res == 1){
+                    await task.createTask();
+                } else if (res == 2) {
+                    await task.modify()
+                }else if (res == 3) {
+                    await task.deleteTask()
+                } else if (res == 4) {
+                    await task.seeTask() 
+                } else if (res == 5) {
+                    await task.seeAll()
+                }
+        } while (res != 0)
     }
 }
