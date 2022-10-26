@@ -46,13 +46,7 @@ class Task {
         console.table(newTask)
     }
 
-    async modify() {
-
-        let taskToModify = await ask(
-            (`Please, type task ID to modify :)\n`)
-        );
-
-        let indexToModify = taskToModify - 1
+    async modify(indexToModify) {
 
         let modificationType = await ask(
             `Please, select a modification type
@@ -125,19 +119,14 @@ class Task {
         }
     };
 
-    async deleteTask(){
+    async deleteTask(indexToModify){
         let jfm = new JsonFileManager()
         let obj = await jfm.getObjFromFile()
 
-        let taskToDelete = await ask(
-            (`Please, type task ID to delete :)\n`)
-        );
-
-        let indexToDelete = taskToDelete - 1
-        let deleteCheck = await obj.tasks[indexToDelete]
+        let deleteCheck = await obj.tasks[indexToModify]
 
         if (deleteCheck !== undefined) {
-            console.table(obj.tasks[indexToDelete])
+            console.table(obj.tasks[indexToModify])
         
             let confirmation = await ask(
                 `Is this the task you want to delete?
@@ -145,7 +134,7 @@ class Task {
                     2. No 
                 `);
             if (confirmation == 1) {
-                obj.tasks.splice(indexToDelete, 1)
+                obj.tasks.splice(indexToModify, 1)
                 jfm.rewriteFile(obj)
                 console.log(`Task deleted!`)
             } else {
@@ -163,8 +152,15 @@ class Task {
         let taskId = await ask(
             (`Type task ID to check :)\n`)
         );
+        
+        let indexToModify = taskId - 1
 
-        console.table(obj.tasks[taskId - 1])
+        if (obj.tasks[indexToModify] !== undefined) {
+            console.table(obj.tasks[indexToModify])
+            return indexToModify
+        } else {
+            console.log(`No task found, try another ID`)
+        }  
     }
 
     async seeAll() {
