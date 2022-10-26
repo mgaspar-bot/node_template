@@ -89,3 +89,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Backup files
+*.mwb.bak

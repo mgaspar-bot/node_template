@@ -3,10 +3,12 @@ global.appRoot = path.resolve(__dirname);
 
 const User = require('./models/User');
 const checkDependencies = require(appRoot + '/helpers/checkDependencies.js');
-const createTask = require(appRoot + '/helpers/createTask.js');
+const Task = require(appRoot + '/models/task.js');
 const JsonFileManager = require(appRoot + '/models/JsonFileManager');
 const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId');
 const ask = require(appRoot + '/helpers/ask');
+const TodoApp = require('./models/TodoApp');
+
 
 /*
 Creeu una aplicació que permeti portar un llistat de tasques per fer. Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar 
@@ -27,15 +29,15 @@ async function menu (id) {
                 0. Bye!
                 `);
             if (res == 1){
-                await createTask(id);
+                await task.createTask(id);
             } else if (res == 2) {
-                //modificaTasca(id)
+                await task.modify()
             }else if (res == 3) {
-                //borraTasca(id)
+                await task.deleteTask()
             } else if (res == 4) {
-                //veure una tasca
+                await task.seeTask() 
             } else if (res == 5) {
-                console.log(await seeAllTasksId(id));
+                await task.seeAll()
             }
     } while (res != 0)
     process.exit();
@@ -71,7 +73,10 @@ async function whoThis() {
    menu(userId);
 }
 
-checkDependencies().then( () =>{
+checkDependencies().then( async () =>{
     // console.log(`I'm in the .then`);
-    whoThis();
+    let app = new TodoApp();
+
+    await app.init();
+    await app.mainMenu();
 })
