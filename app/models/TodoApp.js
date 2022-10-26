@@ -29,7 +29,7 @@ class TodoApp {
                     0. Bye!
 `);
                 if (res == 1){
-                    await Task.createTask(this.user.id);
+                    await Task.prototype.createTask(this.user.id);
                 } else if (res == 2) {
                     Task.prototype.seeAll(); //podem fer que tensenyi nomes les teves
                     this.taskMenu();
@@ -45,29 +45,26 @@ class TodoApp {
     }
     async taskMenu() {
         let res = "";
+        let task = new Task();
+
+        let indexToModify = await task.seeTask()
         
-        do {
-            res = await ask(
-                `What do you want to do? 
-                    1. Create new task
-                    2. Update existing task
-                    3. Erase task
-                    4. Check a task
-                    5. Check all my tasks
-                    0. Bye!
-                    `);
-                if (res == 1){
-                    await task.createTask();
+        if (indexToModify !== undefined) {
+            do {
+                res = await ask(
+                    `What do you want to do? 
+                        1. Update existing task
+                        2. Erase task
+                        0. Back to main menu
+                        `);
+                if (res == 1) {
+                    await task.modify(indexToModify)
                 } else if (res == 2) {
-                    await task.modify()
-                }else if (res == 3) {
-                    await task.deleteTask()
-                } else if (res == 4) {
-                    await task.seeTask() 
-                } else if (res == 5) {
-                    await task.seeAll()
+                    await task.deleteTask(indexToModify)
                 }
-        } while (res != 0)
+            } while (res != 0)
+            this.mainMenu();
+        }
     }
 }
 
