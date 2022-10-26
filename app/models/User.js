@@ -27,7 +27,7 @@ class User {
         return this;
     }
     async syncUserWithDb(){ //this method should only be used after the log in, when you received the username
-        //if the username doesnt exist, it creates it in db
+        //if the username doesnt exist, it creates it in db*--
         //if it exists, just fetch the correct id.
         const jfm = new JsonFileManager();
         let obj = await jfm.getObjFromFile();
@@ -37,11 +37,12 @@ class User {
             return;
         }
         this.id = await this.getNextId();
-        obj.users.push({
-            "id":this.id,
-            "userName":this.username
-        });
-        await jfm.rewriteFile(obj);
+        // obj.users.push({
+        //     "id":this.id,
+        //     "userName":this.username
+        // });
+        // await jfm.rewriteFile(obj);
+        await this.saveToDb();
     }
     getId() {
         return this.id;
@@ -65,7 +66,7 @@ class User {
             return -1;
         }
     }
-    async saveToDb() {//this just writes the runtime object to memory. If the a user with the same id already existed, it just changes the username
+    async saveToDb() {//this just writes the  'this' runtime object to memory. If the a user with the same id already existed, it just changes the username
         let jfm = new JsonFileManager();
         let obj = jfm.getObjFromFile();
 
