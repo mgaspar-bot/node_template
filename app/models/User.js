@@ -13,6 +13,8 @@ Methods:
 - save
 */
 class User {
+    id = "";
+    username = "";
     constructor(username) {
         //Check user if user exists already, i.e. if 
         //i have to return an existing
@@ -23,8 +25,6 @@ class User {
         }
         
         this.username = username;
-        this.id;
-        return this;
     }
     async syncUserWithDb(){ //this method should only be used after the log in, when you received the username
         //if the username doesnt exist, it creates it in db*--
