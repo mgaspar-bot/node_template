@@ -34,12 +34,6 @@ class TodoApp {
       } else if (res === '2') {
         await task.seeAll(this.user.id)
         this.taskMenu()
-      } else if (res === '3') {
-        // borraTasca(id)
-      } else if (res === '4') {
-        // veure una tasca
-      } else if (res === '5') {
-        // to be defined
       }
     } while (res !== '0')
     process.exit()
