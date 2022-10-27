@@ -51,9 +51,9 @@ class Task {
                 0. Bye!
             `)
 
-    if (modificationType === 1) {
+    if (modificationType === '1') {
       this.changeStatus(indexToModify)
-    } else if (modificationType === 2) {
+    } else if (modificationType === '2') {
       this.changeDescription(indexToModify)
     } else {
       console.log('No changes were registered, have a great day!')
@@ -74,21 +74,21 @@ class Task {
                             3. Completed
                             0. Bye!
                         `)
-      if (newStatus === 1) {
+      if (newStatus === '1') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_TODO
         obj.tasks[indexToModify].closed_date = getDate()
         console.table(obj.tasks[indexToModify])
-        jfm.rewriteFile(obj)
-      } else if (newStatus === 2) {
+        await jfm.rewriteFile(obj)
+      } else if (newStatus === '2') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_INPROGRESS
         obj.tasks[indexToModify].closed_date = getDate()
         console.table(obj.tasks[indexToModify])
-        jfm.rewriteFile(obj)
-      } else if (newStatus === 3) {
+        await jfm.rewriteFile(obj)
+      } else if (newStatus === '3') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_DONE
         obj.tasks[indexToModify].closed_date = getDate()
         console.table(obj.tasks[indexToModify])
-        jfm.rewriteFile(obj)
+        await jfm.rewriteFile(obj)
       } else {
         console.log('No changes were registered, have a great day!')
       }
@@ -109,7 +109,7 @@ class Task {
       )
       obj.tasks[indexToModify].description = newDescription
       console.table(obj.tasks[indexToModify])
-      jfm.rewriteFile(obj)
+      await jfm.rewriteFile(obj)
     } else {
       console.log('No task found, try another ID')
     }
@@ -129,9 +129,9 @@ class Task {
                     1. Yes 
                     2. No 
                 `)
-      if (confirmation === 1) {
+      if (confirmation === '1') {
         obj.tasks.splice(indexToModify, 1)
-        jfm.rewriteFile(obj)
+        await jfm.rewriteFile(obj)
         console.log('Task deleted!')
       } else {
         console.log('No changes were registered, have a great day!')
@@ -149,7 +149,7 @@ class Task {
       ('Type task ID to check :)\n')
     )
 
-    const indexToModify = taskId - 1
+    const indexToModify = obj.tasks.findIndex(task => task.task_id === Number(taskId))
 
     if (obj.tasks[indexToModify] !== undefined) {
       console.table(obj.tasks[indexToModify])
@@ -159,11 +159,12 @@ class Task {
     }
   }
 
-  async seeAll () {
+  async seeAll (userId) {
     const jfm = new JsonFileManager()
     const obj = await jfm.getObjFromFile()
 
-    console.table(obj.tasks)
+    const userTasks = obj.tasks.filter((task) => { return task.creator_id === userId })
+    console.table(userTasks)
   }
 }
 

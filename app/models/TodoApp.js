@@ -1,6 +1,7 @@
 const Task = require('./task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
+const task = new Task()
 
 class TodoApp {
   user = ''
@@ -28,25 +29,24 @@ class TodoApp {
                     2. Go to my tasks
                     0. Bye!
 `)
-      if (res === 1) {
-        await Task.prototype.createTask(this.user.id)
-      } else if (res === 2) {
-        Task.prototype.seeAll() // podem fer que tensenyi nomes les teves
+      if (res === '1') {
+        await task.createTask(this.user.id)
+      } else if (res === '2') {
+        await task.seeAll(this.user.id)
         this.taskMenu()
-      } else if (res === 3) {
+      } else if (res === '3') {
         // borraTasca(id)
-      } else if (res === 4) {
+      } else if (res === '4') {
         // veure una tasca
-      } else if (res === 5) {
+      } else if (res === '5') {
         // to be defined
       }
-    } while (res !== 0)
+    } while (res !== '0')
     process.exit()
   }
 
   async taskMenu () {
     let res = ''
-    const task = new Task()
 
     const indexToModify = await task.seeTask()
 
@@ -54,16 +54,16 @@ class TodoApp {
       do {
         res = await ask(
                     `What do you want to do? 
-                        1. Update existing task
-                        2. Erase task
+                        1. Update this task
+                        2. Erase this task
                         0. Back to main menu
                         `)
-        if (res === 1) {
+        if (res === '1') {
           await task.modify(indexToModify)
-        } else if (res === 2) {
+        } else if (res === '2') {
           await task.deleteTask(indexToModify)
         }
-      } while (res !== 0)
+      } while (res !== '0')
       this.mainMenu()
     }
   }
