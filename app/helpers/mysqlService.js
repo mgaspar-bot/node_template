@@ -21,7 +21,7 @@ class MySQLService {
     })
   }
 
-  async mysql_query (sql) {
+  async mysqlQuery (sql) {
     return new Promise((resolve, reject) => {
       this.con.query(sql, (err, result) => {
         if (err) { return reject(err) }
@@ -32,17 +32,17 @@ class MySQLService {
 
   async query (sql) {
     await this.openCon()
-    const result = await this.mysql_query(sql)
+    const result = await this.mysqlQuery(sql)
     this.con.end()
     return result
   }
 
-  async print_query (sql) {
+  async printQuery (sql) {
     const result = await this.query(sql)
     console.table(result)
   }
 
-  async check_database () {
+  async checkDatabase () {
     // -----------------------------------------------------
     // Table `User`
     // -----------------------------------------------------
@@ -54,4 +54,4 @@ class MySQLService {
   }
 }
 const mysqlService = new MySQLService('todo')
-mysqlService.check_database()
+mysqlService.checkDatabase()
