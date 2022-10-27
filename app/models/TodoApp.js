@@ -1,3 +1,4 @@
+const JsonFileManager = require(appRoot + '/models/JsonFileManager')
 const Task = require('./task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
@@ -5,7 +6,6 @@ const task = new Task()
 
 class TodoApp {
   user = ''
-  menuposition = -1
 
   async init () { // this should do what whodis does more or less
     let username = ''
@@ -42,23 +42,60 @@ class TodoApp {
   async taskMenu () {
     let res = ''
 
-    const indexToModify = await task.seeTask()
-
-    if (indexToModify !== undefined) {
-      do {
-        res = await ask(
+    let indexToModify
+    do {
+      indexToModify = await task.seeTask(this.user.id)
+    } while (indexToModify === undefined)
+    if (indexToModify === 0) {
+      this.mainMenu()
+      return
+    }
+    do {
+      const presentTask = await this.queryDbForTask(indexToModify)
+      console.table(presentTask)
+      res = await ask(
                     `What do you want to do? 
-                        1. Update this task
-                        2. Erase this task
+                        1. Modify task status
+                        2. Change task description
+                        3. Erase this task
                         0. Back to main menu
                         `)
-        if (res === '1') {
-          await task.modify(indexToModify)
-        } else if (res === '2') {
-          await task.deleteTask(indexToModify)
-        }
-      } while (res !== '0')
-      this.mainMenu()
+      if (res === '1') {
+        await task.changeStatus(indexToModify)
+      } else if (res === '2') {
+        await task.changeDescription(indexToModify)
+      } else if (res === '3') {
+        await task.deleteTask(indexToModify)
+        res = '0'
+        // without this if you delete a task, you go back to taskMenu (1.Modify status...)
+        // but since you deleted an entry in the array now indexToModify doesnt point to the right task, so you can end
+        // up accessing a task which is not yours
+        // this just forces you out of the loop into the mainMenu which is inconsistent with the rest of the options but meh
+      }
+    } while (res !== '0')
+    this.mainMenu()
+  }
+
+  async queryDbForTask (taskId) {
+    const jfm = new JsonFileManager()
+    const obj = await jfm.getObjFromFile()
+
+    if (typeof taskId === 'number') {
+      return obj.tasks[taskId]
+    //   return obj.tasks.find((task) => task.task_id === taskId)
+    } else {
+      return obj.tasks
+    }
+  }
+
+  async queryDbForUser (userId) {
+    const jfm = new JsonFileManager()
+    const obj = await jfm.getObjFromFile()
+
+    if (typeof taskId === 'number') {
+      return obj.users.find((user) => user.id === userId)
+    } else {
+      return obj.users
     }
   }
 }

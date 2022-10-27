@@ -12,13 +12,13 @@ class Task {
     if (obj.tasks.length === 0) {
       taskId = 1
     } else {
-      taskId = obj.tasks[obj.tasks.length - 1] + 1
+      taskId = obj.tasks[obj.tasks.length - 1].task_id + 1
     }
 
     description = await ask(
-      'Type your task :)\n\n\t(empty text = go back to main menu)\n'
+      'Type your task :) Or 0 to go back\n'
     )
-    if (description.length === 0) {
+    if (description === '0') {
       return
     }
 
@@ -52,20 +52,21 @@ class Task {
   }
 
   async modify (indexToModify) {
-    const modificationType = await ask(
-            `Please, select a modification type
-                1. Modify task status
-                2. Change task description
-                0. Bye!
-            `)
+    let modificationType
+    do {
+      modificationType = await ask(
+                `Please, select a modification type
+                    1. Modify task status
+                    2. Change task description
+                    0. Back to task menu
+                `)
 
-    if (modificationType === '1') {
-      this.changeStatus(indexToModify)
-    } else if (modificationType === '2') {
-      this.changeDescription(indexToModify)
-    } else {
-      console.log('No changes were registered, have a great day!')
-    }
+      if (modificationType === '1') {
+        await this.changeStatus(indexToModify)
+      } else if (modificationType === '2') {
+        await this.changeDescription(indexToModify)
+      }
+    } while (modificationType !== '0')
   }
 
   async changeStatus (indexToModify) {
@@ -80,22 +81,22 @@ class Task {
                             1. To Do
                             2. In Progress
                             3. Completed
-                            0. Bye!
+                            0. Go back
                         `)
       if (newStatus === '1') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_TODO
-        obj.tasks[indexToModify].closed_date = getDate()
+        // obj.tasks[indexToModify].closed_date = getDate()
         console.table(obj.tasks[indexToModify])
         await jfm.rewriteFile(obj)
       } else if (newStatus === '2') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_INPROGRESS
-        obj.tasks[indexToModify].closed_date = getDate()
+        // obj.tasks[indexToModify].closed_date = getDate()
         console.table(obj.tasks[indexToModify])
         await jfm.rewriteFile(obj)
       } else if (newStatus === '3') {
         obj.tasks[indexToModify].status = CONSTANTS.STATUS_DONE
         obj.tasks[indexToModify].closed_date = getDate()
-        console.table(obj.tasks[indexToModify])
+        // console.table(obj.tasks[indexToModify])
         await jfm.rewriteFile(obj)
       } else {
         console.log('No changes were registered, have a great day!')
@@ -113,10 +114,11 @@ class Task {
 
     if (taskToModify !== undefined) {
       const newDescription = await ask(
-        ('Please, type the new task description :)\n')
+        ('Please, type the new task description :) Or 0 to go back\n')
       )
+      if (newDescription === '0') return
       obj.tasks[indexToModify].description = newDescription
-      console.table(obj.tasks[indexToModify])
+      //   console.table(obj.tasks[indexToModify])
       await jfm.rewriteFile(obj)
     } else {
       console.log('No task found, try another ID')
@@ -149,19 +151,21 @@ class Task {
     }
   };
 
-  async seeTask () {
+  async seeTask (creatorId) {
     const jfm = new JsonFileManager()
     const obj = await jfm.getObjFromFile()
 
     const taskId = await ask(
-      ('Type task ID to check :)\n')
+      'Type task ID to check :) Or 0 to go back\n'
     )
 
     const indexToModify = obj.tasks.findIndex(task => task.task_id === Number(taskId))
 
-    if (obj.tasks[indexToModify] !== undefined) {
+    if (obj.tasks[indexToModify] !== undefined && obj.tasks[indexToModify].creator_id === creatorId) {
       console.table(obj.tasks[indexToModify])
       return indexToModify
+    } else if (taskId === '0') {
+      return 0
     } else {
       console.log('No task found, try another ID')
     }
