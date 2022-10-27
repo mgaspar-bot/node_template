@@ -8,11 +8,19 @@ class Task {
     let description = ''
     const jfm = new JsonFileManager()
     const obj = await jfm.getObjFromFile()
-    const taskId = obj.tasks.length + 1
+    let taskId
+    if (obj.tasks.length === 0) {
+      taskId = 1
+    } else {
+      taskId = obj.tasks[obj.tasks.length - 1] + 1
+    }
 
     description = await ask(
-      ('Type your task :)\n')
+      'Type your task :)\n\n\t(empty text = go back to main menu)\n'
     )
+    if (description.length === 0) {
+      return
+    }
 
     this.task_id = taskId
     this.creator_id = creatorId
