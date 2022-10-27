@@ -1,9 +1,8 @@
-function getDate() {
-    const date = new Date()
-    const currentDate = `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
+function getDate () {
+  const date = new Date()
+  const currentDate = `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
 
-    return currentDate
+  return currentDate
 }
 
-
-module.exports = getDate;
+module.exports = getDate
