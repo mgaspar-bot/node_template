@@ -42,12 +42,11 @@ class PersistenceManager {
 
     if (receivedProperties.includes('id')) { // case User
       const found = obj.users.find((user) => user.id === objToWrite.id)
-      if (found === undefined) { // if the id is not in the db, just add it to the file
+      if (found === undefined) {
         obj.users.push(objToWrite)
         await jfm.rewriteFile(obj)
         return
       }
-      // if the id already exists, just change the username
       for (const user of obj.users) {
         if (user.id === objToWrite.id) {
           user.userName = objToWrite.userName
@@ -65,6 +64,7 @@ class PersistenceManager {
     }
   }
 
+  // delete task is different as it only receives the task_id and you just delete that id from persistence
   static async deleteTask (taskId) {
     if (global.persistence === '1') {
       const jfm = new JsonFileManager()
