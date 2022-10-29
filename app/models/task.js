@@ -1,18 +1,18 @@
 const CONSTANTS = require(appRoot + '/helpers/constants.js')
 const ask = require(appRoot + '/helpers/ask')
 const getDate = require(appRoot + '/helpers/getDate')
-const JsonFileManager = require(appRoot + '/models/JsonFileManager.js')
+const db = require(appRoot + '/models/PersistenceManager')
 
 class Task {
   async createTask (creatorId) {
     let description = ''
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
+
     let taskId
-    if (obj.tasks.length === 0) {
+    if (tasks.length === 0) {
       taskId = 1
     } else {
-      taskId = obj.tasks[obj.tasks.length - 1].task_id + 1
+      taskId = tasks[tasks.length - 1].task_id + 1
     }
 
     description = await ask(
@@ -29,13 +29,10 @@ class Task {
     this.status = CONSTANTS.STATUS_TODO
     this.closed_date = ''
 
-    this.save()
+    await this.save()
   }
 
   async save () {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
     const newTask = {
       task_id: this.task_id,
       creator_id: this.creator_id,
@@ -45,9 +42,7 @@ class Task {
       closed_date: this.closed_date
     }
 
-    obj.tasks.push(newTask)
-
-    jfm.rewriteFile(obj)
+    await db.saveToPersistence(newTask)
     console.table(newTask)
   }
 
@@ -70,10 +65,9 @@ class Task {
   }
 
   async changeStatus (indexToModify) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
 
-    const taskToModify = await obj.tasks[indexToModify]
+    const taskToModify = await tasks[indexToModify]
 
     if (taskToModify !== undefined) {
       const newStatus = await ask(
@@ -84,55 +78,47 @@ class Task {
                             0. Go back
                         `)
       if (newStatus === '1') {
-        obj.tasks[indexToModify].status = CONSTANTS.STATUS_TODO
-        // obj.tasks[indexToModify].closed_date = getDate()
-        console.table(obj.tasks[indexToModify])
-        await jfm.rewriteFile(obj)
+        taskToModify.status = CONSTANTS.STATUS_TODO
       } else if (newStatus === '2') {
-        obj.tasks[indexToModify].status = CONSTANTS.STATUS_INPROGRESS
-        // obj.tasks[indexToModify].closed_date = getDate()
-        console.table(obj.tasks[indexToModify])
-        await jfm.rewriteFile(obj)
+        taskToModify.status = CONSTANTS.STATUS_INPROGRESS
       } else if (newStatus === '3') {
-        obj.tasks[indexToModify].status = CONSTANTS.STATUS_DONE
-        obj.tasks[indexToModify].closed_date = getDate()
-        // console.table(obj.tasks[indexToModify])
-        await jfm.rewriteFile(obj)
+        taskToModify.status = CONSTANTS.STATUS_DONE
+        taskToModify.closed_date = getDate()
       } else {
         console.log('No changes were registered, have a great day!')
       }
+      await db.saveToPersistence(taskToModify) // im calling saveToPersistence even if nothing changed but meh
+      console.table(taskToModify)
     } else {
       console.log('No task found, try another ID')
     }
   }
 
   async changeDescription (indexToModify) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
 
-    const taskToModify = await obj.tasks[indexToModify]
+    const taskToModify = await tasks[indexToModify]
 
     if (taskToModify !== undefined) {
       const newDescription = await ask(
         ('Please, type the new task description :) Or 0 to go back\n')
       )
       if (newDescription === '0') return
-      obj.tasks[indexToModify].description = newDescription
-      //   console.table(obj.tasks[indexToModify])
-      await jfm.rewriteFile(obj)
+      taskToModify.description = newDescription
+      console.table(taskToModify)
+      await db.saveToPersistence(taskToModify)
     } else {
       console.log('No task found, try another ID')
     }
   };
 
   async deleteTask (indexToModify) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
 
-    const deleteCheck = await obj.tasks[indexToModify]
+    const deleteCheck = await tasks[indexToModify]
 
     if (deleteCheck !== undefined) {
-      console.table(obj.tasks[indexToModify])
+      console.table(tasks[indexToModify])
 
       const confirmation = await ask(
                 `Is this the task you want to delete?
@@ -140,8 +126,7 @@ class Task {
                     2. No 
                 `)
       if (confirmation === '1') {
-        obj.tasks.splice(indexToModify, 1)
-        await jfm.rewriteFile(obj)
+        await db.deleteTask(tasks[indexToModify].task_id)
         console.log('Task deleted!')
       } else {
         console.log('No changes were registered, have a great day!')
@@ -152,17 +137,16 @@ class Task {
   };
 
   async seeTask (creatorId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
 
     const taskId = await ask(
       'Type task ID to check :) Or 0 to go back\n'
     )
 
-    const indexToModify = obj.tasks.findIndex(task => task.task_id === Number(taskId))
+    const indexToModify = tasks.findIndex(task => task.task_id === Number(taskId))
 
-    if (obj.tasks[indexToModify] !== undefined && obj.tasks[indexToModify].creator_id === creatorId) {
-      console.table(obj.tasks[indexToModify])
+    if (tasks[indexToModify] !== undefined && tasks[indexToModify].creator_id === creatorId) {
+      console.table(tasks[indexToModify])
       return indexToModify
     } else if (taskId === '0') {
       return 0
@@ -172,10 +156,9 @@ class Task {
   }
 
   async seeAll (userId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
+    const tasks = await db.getTasksArray()
 
-    const userTasks = obj.tasks.filter((task) => { return task.creator_id === userId })
+    const userTasks = tasks.filter((task) => { return task.creator_id === userId })
     console.table(userTasks)
   }
 }

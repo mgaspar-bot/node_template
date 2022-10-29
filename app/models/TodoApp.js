@@ -1,5 +1,4 @@
-const JsonFileManager = require(appRoot + '/models/JsonFileManager')
-const Task = require('./task')
+const Task = require(appRoot + '/models/task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
 const task = new Task()
@@ -7,7 +6,7 @@ const task = new Task()
 class TodoApp {
   user = ''
 
-  async init () { // this should do what whodis does more or less
+  async init () {
     let username = ''
     do {
       username = await ask('Please enter your username\n')
@@ -20,7 +19,7 @@ class TodoApp {
   }
 
   async mainMenu () {
-    console.log(`Welcome ${this.user.username}`)
+    console.log(`Welcome ${this.user.userName}`)
     let res = ''
     do {
       res = await ask(
@@ -51,8 +50,6 @@ class TodoApp {
       return
     }
     do {
-      const presentTask = await this.queryDbForTask(indexToModify)
-      console.table(presentTask)
       res = await ask(
                     `What do you want to do? 
                         1. Modify task status
@@ -74,29 +71,6 @@ class TodoApp {
       }
     } while (res !== '0')
     this.mainMenu()
-  }
-
-  async queryDbForTask (taskId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
-    if (typeof taskId === 'number') {
-      return obj.tasks[taskId]
-    //   return obj.tasks.find((task) => task.task_id === taskId)
-    } else {
-      return obj.tasks
-    }
-  }
-
-  async queryDbForUser (userId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
-    if (typeof taskId === 'number') {
-      return obj.users.find((user) => user.id === userId)
-    } else {
-      return obj.users
-    }
   }
 }
 
