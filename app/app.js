@@ -3,10 +3,6 @@ global.appRoot = path.resolve(__dirname)
 
 // const User = require('./models/User')
 const checkDependencies = require(appRoot + '/helpers/checkDependencies.js')
-// const Task = require(appRoot + '/models/task.js')
-// const JsonFileManager = require(appRoot + '/models/JsonFileManager')
-// const seeAllTasksId = require(appRoot + '/helpers/seeAllTasksId')
-// const ask = require(appRoot + '/helpers/ask')
 const TodoApp = require('./models/TodoApp')
 
 /*

@@ -1,6 +1,6 @@
 const ask = require(appRoot + '/helpers/ask.js')
 const checkJsonFile = require(appRoot + '/helpers/checkJsonFile')
-// Did i make trycatch hell??
+
 async function checkDependencies (reset) {
   let persistence
   do {

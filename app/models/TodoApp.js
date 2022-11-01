@@ -1,10 +1,14 @@
-const Task = require(appRoot + '/models/task')
+const Task = require(appRoot + '/models/Task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
-const task = new Task()
 
 class TodoApp {
   user = ''
+  task = ''
+
+  constructor () {
+    this.task = new Task()
+  }
 
   async init () {
     let username = ''
@@ -29,9 +33,9 @@ class TodoApp {
                     0. Bye!
 `)
       if (res === '1') {
-        await task.createTask(this.user.id)
+        await this.task.createTask(this.user.id)
       } else if (res === '2') {
-        await task.seeAll(this.user.id)
+        await this.task.seeAll(this.user.id)
         this.taskMenu()
       }
     } while (res !== '0')
@@ -43,7 +47,7 @@ class TodoApp {
 
     let indexToModify
     do {
-      indexToModify = await task.seeTask(this.user.id)
+      indexToModify = await this.task.seeTask(this.user.id)
     } while (indexToModify === undefined)
     if (indexToModify === 0) {
       this.mainMenu()
@@ -58,11 +62,11 @@ class TodoApp {
                         0. Back to main menu
                         `)
       if (res === '1') {
-        await task.changeStatus(indexToModify)
+        await this.task.changeStatus(indexToModify)
       } else if (res === '2') {
-        await task.changeDescription(indexToModify)
+        await this.task.changeDescription(indexToModify)
       } else if (res === '3') {
-        await task.deleteTask(indexToModify)
+        await this.task.deleteTask(indexToModify)
         res = '0'
         // without this if you delete a task, you go back to taskMenu (1.Modify status...)
         // but since you deleted an entry in the array now indexToModify doesnt point to the right task, so you can end
