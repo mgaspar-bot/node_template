@@ -1,13 +1,16 @@
-const JsonFileManager = require(appRoot + '/models/JsonFileManager')
-const Task = require('./task')
+const Task = require(appRoot + '/models/Task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
-const task = new Task()
 
 class TodoApp {
   user = ''
+  task = ''
 
-  async init () { // this should do what whodis does more or less
+  constructor () {
+    this.task = new Task()
+  }
+
+  async init () {
     let username = ''
     do {
       username = await ask('Please enter your username\n')
@@ -20,7 +23,7 @@ class TodoApp {
   }
 
   async mainMenu () {
-    console.log(`Welcome ${this.user.username}`)
+    console.log(`Welcome ${this.user.userName}`)
     let res = ''
     do {
       res = await ask(
@@ -30,9 +33,9 @@ class TodoApp {
                     0. Bye!
 `)
       if (res === '1') {
-        await task.createTask(this.user.id)
+        await this.task.createTask(this.user.id)
       } else if (res === '2') {
-        await task.seeAll(this.user.id)
+        await this.task.seeAll(this.user.id)
         this.taskMenu()
       }
     } while (res !== '0')
@@ -44,15 +47,13 @@ class TodoApp {
 
     let indexToModify
     do {
-      indexToModify = await task.seeTask(this.user.id)
+      indexToModify = await this.task.seeTask(this.user.id)
     } while (indexToModify === undefined)
     if (indexToModify === 0) {
       this.mainMenu()
       return
     }
     do {
-      const presentTask = await this.queryDbForTask(indexToModify)
-      console.table(presentTask)
       res = await ask(
                     `What do you want to do? 
                         1. Modify task status
@@ -61,11 +62,11 @@ class TodoApp {
                         0. Back to main menu
                         `)
       if (res === '1') {
-        await task.changeStatus(indexToModify)
+        await this.task.changeStatus(indexToModify)
       } else if (res === '2') {
-        await task.changeDescription(indexToModify)
+        await this.task.changeDescription(indexToModify)
       } else if (res === '3') {
-        await task.deleteTask(indexToModify)
+        await this.task.deleteTask(indexToModify)
         res = '0'
         // without this if you delete a task, you go back to taskMenu (1.Modify status...)
         // but since you deleted an entry in the array now indexToModify doesnt point to the right task, so you can end
@@ -74,29 +75,6 @@ class TodoApp {
       }
     } while (res !== '0')
     this.mainMenu()
-  }
-
-  async queryDbForTask (taskId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
-    if (typeof taskId === 'number') {
-      return obj.tasks[taskId]
-    //   return obj.tasks.find((task) => task.task_id === taskId)
-    } else {
-      return obj.tasks
-    }
-  }
-
-  async queryDbForUser (userId) {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
-    if (typeof taskId === 'number') {
-      return obj.users.find((user) => user.id === userId)
-    } else {
-      return obj.users
-    }
   }
 }
 

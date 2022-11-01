@@ -1,49 +1,32 @@
-const JsonFileManager = require('./JsonFileManager')
-/*
-Attributes:
-- id
-- name
+const db = require(appRoot + '/models/PersistenceManager')
 
-Methods:
-- constructor(name)
-- getId
-- getName
-- setId
-- setName
-- save
-*/
 class User {
   id = ''
-  username = ''
-  constructor (username) {
+  userName = ''
+  constructor (userName) {
     // Check user if user exists already, i.e. if
     // i have to return an existing
 
-    if (!username || typeof username !== 'string' || username.length < 1) {
-      // console.log(`Invalid username in constructor`);
-      throw new Error('invalid username in constructor')
+    if (!userName || typeof userName !== 'string' || userName.length < 1) {
+      // console.log(`Invalid userName in constructor`);
+      throw new Error('invalid userName in constructor')
     }
 
-    this.username = username
+    this.userName = userName
   }
 
-  async syncUserWithDb () { // this method should only be used after the log in, when you received the username
-    // if the username doesnt exist, it creates it in db
+  async syncUserWithDb () { // this method should only be used after the log in, when you received the userName
+    // if the userName doesnt exist, it creates it in db
     // if it exists, just fetch the correct id.
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-    const found = obj.users.find((user) => user.userName === this.username)
+    const users = await db.getUsersArray()
+    const found = users.find((user) => user.userName === this.userName)
     if (found !== undefined) {
       this.id = found.id
       return true
     }
     this.id = await this.getNextId()
-    // obj.users.push({
-    //     "id":this.id,
-    //     "userName":this.username
-    // });
-    // await jfm.rewriteFile(obj);
-    await this.saveToDb()
+
+    await db.saveToPersistence()
     return false
   }
 
@@ -51,15 +34,15 @@ class User {
     return this.id
   }
 
-  getUserName () {
-    return this.username
+  getuserName () {
+    return this.userName
   }
 
-  setUsername (username) {
-    if (typeof username === 'string') {
-      this.username = username
+  setuserName (userName) {
+    if (typeof userName === 'string') {
+      this.userName = userName
     } else {
-      console.log('Bad username, cannot set')
+      console.log('Bad userName, cannot set')
       return -1
     }
   }
@@ -73,35 +56,12 @@ class User {
     }
   }
 
-  async saveToDb () { // this just writes the  'this' runtime object to memory. If the a user with the same id already existed, it just changes the username
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-
-    const found = obj.users.find((user) => user.id === this.id)
-    if (found === undefined) { // if the id is not in the db, just add it to the file
-      obj.users.push({
-        id: this.id,
-        userName: this.username
-      })
-      await jfm.rewriteFile(obj)
-      return
-    }
-    // if the id already exists, just change the username
-    for (const user of obj.users) {
-      if (user.id === this.id) {
-        user.userName = this.username
-      }
-    }
-    await jfm.rewriteFile(obj)
-  }
-
   async getNextId () {
-    const jfm = new JsonFileManager()
-    const obj = await jfm.getObjFromFile()
-    if (obj.users.length === 0) {
+    const users = await db.getUsersArray()
+    if (users.length === 0) {
       return 1
     }
-    return obj.users[obj.users.length - 1].id + 1
+    return users[users.length - 1].id + 1
   }
 }
 
