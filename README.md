@@ -50,7 +50,7 @@ Actualmente solamente la opción 1 está implementada.
 
 - Cadevall Baulies, Alex (alexcadevall@gmail.com)
 - Chaiben Machado, Marçal (marcal.chaiben@gmail.com)
-- Gaspar, Marc 
+- Gaspar, Marc (marc.gaspar.martinez@gmail.com)
 
 <!-- 
 
