@@ -1,12 +1,16 @@
-const Task = require('./task')
+const Task = require(appRoot + '/models/Task')
 const User = require(appRoot + '/models/User')
 const ask = require(appRoot + '/helpers/ask')
 
 class TodoApp {
   user = ''
-  menuposition = -1
+  task = ''
 
-  async init () { // this should do what whodis does more or less
+  constructor () {
+    this.task = new Task()
+  }
+
+  async init () {
     let username = ''
     do {
       username = await ask('Please enter your username\n')
@@ -19,7 +23,7 @@ class TodoApp {
   }
 
   async mainMenu () {
-    console.log(`Welcome ${this.user.username}`)
+    console.log(`Welcome ${this.user.userName}`)
     let res = ''
     do {
       res = await ask(
@@ -28,44 +32,49 @@ class TodoApp {
                     2. Go to my tasks
                     0. Bye!
 `)
-      if (res === 1) {
-        await Task.prototype.createTask(this.user.id)
-      } else if (res === 2) {
-        Task.prototype.seeAll() // podem fer que tensenyi nomes les teves
+      if (res === '1') {
+        await this.task.createTask(this.user.id)
+      } else if (res === '2') {
+        await this.task.seeAll(this.user.id)
         this.taskMenu()
-      } else if (res === 3) {
-        // borraTasca(id)
-      } else if (res === 4) {
-        // veure una tasca
-      } else if (res === 5) {
-        // to be defined
       }
-    } while (res !== 0)
+    } while (res !== '0')
     process.exit()
   }
 
   async taskMenu () {
     let res = ''
-    const task = new Task()
 
-    const indexToModify = await task.seeTask()
-
-    if (indexToModify !== undefined) {
-      do {
-        res = await ask(
+    let indexToModify
+    do {
+      indexToModify = await this.task.seeTask(this.user.id)
+    } while (indexToModify === undefined)
+    if (indexToModify === 0) {
+      this.mainMenu()
+      return
+    }
+    do {
+      res = await ask(
                     `What do you want to do? 
-                        1. Update existing task
-                        2. Erase task
+                        1. Modify task status
+                        2. Change task description
+                        3. Erase this task
                         0. Back to main menu
                         `)
-        if (res === 1) {
-          await task.modify(indexToModify)
-        } else if (res === 2) {
-          await task.deleteTask(indexToModify)
-        }
-      } while (res !== 0)
-      this.mainMenu()
-    }
+      if (res === '1') {
+        await this.task.changeStatus(indexToModify)
+      } else if (res === '2') {
+        await this.task.changeDescription(indexToModify)
+      } else if (res === '3') {
+        await this.task.deleteTask(indexToModify)
+        res = '0'
+        // without this if you delete a task, you go back to taskMenu (1.Modify status...)
+        // but since you deleted an entry in the array now indexToModify doesnt point to the right task, so you can end
+        // up accessing a task which is not yours
+        // this just forces you out of the loop into the mainMenu which is inconsistent with the rest of the options but meh
+      }
+    } while (res !== '0')
+    this.mainMenu()
   }
 }
 
