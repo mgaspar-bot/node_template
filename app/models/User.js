@@ -26,7 +26,7 @@ class User {
     }
     this.id = await this.getNextId()
 
-    await db.saveToPersistence()
+    await db.saveToPersistence(this)
     return false
   }
 
