@@ -48,9 +48,9 @@ Actualmente solamente la opción 1 está implementada.
 
 ## Equipo
 
-- Alex
-- Marc Gaspar
-- Marçal Chaiben (marcal.chaiben@gmail.com)
+- Cadevall Baulies, Alex (alexcadevall@gmail.com)
+- Chaiben Machado, Marçal (marcal.chaiben@gmail.com)
+- Gaspar, Marc 
 
 <!-- 
 
