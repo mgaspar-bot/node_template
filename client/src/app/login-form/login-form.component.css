@@ -1,0 +1,18 @@
+.loginForm{
+    width: 30%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.loginButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.butt {
+    width: 4rem;
+}
