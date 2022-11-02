@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^9.0.2",
+    "mongodb": "^4.11.0",
     "mysql": "^2.18.1"
   },
   "eslintConfig": {
@@ -23,7 +24,9 @@
     }
   },
   "standard": {
-    "globals": [ "appRoot" ]
+    "globals": [
+      "appRoot"
+    ]
   },
   "devDependencies": {
     "jest": "^28.1.1",
