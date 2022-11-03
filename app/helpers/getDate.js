@@ -1,7 +1,5 @@
 function getDate () {
-  const date = new Date()
-  const currentDate = `${date.getDate()} / ${date.getMonth() + 1} / ${date.getFullYear()}`
-
+  const currentDate = new Date().toJSON().slice(0, 10)
   return currentDate
 }
 

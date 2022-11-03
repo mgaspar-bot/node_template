@@ -50,7 +50,7 @@ class MySQLService {
     // -----------------------------------------------------
     // Table `Task`
     // -----------------------------------------------------
-    await this.query("CREATE TABLE IF NOT EXISTS `todo`.`tasks` ( `task_id` INT NOT NULL AUTO_INCREMENT, `description` TEXT NOT NULL, `create_date` DATETIME NOT NULL, `closed_date` DATETIME NULL, `status` ENUM('to do', 'in progress', 'done') NULL, `creator_id` INT NOT NULL, PRIMARY KEY (`task_id`), INDEX `fk_Task_User_idx` (`creator_id` ASC), CONSTRAINT `fk_Task_User` FOREIGN KEY (`creator_id`) REFERENCES `todo`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) ENGINE = InnoDB")
+    await this.query("CREATE TABLE IF NOT EXISTS `todo`.`tasks` ( `task_id` INT NOT NULL AUTO_INCREMENT, `description` TEXT NOT NULL, `create_date` VARCHAR(14) NOT NULL, `closed_date` VARCHAR(14) NULL, `status` ENUM('to do', 'in progress', 'done') NULL, `creator_id` INT NOT NULL, PRIMARY KEY (`task_id`), INDEX `fk_Task_User_idx` (`creator_id` ASC), CONSTRAINT `fk_Task_User` FOREIGN KEY (`creator_id`) REFERENCES `todo`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) ENGINE = InnoDB")
 
     // Users sample data
     await this.query("INSERT INTO `todo`.`users` (`id`, `userName`) VALUES (1, 'Alex') ON DUPLICATE KEY UPDATE userName=userName")
