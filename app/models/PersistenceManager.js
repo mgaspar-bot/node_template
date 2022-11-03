@@ -76,7 +76,14 @@ class PersistenceManager {
   }
 
   static async saveToMySQL (objToWrite) {
-    const query = `INSERT INTO tasks ( task_id, description, create_date, closed_date, status, creator_id ) VALUES ( ${mysql.escape(objToWrite.task_id)}, ${mysql.escape(objToWrite.description)}, ${mysql.escape(objToWrite.create_date)}, ${mysql.escape(objToWrite.closed_date)}, ${mysql.escape(objToWrite.status)}, ${mysql.escape(objToWrite.creator_id)}) ON DUPLICATE KEY UPDATE description = ${mysql.escape(objToWrite.description)}, create_date = ${mysql.escape(objToWrite.create_date)}, closed_date = ${mysql.escape(objToWrite.closed_date)}, status = ${mysql.escape(objToWrite.status)}, creator_id = ${mysql.escape(objToWrite.creator_id)}`
+    const receivedProperties = Object.getOwnPropertyNames(objToWrite)
+    let query
+    if (receivedProperties.includes('id')) {
+      query = `INSERT INTO users (id, userName) VALUES (${mysql.escape(objToWrite.task_id)}, ${mysql.escape(objToWrite.userName)}) ON DUPLICATE KEY UPDATE userName=${mysql.escape(objToWrite.userName)}`
+    }
+    if (receivedProperties.includes('task_id')) {
+      query = `INSERT INTO tasks ( task_id, description, create_date, closed_date, status, creator_id ) VALUES ( ${mysql.escape(objToWrite.task_id)}, ${mysql.escape(objToWrite.description)}, ${mysql.escape(objToWrite.create_date)}, ${mysql.escape(objToWrite.closed_date)}, ${mysql.escape(objToWrite.status)}, ${mysql.escape(objToWrite.creator_id)}) ON DUPLICATE KEY UPDATE description = ${mysql.escape(objToWrite.description)}, create_date = ${mysql.escape(objToWrite.create_date)}, closed_date = ${mysql.escape(objToWrite.closed_date)}, status = ${mysql.escape(objToWrite.status)}, creator_id = ${mysql.escape(objToWrite.creator_id)}`
+    }
     const mysqlService = new MysqlService()
     await mysqlService.query(query)
   }
