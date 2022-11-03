@@ -48,7 +48,9 @@ class TodoApp {
     let indexToModify
     do {
       indexToModify = await this.task.seeTask(this.user.id)
-    } while (indexToModify === undefined) do {
+    } while (indexToModify === undefined)
+    if (indexToModify === 0) { return this.mainMenu() }
+    do {
       res = await ask(
                     `What do you want to do? 
                         1. Modify task status
@@ -57,11 +59,11 @@ class TodoApp {
                         0. Back to main menu
                         `)
       if (res === '1') {
-        await this.task.changeStatus(indexToModify)
+        await this.task.changeStatus(indexToModify.i)
       } else if (res === '2') {
-        await this.task.changeDescription(indexToModify)
+        await this.task.changeDescription(indexToModify.i)
       } else if (res === '3') {
-        await this.task.deleteTask(indexToModify)
+        await this.task.deleteTask(indexToModify.i)
         res = '0'
         // without this if you delete a task, you go back to taskMenu (1.Modify status...)
         // but since you deleted an entry in the array now indexToModify doesnt point to the right task, so you can end

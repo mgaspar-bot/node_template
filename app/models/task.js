@@ -147,7 +147,7 @@ class Task {
 
     if (tasks[indexToModify] !== undefined && tasks[indexToModify].creator_id === creatorId) {
       console.table(tasks[indexToModify])
-      return indexToModify
+      return { i: indexToModify }
     } else if (taskId === '0') {
       return 0
     } else {
