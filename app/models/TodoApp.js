@@ -48,12 +48,7 @@ class TodoApp {
     let indexToModify
     do {
       indexToModify = await this.task.seeTask(this.user.id)
-    } while (indexToModify === undefined)
-    if (indexToModify === 0) {
-      this.mainMenu()
-      return
-    }
-    do {
+    } while (indexToModify === undefined) do {
       res = await ask(
                     `What do you want to do? 
                         1. Modify task status
