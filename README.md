@@ -11,17 +11,28 @@ Aplicación que permite guardar una lista de tareas para hacer.
 
 ## Modo de funcionamento
 
-Para ejecutar la aplicación, utilice el siguiente comando:
+Para ejecutar la aplicación:
+
+1. Instalar [Docker](https://www.docker.com/)
+1. Levantar la instancia de MySQL
+
+> `$ docker compose -f docker/docker-compose-mysql.yml up `
+
+3. Ejecutar la app
 
 > `$ node app/app.js `
 
-El programa preguntará donde quieres guardar tus datos: 
+El programa creará la base de datos y algunos datos de ejemplo automaticamente.
 
-1. Archivo JSON
-1. Base de datos MySQL
-1. Base de datos MongoDB
+El programa preguntará donde quieres guardar tus datos. Actualmente solamente la opción 1 y 2 está implementada (Nivel 1 y 2). 
 
-Actualmente solamente la opción 1 está implementada.
+`Which persistence will you use?
+>1. Json file in disk
+>2. Mysql
+>3. MongoDb
+`
+
+Después pedirá el nombre de usuario. Caso quieres ver algún usuario con dato, puedes escribir "Alex", "Marçal" o "Marc" ;)
 
 
 ## Flujo de datos implementado
@@ -39,6 +50,7 @@ Actualmente solamente la opción 1 está implementada.
 1. [Starndard JS](https://standardjs.com/)
 1. [¡Tu CÓDIGO JAVASCRIPT sin ERRORES! 🛑🐛 - Configurando el LINTER con ESLint y STANDARD JS](https://www.youtube.com/watch?v=QpDpRmlFfqI)
 1. [Docker](https://www.docker.com/)
+1. [NPM MySQL](https://www.npmjs.com/package/mysql)
 
 ## Visual Studio Code Plugins
 - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)

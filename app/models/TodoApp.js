@@ -36,7 +36,7 @@ class TodoApp {
         await this.task.createTask(this.user.id)
       } else if (res === '2') {
         await this.task.seeAll(this.user.id)
-        this.taskMenu()
+        await this.taskMenu()
       }
     } while (res !== '0')
     process.exit()

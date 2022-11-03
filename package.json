@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^9.0.2"
+    "dotenv": "^9.0.2",
+    "mongodb": "^4.11.0",
+    "mysql": "^2.18.1"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json",
@@ -22,7 +24,9 @@
     }
   },
   "standard": {
-    "globals": [ "appRoot" ]
+    "globals": [
+      "appRoot"
+    ]
   },
   "devDependencies": {
     "jest": "^28.1.1",

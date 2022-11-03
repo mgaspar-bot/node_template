@@ -13,7 +13,6 @@ tasques o llistar una tasca específica.
 */
 
 checkDependencies().then(async () => {
-  // console.log(`I'm in the .then`);
   const app = new TodoApp()
 
   await app.init()

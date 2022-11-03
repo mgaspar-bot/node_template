@@ -2,7 +2,7 @@
 /* eslint-disable no-new */
 require('../app/app') // the only purpose of this require is to set global.appRoot
 const checkDependencies = require('../app/helpers/checkDependencies')
-const JsonFileManager = require('../app/models/JsonFileManager')
+const JsonFileManager = require('../app/helpers/JsonFileManager')
 
 const User = require('../app/models/User')
 

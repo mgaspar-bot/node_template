@@ -1,14 +1,20 @@
-const JsonFileManager = require(appRoot + '/models/JsonFileManager')
+const JsonFileManager = require(appRoot + '/helpers/JsonFileManager')
+const MysqlService = require(appRoot + '/helpers/MysqlService')
+const mysql = require('mysql')
 
 class PersistenceManager {
   // "getters" that just return an array with all users or all tasks
+
   static async getUsersArray () {
     if (global.persistence === '1') {
       const jfm = new JsonFileManager()
       const obj = await jfm.getObjFromFile()
       return obj.users
+    } else if (global.persistence === '2') {
+      const mysqlService = new MysqlService()
+      return await mysqlService.query('SELECT * FROM users')
     } else {
-      console.log('global.persistence !== \'1\' so i cant go on')
+      console.log('global.persistence !== "1" or "2" so I cant go on')
     }
   }
 
@@ -17,8 +23,11 @@ class PersistenceManager {
       const jfm = new JsonFileManager()
       const obj = await jfm.getObjFromFile()
       return obj.tasks
+    } else if (global.persistence === '2') {
+      const mysqlService = new MysqlService()
+      return await mysqlService.query('SELECT * FROM tasks')
     } else {
-      console.log('global.persistence !== \'1\' so i cant go on')
+      console.log('global.persistence !== "1" or "2" so I cant go on')
     }
   }
 
@@ -29,8 +38,10 @@ class PersistenceManager {
   static async saveToPersistence (objToWrite) {
     if (global.persistence === '1') {
       await this.saveToJson(objToWrite)
+    } else if (global.persistence === '2') {
+      await this.saveToMySQL(objToWrite)
     } else {
-      console.log('global.persistence !== \'1\' so i cant go on')
+      console.log('global.persistence !== "1" or "2" so I cant go on')
     }
   }
 
@@ -64,6 +75,12 @@ class PersistenceManager {
     }
   }
 
+  static async saveToMySQL (objToWrite) {
+    const query = `INSERT INTO tasks ( task_id, description, create_date, closed_date, status, creator_id ) VALUES ( ${mysql.escape(objToWrite.task_id)}, ${mysql.escape(objToWrite.description)}, ${mysql.escape(objToWrite.create_date)}, ${mysql.escape(objToWrite.closed_date)}, ${mysql.escape(objToWrite.status)}, ${mysql.escape(objToWrite.creator_id)}) ON DUPLICATE KEY UPDATE description = ${mysql.escape(objToWrite.description)}, create_date = ${mysql.escape(objToWrite.create_date)}, closed_date = ${mysql.escape(objToWrite.closed_date)}, status = ${mysql.escape(objToWrite.status)}, creator_id = ${mysql.escape(objToWrite.creator_id)}`
+    const mysqlService = new MysqlService()
+    await mysqlService.query(query)
+  }
+
   // delete task is different as it only receives the task_id and you just delete that id from persistence
   static async deleteTask (taskId) {
     if (global.persistence === '1') {
@@ -74,8 +91,11 @@ class PersistenceManager {
         obj.tasks.splice(index, 1)
         await jfm.rewriteFile(obj)
       }
+    } else if (global.persistence === '2') {
+      const mysqlService = new MysqlService()
+      return await mysqlService.query(`DELETE FROM tasks WHERE task_id = ${mysql.escape(taskId)}`)
     } else {
-      console.log('global.persistence !== \'1\' so i cant go on')
+      console.log('global.persistence !== "1" or "2" so I cant go on')
     }
   }
 }
