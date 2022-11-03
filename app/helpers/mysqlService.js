@@ -33,7 +33,7 @@ class MySQLService {
   async query (sql) {
     await this.openCon()
     const result = await this.mysqlQuery(sql)
-    this.con.end()
+    await this.con.end()
     return result
   }
 
@@ -51,22 +51,18 @@ class MySQLService {
     // Table `Task`
     // -----------------------------------------------------
     await this.query("CREATE TABLE IF NOT EXISTS `todo`.`tasks` ( `task_id` INT NOT NULL AUTO_INCREMENT, `description` TEXT NOT NULL, `create_date` DATETIME NOT NULL, `closed_date` DATETIME NULL, `status` ENUM('to do', 'in progress', 'done') NULL, `creator_id` INT NOT NULL, PRIMARY KEY (`task_id`), INDEX `fk_Task_User_idx` (`creator_id` ASC), CONSTRAINT `fk_Task_User` FOREIGN KEY (`creator_id`) REFERENCES `todo`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) ENGINE = InnoDB")
-  }
 
-  async loadSampleData () {
     // Users sample data
-    await this.query("INSERT INTO `todo`.`users` (`userName`) VALUES ('Alex')")
-    await this.query("INSERT INTO `todo`.`users` (`userName`) VALUES ('Marçal')")
-    await this.query("INSERT INTO `todo`.`users` (`userName`) VALUES ('Marc')")
+    await this.query("INSERT INTO `todo`.`users` (`id`, `userName`) VALUES (1, 'Alex') ON DUPLICATE KEY UPDATE userName=userName")
+    await this.query("INSERT INTO `todo`.`users` (`id`, `userName`) VALUES (2, 'Marçal') ON DUPLICATE KEY UPDATE userName=userName")
+    await this.query("INSERT INTO `todo`.`users` (`id`, `userName`) VALUES (3, 'Marc') ON DUPLICATE KEY UPDATE userName=userName")
 
     // Tasks sample data
-    await this.query("INSERT INTO `todo`.`tasks` (`description`, `create_date`, `closed_date`, `status`, `creator_id`) VALUES ('teach gitflow to boneheads', '2022-11-1', '2022-11-2', 'done', '2')")
-    await this.query("INSERT INTO `todo`.`tasks` (`description`, `create_date`, `status`, `creator_id`) VALUES ('clean dishes', '2022-10-1', 'to do', '3')")
-    await this.query("INSERT INTO `todo`.`tasks` (`description`, `create_date`, `status`, `creator_id`) VALUES ('fix door', '2022-10-15', 'to do', '1')")
-    await this.query("INSERT INTO `todo`.`tasks` (`description`, `create_date`, `status`, `creator_id`) VALUES ('walk dogs', '2022-10-22', 'to do', '1')")
-    await this.query("INSERT INTO `todo`.`tasks` (`description`, `create_date`, `status`, `creator_id`) VALUES ('abolish democracy', '2022-1-1', 'in progress', '3')")
+    await this.query("INSERT INTO `todo`.`tasks` (`task_id`, `description`, `create_date`, `closed_date`, `status`, `creator_id`) VALUES ('1', 'teach gitflow to boneheads', '2022-11-1', '2022-11-2', 'done', '2') ON DUPLICATE KEY UPDATE description = description")
+    await this.query("INSERT INTO `todo`.`tasks` (`task_id`, `description`, `create_date`, `status`, `creator_id`) VALUES ('2', 'clean dishes', '2022-10-1', 'to do', '3') ON DUPLICATE KEY UPDATE description = description")
+    await this.query("INSERT INTO `todo`.`tasks` (`task_id`, `description`, `create_date`, `status`, `creator_id`) VALUES ('3', 'fix door', '2022-10-15', 'to do', '1') ON DUPLICATE KEY UPDATE description = description")
+    await this.query("INSERT INTO `todo`.`tasks` (`task_id`, `description`, `create_date`, `status`, `creator_id`) VALUES ('4', 'walk dogs', '2022-10-22', 'to do', '1') ON DUPLICATE KEY UPDATE description = description")
+    await this.query("INSERT INTO `todo`.`tasks` (`task_id`, `description`, `create_date`, `status`, `creator_id`) VALUES ('5', 'abolish democracy', '2022-1-1', 'in progress', '3') ON DUPLICATE KEY UPDATE description = description")
   }
 }
-const mysqlService = new MySQLService('todo')
-mysqlService.checkDatabase()
-// mysqlService.loadSampleData()
+module.exports = MySQLService

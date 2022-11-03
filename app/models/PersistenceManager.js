@@ -1,18 +1,14 @@
 const JsonFileManager = require(appRoot + '/helpers/JsonFileManager')
-const MysqlService = require(appRoot + '/helpers/mysqlService')
+const MysqlService = require(appRoot + '/helpers/MysqlService')
 
 class PersistenceManager {
-  jfm = null
-  mysqlService = null
-  constructor () {
-    this.jfm = new JsonFileManager()
-    this.mysqlService = new MysqlService()
-  }
   // "getters" that just return an array with all users or all tasks
 
   static async getUsersArray () {
     if (global.persistence === '1') {
-      const obj = await this.jfm.getObjFromFile()
+      const jfm = new JsonFileManager()
+      const obj = await jfm.getObjFromFile()
+      console.log(obj)
       return obj.users
     } else if (global.persistence === '2') {
       return await this.mysqlService.query('SELECT * FROM users')
@@ -23,7 +19,8 @@ class PersistenceManager {
 
   static async getTasksArray () {
     if (global.persistence === '1') {
-      const obj = await this.jfm.getObjFromFile()
+      const jfm = new JsonFileManager()
+      const obj = await jfm.getObjFromFile()
       return obj.tasks
     } else {
       console.log('global.persistence !== \'1\' so i cant go on')
