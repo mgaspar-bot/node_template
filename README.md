@@ -1,51 +1,95 @@
+# Sprint 3.3 - TO DO Project
 
-# Node Initial Project
+Aplicación que permite guardar una lista de tareas para hacer.
+- Mostras las tareas e sus estados (pendentes, en progreso y hechas), hora de inicio y final, usuario que ha creado la tarea.
+- Permite:
+  - Crear tareas
+  - Actualizar tareas
+  - Borrar tareas
+  - Listar todas las tareas
+  - Listar una tarea determinada
 
-### Project Structure
+## Modo de funcionamento
 
-Main structure of node.js project. Folders / files:
+Para ejecutar la aplicación:
 
-- <b>\_\_tests__</b>. Tests folder. See [Jest Docs](https://jestjs.io/es-ES/docs/configuration) and [Chai Docs](https://www.chaijs.com/)
-- <b>app</b>:
-    - <b>config</b>
-    - <b>controllers</b>
-    - <b>middlewares</b>
-    - <b>models</b>
-    - <b>routes</b>
-    - <b>helpers</b>
-    - <b>app.js</b>. Entry point.
-- <b>package.json</b>.
-- <b>.env</b>. Environment descriptor. See [dotenv doc](https://www.npmjs.com/package/dotenv).
+1. Instalar [Docker](https://www.docker.com/)
+1. Levantar la instancia de MySQL
 
-Extras:
-- <b>.eslintrc</b>. Linter JS, static code analyzer. See [EsLint Docs](https://eslint.org/docs/user-guide/configuring/configuration-files).
-- <b>.prettierignore</b>. Code formatter. See [Prettier Config](https://prettier.io/docs/en/configuration.html) and [Prettier Ignore](https://prettier.io/docs/en/ignore.html).
-- <b>.ecosystem.config.js</b>. Process Manage at runtime. See [PM2 Docs](https://pm2.keymetrics.io/).
+> `$ docker compose -f docker/docker-compose-mysql.yml up `
 
-### Import project for use with Visual Studio Code
+3. Ejecutar la app
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-  ![Open Project](img/VSC_open.png)
+> `$ node app/app.js `
 
+El programa creará la base de datos y algunos datos de ejemplo automaticamente.
 
-### Import project for use with WebStorm
+El programa preguntará donde quieres guardar tus datos. Actualmente solamente la opción 1 y 2 está implementada (Nivel 1 y 2). 
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-![Open Project](img/webstorm_open.png)
+`Which persistence will you use?
+>1. Json file in disk
+>2. Mysql
+>3. MongoDb
+`
+
+Después pedirá el nombre de usuario. Caso quieres ver algún usuario con dato, puedes escribir "Alex", "Marçal" o "Marc" ;)
 
 
-### Utilities
+## Flujo de datos implementado
 
-* [Node Developers Guide](https://nodejs.dev/learn)
-* **.gitignore file** configuration. See [Official Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files).
-* **Git branches**. See [Official Docs](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+![Flujo de datos](./img/flow.jpg)
+
+## Futuras implementaciones
+
+- Ver todos los usuarios
+- Modificar usuarios
+
+## Referencias utilizadas
+
+1. [Git Flow](https://www.atlassian.com/es/git/tutorials/comparing-workflows/gitflow-workflow)
+1. [Starndard JS](https://standardjs.com/)
+1. [¡Tu CÓDIGO JAVASCRIPT sin ERRORES! 🛑🐛 - Configurando el LINTER con ESLint y STANDARD JS](https://www.youtube.com/watch?v=QpDpRmlFfqI)
+1. [Docker](https://www.docker.com/)
+1. [NPM MySQL](https://www.npmjs.com/package/mysql)
+
+## Visual Studio Code Plugins
+- [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
+- [Eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [StardardJS](https://marketplace.visualstudio.com/items?itemName=standard.vscode-standard)
+
+
+## Equipo
+
+- Cadevall Baulies, Alex (alexcadevall@gmail.com)
+- Chaiben Machado, Marçal (marcal.chaiben@gmail.com)
+- Gaspar, Marc (marc.gaspar.martinez@gmail.com)
+
+<!-- 
+
+## Documents:
+- appData.json (contains):
+    - User array (contains):
+        - id
+        - username
+    - Task array (contains):
+        - id
+        - user_id
+        - description
+        - create_date
+        - status
+        - closed_date
+- jsonFileManager.js (contains):
+    - Path constructor
+    - `function` Require JSON 
+    - `function` Modify JSON 
+- helpers.js (contains): 
+    - `function` Create task 
+    - `function` Update task 
+    - `function` Erase task 
+    - `function` Check a task 
+    - `function` Check all tasks 
+- app.js (contains):
+    - console prompts
+    - function calls
+    - `function` menu (start) -->
+

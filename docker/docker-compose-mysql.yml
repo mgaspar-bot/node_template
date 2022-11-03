@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+   db:
+     platform: linux/x86_64
+     image: mysql:5.7
+     volumes:
+       - my_db:/var/lib/mysql
+     ports:
+       - "33060:3306"
+     expose:
+      # Opens port 3306 on the container
+       - '33060'
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: todo
+       MYSQL_USER: node
+       MYSQL_PASSWORD: todo_project
+
+volumes:
+    my_db: {}

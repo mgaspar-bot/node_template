@@ -6,15 +6,31 @@
   "scripts": {
     "start": "node app/app.js",
     "dev": "nodemon app/app.js",
-    "test": "jest"
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
+    "test": "standard && jest --coverage"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^9.0.2"
+    "dotenv": "^9.0.2",
+    "mongodb": "^4.11.0",
+    "mysql": "^2.18.1"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/standard/eslintrc.json",
+    "globals": {
+      "appRoot": "writable"
+    }
+  },
+  "standard": {
+    "globals": [
+      "appRoot"
+    ]
   },
   "devDependencies": {
+    "jest": "^28.1.1",
     "nodemon": "^2.0.7",
-    "jest": "^28.1.1"
+    "standard": "^17.0.0"
   }
 }
