@@ -88,4 +88,3 @@ typings/
 .dynamodb/
 
 # Directory with tsc compiled files
-compiled
