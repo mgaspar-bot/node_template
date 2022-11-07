@@ -4,7 +4,8 @@
   "description": "",
   "main": "./compiled/server.js",
   "scripts": {
-    "devRestart": "npx tsc && nodemon"
+    "devStart": "npx tsc && nodemon",
+    "start": "npx tsc && node ./compiled/server.js"
   },
   "author": "",
   "license": "ISC",

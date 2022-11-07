@@ -1,5 +1,8 @@
 const mysql = require('mysql2');
-require('dotenv').config();
+const path = require('path')
+require('dotenv').config({
+    path : '../.env'
+});
 
 function createdb () {
     const connection = mysql.createConnection({ //Això es una mica com entrar a la consola de mysql però des de node
