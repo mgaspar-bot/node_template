@@ -10,22 +10,24 @@ const io = require('socket.io')(http, {
     }
 })
 
-//router imports should go here
-
-//middlewares ill need: cors to share resources from a different port and urlencoded to acces body of requests
-app.use(cors())
-app.use(express.urlencoded({extended:true}))
+const appRouter = require('./routes/globalRouter')
 
 io.on('connection', (socket : Socket) => { //for now it just tells me it works
     console.log('Someone connected through a socket');
     console.log(`See, i have their id here: ${socket.id}`);
 })
+//middlewares ill need: cors to share resources from a different port and urlencoded to acces urlencoded body of requests
+app.use(cors())
+app.use(express.urlencoded({extended:true}))
+
 
 //all routes should go here
-app.get('/', (req : Request, res : Response) => {
-    console.log(req);
-    res.send({"msg":"hello world"});
-    
+app.use('/',appRouter);
+app.use('/', (req: Request, res: Response) => {
+    req.body;
+    res.status(404).send({
+        "msg":"this route does not exist"
+    })
 })
 
 http.listen(3000, () => console.log(`Server escoltant al port 3000`))
