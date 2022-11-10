@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typescript xat</title>
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script>
+        const socket = io(`http://localhost:3000?username=pep`);
+        socket.on("messageBroadcast", (message) => {
+            document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + message.msg
+        })
+        // console.log(document.all);
+    </script>
+    
+</head>
+<body>
+    <script>
+        const sc = () => {
+            socket.emit("messageToServer", document.getElementById("box").value)
+        }
+    </script>
+    <h1>Im the front</h1>
+    <input type="text" id="box">
+    <button onclick="sc();">Im a buton</button>
+    <p id = "messages"></p>
+</body>
+</html>
