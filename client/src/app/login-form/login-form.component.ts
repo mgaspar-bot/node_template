@@ -9,6 +9,15 @@ export class LoginFormComponent implements OnInit {
 
   constructor() { }
 
+  signinButton() : void {
+    // POST request to /signin, store token
+    // once we have token, GET request to / and change view to my messages
+  }
+
+  loginButton() : void {
+    // GET request to /login, store token
+    // once we have token, GET request to / and change view to my messages
+  }
   ngOnInit(): void {
   }
 

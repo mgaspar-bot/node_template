@@ -58,9 +58,34 @@ async function server () {
     await sqlize.authenticate();
     await sqlize.sync({"force": false});
     
-    io.on('connection', (socket : Socket) => { //for now it just tells me it works
+    var connectedUsers : {username : string, id: string}[] = []; // should this be a singleton? do i need to think about race conditions?
+    //for now it just tells me it works
+    io.on('connection', (socket : Socket) => { 
+        // Can i somehow force the socket id to be equal to the userId in db?
         console.log(`Someone connected through a socket`);
         console.log(`See, i have their id here: ${socket.id}`);
+        
+        const usernameConnected = socket.handshake.query.username;
+        if (usernameConnected instanceof Array || usernameConnected === undefined) return;
+        console.log(usernameConnected);
+        
+        socket.on("messageToServer", (message) => {
+            console.log(message);
+            
+            socket.broadcast.emit("messageBroadcast", {msg : message, sender : usernameConnected })
+        });
+
+        // Add user that just connected to connectedUsers before broadcasting
+        connectedUsers.push({username : usernameConnected, id: socket.id});
+        socket.broadcast.emit("userList", connectedUsers);
+
+        socket.on('disconnect', (reason) => {
+            console.log(`${usernameConnected} left`);
+            
+            let index = connectedUsers.findIndex((element) => element.id === socket.id);
+            connectedUsers = connectedUsers.splice(index, 1);
+            socket.broadcast.emit("userList", connectedUsers);
+        });
     });
 
     //middlewares ill need: cors to share resources from a different port and urlencoded to acces urlencoded body of requests
