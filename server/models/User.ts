@@ -8,12 +8,13 @@ const User = sqlize.define('User', {
         allowNull:false,
         unique:true
     },
+    password : {
+        type: DataTypes.STRING,
+        allowNull:false
+    }
 },{
     timestamps: true,
     updatedAt:false
 })
-
-
-
 
 module.exports = User;

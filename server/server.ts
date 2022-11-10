@@ -39,9 +39,24 @@ Group.belongsToMany(User, { // despres quan vulgui afegir users a groups haure d
 });
 //Tot aquest bloc el podria colocar a models no?.
 
+/*
+// function checkEnv(): boolean {
+//     require('dotenv').config();
+//     if (process.env.DB_USERNAME 
+//     && process.env.DB_PASSWORD 
+//     && process.env.DB_NAME 
+//     && process.env.AUTH_SECRET){
+//         global.DB_USERNAME : string = process.env.DB_USERNAME;
+
+        
+//     }
+ // Estaria be fer una funcio que checkejes les variables d'entorn abans de començar per no haver de fer mil checks despres
+// }*/
+
+
 async function server () {
     await sqlize.authenticate();
-    await sqlize.sync({"force": true});
+    await sqlize.sync({"force": false});
 
 
     
