@@ -1,8 +1,8 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 const express = require('express');
 const router: Router = express.Router();
 
-const loginGetController = require('../controllers/loginGetController')
+const loginGetController = require('../Controllers/loginGetController')
 
 router.get('/', loginGetController);
 

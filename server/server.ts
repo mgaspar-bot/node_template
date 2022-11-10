@@ -12,7 +12,7 @@ const io = require('socket.io')(http, {
     }
 })
 
-const appRouter = require('./routes/globalRouter');
+const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
 const createdb = require('./db/createdb');
 
@@ -57,11 +57,9 @@ Group.belongsToMany(User, { // despres quan vulgui afegir users a groups haure d
 async function server () {
     await sqlize.authenticate();
     await sqlize.sync({"force": false});
-
-
     
     io.on('connection', (socket : Socket) => { //for now it just tells me it works
-        console.log('Someone connected through a socket');
+        console.log(`Someone connected through a socket`);
         console.log(`See, i have their id here: ${socket.id}`);
     });
 
@@ -70,13 +68,12 @@ async function server () {
     app.use(express.urlencoded({extended:true}));
 
     //all routes should go here
-    app.use('/',appRouter);
+    app.use('/',globalRouter);
     app.use('/', (req: Request, res: Response) => {
-        req.body; // just so tsc doesnt complain
         res.status(404).send({
             "msg":"this route does not exist"
-        })
-    })
+        });
+    });
 
     http.listen(3000, () => console.log(`Server escoltant al port 3000`));
 }

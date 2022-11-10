@@ -18,17 +18,24 @@ async function signinPostController (req:Request, res: Response) {
     });
     if (alreadyExists !== null) return res.status(409).send({"msg":"user already exists, please log in"});
     // store user in db with hashed password
-    let encryptedPassword = await hash(password, 10);
-    await User.upsert({
-        username:newUsername,
-        password:encryptedPassword // we could put a catch in this query to be totally rigorous
-    });
+    const encryptedPassword : string = await hash(password, 10);
+    try {
+        await User.upsert({
+            username:newUsername,
+            password: encryptedPassword
+        });
+        
+    } catch (error) {
+        console.log(error);
+        console.log(`ERROR IN UPSERT QUERY IN SIGNINPOSTCONTROLLER`);
+        return res.status(500).send({"msg":"something went wrong querying the db"});        
+    }
     // Sign token and send it to user
     if (process.env.AUTH_SECRET === undefined) return res.status(500).send({"msg":"my environment variables are fucked up (siginPostController)"});
-    const token = sign({username : newUsername, password: encryptedPassword}, process.env.AUTH_SECRET);
+    const token = sign({username : newUsername, password: encryptedPassword}, process.env.AUTH_SECRET);    
     res.status(201).send({
         "msg":"user registered, here's your token",
-        "accesToken":token
+        "accesToken": token
     });
 }
 
