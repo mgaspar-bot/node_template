@@ -60,7 +60,7 @@ async function server () {
     
     var connectedUsers : {username : string, id: string}[] = []; // should this be a singleton? do i need to think about race conditions?
     //for now it just tells me it works
-    io.on('connection', (socket : Socket) => { 
+    io.on('connection', (socket : Socket) => {
         // Can i somehow force the socket id to be equal to the userId in db?
         console.log(`Someone connected through a socket`);
         console.log(`See, i have their id here: ${socket.id}`);
@@ -71,7 +71,6 @@ async function server () {
         
         socket.on("messageToServer", (message) => {
             console.log(message);
-            
             socket.broadcast.emit("messageBroadcast", {msg : message, sender : usernameConnected })
         });
 
@@ -81,7 +80,7 @@ async function server () {
 
         socket.on('disconnect', (reason) => {
             console.log(`${usernameConnected} left`);
-            
+
             let index = connectedUsers.findIndex((element) => element.id === socket.id);
             connectedUsers = connectedUsers.splice(index, 1);
             socket.broadcast.emit("userList", connectedUsers);
