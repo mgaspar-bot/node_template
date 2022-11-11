@@ -9,7 +9,7 @@
     <script>
         const socket = io(`http://localhost:3000?username=pep`);
         socket.on("messageBroadcast", (message) => {
-            document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + message.msg
+            document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + '\n' + message.sender + 'says: '+message.msg; 
         })
         // console.log(document.all);
     </script>
@@ -18,7 +18,9 @@
 <body>
     <script>
         const sc = () => {
-            socket.emit("messageToServer", document.getElementById("box").value)
+            socket.emit("messageToServer", document.getElementById("box").value);
+            document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + '\nI say: '+document.getElementById("box").value; 
+
         }
     </script>
     <h1>Im the front</h1>
