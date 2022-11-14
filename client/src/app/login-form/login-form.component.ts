@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { io } from 'socket.io-client';
 
 @Component({
   selector: 'app-login-form',
@@ -8,6 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class LoginFormComponent implements OnInit {
 
   constructor() { }
+  connected : boolean = false;
+
+  adminLogin() {
+    const username : string = (document.getElementById(`login`) as HTMLInputElement)?.value
+    const socket = io(`http://localhost:3000?username=${username}`);
+    console.log(socket);
+    if(socket) this.connected = true; else this.connected = false;
+  }
 
   signinButton() : void {
     // POST request to /signin, store token

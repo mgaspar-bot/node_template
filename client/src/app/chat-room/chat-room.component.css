@@ -1,0 +1,24 @@
+.contaniner1 {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    /* It's NOT displaying it in a row?!?!?! */
+    background-color: blueviolet;
+}
+.roomsContext {
+    width: 20%;
+    /* Empty for now */
+    background-color: red;
+}
+.chattingContext {
+    width: 80%;
+    background-color: blue;
+}
+.pastMessages {
+    background-color: aqua;
+}
+.sendMessage {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

@@ -11,16 +11,16 @@
         socket.on("messageBroadcast", (message) => {
             document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + '\n' + message.sender + 'says: '+message.msg; 
         })
-        // console.log(document.all);
     </script>
     
 </head>
 <body>
     <script>
         const sc = () => {
-            socket.emit("messageToServer", document.getElementById("box").value);
+            let content = document.getElementById("box").value;
+            
+            socket.emit("messageToServer", );
             document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + '\nI say: '+document.getElementById("box").value; 
-
         }
     </script>
     <h1>Im the front</h1>

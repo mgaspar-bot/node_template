@@ -2,7 +2,12 @@
     <input type="text" id="login" class="fadeInsecond" name="login" placeholder="Your ID">
     <input type="text" id="password" class="fadeInthird" name="login" placeholder="password">
     <div class="loginButtons">
-        <button id="login"type="submit" class="butt">Log in</button>
-        <button id="new"type="submit" class="butt">Sign in</button>
+        <button type="button" id="loginBut" (click)="adminLogin()" class="butt">Log in</button>
+        <button type="button" id="new"(click)="adminLogin()" class="butt">Sign in</button>
+        <button type="button" id="admin" (click)="adminLogin()">Saltat el middleware i conecta el socket</button>
     </div>
+    <h2 *ngIf="connected">I'm Connected!</h2>
+    <h1>{{connected}}</h1>
+    <br><br>
+    <a routerLink="chat">Go to chatRoom component</a>
 </form>
