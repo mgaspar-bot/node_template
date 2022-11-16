@@ -91,12 +91,12 @@
         <!--This commented div is just the three dots that show the options-->
       </div>
 
-      <div class="row message" id="conversation" *ngFor="let message of messages">
-        <div class="row no-gutters">
-            <div class="chat-bubble">{{message}}</div>
+      <div class="row message" id="conversation" >
+        <div class="display-messages" *ngFor="let message of messages">
+            <div class="row no-gutters">
+                <div class="chat-bubble" [ngClass]='message.display'>{{message.content}}<br>{{message.senderUsername}}</div>
+            </div>
         </div>
-        <div class="chat-bubble" id="superMessage"></div>
-        <!-- <div class="row"></div> -->
       </div>
 
       <div class="row reply">

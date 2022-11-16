@@ -487,7 +487,13 @@ button {
     max-height: fit-content;
     width: fit-content;
     max-width: 60%;
-
+}
+.ghost {
+    background: #00968700;
+}
+.mine {
+    position: right !important;
+    /* something to make the bubble render to the other side */
 }
 
 .reply-main textarea:focus {
