@@ -10,7 +10,7 @@
         const socket = io(`http://localhost:3000?username=pep`);
         socket.on("messageBroadcast", (message) => {
             document.getElementById("messages").innerHTML = document.getElementById("messages").innerHTML + '\n' + message.sender + 'says: '+message.msg; 
-        })
+        });
     </script>
     
 </head>

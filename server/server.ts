@@ -1,6 +1,7 @@
 import {Express, Request, Response} from 'express' //import types
 import { Socket } from 'socket.io'
 import {Model, ModelStatic, Sequelize} from 'sequelize';
+import { execSync } from 'child_process';
 
 const cors = require('cors') //import libraries and shit
 const express = require('express')
@@ -15,6 +16,7 @@ const io = require('socket.io')(http, {
 const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
 const createdb = require('./db/createdb');
+import { connectedUser, message } from './interfaces';
 
 const User : ModelStatic<Model> = require('./models/User'); //No tinc gaire ide de que son aquests types, pero els objectes que exporto passen el typecheck del compilador i aqui tinc intellisense amb els metodes que vull aixi que deu estar be
 const Message : ModelStatic<Model> = require('./models/Message');
@@ -58,7 +60,7 @@ async function server () {
     await sqlize.authenticate();
     await sqlize.sync({"force": false});
     
-    var connectedUsers : {username : string, id: string}[] = []; // should this be a singleton? do i need to think about race conditions?
+    var connectedUsers : connectedUser[] = []; // should this be a singleton? do i need to think about race conditions?
     //for now it just tells me it works
     io.on('connection', (socket : Socket) => {
         // Can i somehow force the socket id to be equal to the userId in db?
@@ -69,19 +71,19 @@ async function server () {
         if (usernameConnected instanceof Array || usernameConnected === undefined) return;
         console.log(usernameConnected);
         
-        socket.on("messageToServer", (message) => {
+        socket.on("messageToServer", (message : message) => { // frontend message also needs to implement this interface!!
             console.log(message);
-            socket.broadcast.emit("messageBroadcast", {msg : message, sender : usernameConnected })
+            socket.broadcast.emit("messageBroadcast", message);
         });
 
         // Add user that just connected to connectedUsers before broadcasting
-        connectedUsers.push({username : usernameConnected, id: socket.id});
+        connectedUsers.push({"username" : usernameConnected, "socketId" : socket.id});
         socket.broadcast.emit("userList", connectedUsers);
 
         socket.on('disconnect', (reason) => {
             console.log(`${usernameConnected} left`);
 
-            let index = connectedUsers.findIndex((element) => element.id === socket.id);
+            let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
             connectedUsers = connectedUsers.splice(index, 1);
             socket.broadcast.emit("userList", connectedUsers);
         });
@@ -102,6 +104,7 @@ async function server () {
     http.listen(3000, () => console.log(`Server escoltant al port 3000`));
 }
 
+// execSync('net start mysql80'); // run script as admin!!
 createdb();
 setTimeout(() => server());
 
