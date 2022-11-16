@@ -1,16 +1,121 @@
-<div class="container1">
-    <div class="roomsContext">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste quaerat ad rem quis dicta incidunt maiores accusantium, sint, possimus fugit quibusdam cupiditate qui, officia aspernatur quas quam iusto neque suscipit!
-    </div>
-    <div class="chattingContext">
-        <div class="pastMessages">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perferendis voluptate optio facilis voluptatum fugiat eos veniam in corporis! Distinctio, architecto dolores aperiam incidunt, unde veniam harum nihil odit corrupti ad labore. Eos id rem ipsa fugiat sint ullam cumque, cupiditate animi architecto eveniet perferendis. Esse corrupti mollitia fugit neque molestiae!
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container-fluid app">
+  <div class="row app-one">
+    <div class="col-sm-4 side">
+      <div class="side-one">
+        <div class="row heading">
+          <div class="col-sm-3 col-xs-3 heading-avatar">
+            <div class="heading-avatar-icon">
+              <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+            </div>
+          </div>
+          <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
+            <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+          </div>
+          <div class="col-sm-2 col-xs-2 heading-compose  pull-right">
+            <i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
+          </div>
         </div>
-        <div class="sendMessage">
-            <input type="text" placeholder="say something..." >
-            <button type="button" (click)="sendMessage()"><img class="planeImage" src="../../assets/plane.png"></button>
-        </div>
-    </div>
-    <a [routerLink]="['']">Back to login</a>
 
+        <div class="row searchBox">
+          <div class="col-sm-12 searchBox-inner">
+            <div class="form-group has-feedback">
+              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row sideBar">
+          <div class="row sideBar-body">
+            <div class="col-sm-3 col-xs-3 sideBar-avatar">
+              <div class="avatar-icon">
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+              </div>
+            </div>
+            <div class="col-sm-9 col-xs-9 sideBar-main">
+              <div class="row">
+                <div class="col-sm-8 col-xs-8 sideBar-name">
+                  <span class="name-meta">John Doe
+                </span>
+                </div>
+                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
+                  <span class="time-meta pull-right">18:18
+                </span>
+                </div>
+              </div>
+            </div>
+          </div>  
+        
+        </div>
+      </div>
+
+      <div class="side-two">
+        <div class="row newMessage-heading">
+          <div class="row newMessage-main">
+            <div class="col-sm-2 col-xs-2 newMessage-back">
+              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </div>
+            <div class="col-sm-10 col-xs-10 newMessage-title">
+              New Chat
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row composeBox">
+          <div class="col-sm-12 composeBox-inner">
+            <div class="form-group has-feedback">
+              <input id="composeText" type="text" class="form-control" name="searchText" placeholder="Search People">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div> -->
+
+        
+      </div>
+    </div>
+
+    <div class="col-sm-8 conversation">
+      <div class="row heading">
+        <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+          <div class="heading-avatar-icon">
+            <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
+          </div>
+        </div>
+        <div class="col-sm-8 col-xs-7 heading-name">
+          <p class="heading-name-meta">{{openChatRoomName}}</p>
+        </div>
+        <!-- <div class="col-sm-1 col-xs-1  heading-dot pull-right">
+          <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
+        </div> -->
+        <!--This commented div is just the three dots that show the options-->
+      </div>
+
+      <div class="row message" id="conversation" *ngFor="let message of messages">
+        <div class="row no-gutters">
+            <div class="chat-bubble">{{message}}</div>
+        </div>
+        <div class="chat-bubble" id="superMessage"></div>
+        <!-- <div class="row"></div> -->
+      </div>
+
+      <div class="row reply">
+        <div class="col-sm-1 col-xs-1 reply-emojis">
+          <i class="fa fa-smile-o fa-2x"></i>
+        </div>
+        <div class="col-sm-9 col-xs-9 reply-main">
+          <input type="text" class="textArea" id="textArea" [(ngModel)]="writingMessage">
+        </div>
+        <!-- <div class="col-sm-1 col-xs-1 reply-recording">
+          <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+        </div> -->
+        <div class="col-sm-1 col-xs-1 reply-send">
+          <button class="fa fa-send fa-2x" type="button" aria-hidden="true" (click)="sendMessage()"></button>
+        </div>
+      </div>
+
+    </div>
+    <!--Conversation-->
+
+  </div>
 </div>

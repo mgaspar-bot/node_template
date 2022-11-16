@@ -8,4 +8,6 @@ html{
 body{
     height: 100%;
     background: #222D32;
+    /* margin: 0; */
+    /* background: url("./assets/cloud-background.jpg") no-repeat fixed center; */
 }
