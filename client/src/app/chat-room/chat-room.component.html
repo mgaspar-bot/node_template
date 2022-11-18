@@ -9,39 +9,28 @@
               <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
             </div>
           </div>
-          <div class="col-sm-1 col-xs-1  heading-dot  pull-right">
-            <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
-          <div class="col-sm-2 col-xs-2 heading-compose  pull-right">
-            <i class="fa fa-comments fa-2x  pull-right" aria-hidden="true"></i>
-          </div>
         </div>
 
-        <div class="row searchBox">
+        <!-- <div class="row searchBox">
           <div class="col-sm-12 searchBox-inner">
             <div class="form-group has-feedback">
               <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
               <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row sideBar">
-          <div class="row sideBar-body">
+        <div class="row sideBar" >
+          <div class="row sideBar-body" *ngFor="let user of connectedUsers">
             <div class="col-sm-3 col-xs-3 sideBar-avatar">
               <div class="avatar-icon">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                <img src="https://www.bootdey.com/img/Content/poof_by_fairlyoddanticosmo-d48epgu.png">
               </div>
             </div>
             <div class="col-sm-9 col-xs-9 sideBar-main">
               <div class="row">
                 <div class="col-sm-8 col-xs-8 sideBar-name">
-                  <span class="name-meta">John Doe
-                </span>
-                </div>
-                <div class="col-sm-4 col-xs-4 pull-right sideBar-time">
-                  <span class="time-meta pull-right">18:18
-                </span>
+                  <span class="name-meta">{{user.username}}</span>
                 </div>
               </div>
             </div>
@@ -60,41 +49,28 @@
               New Chat
             </div>
           </div>
-        </div>
-
-        <!-- <div class="row composeBox">
-          <div class="col-sm-12 composeBox-inner">
-            <div class="form-group has-feedback">
-              <input id="composeText" type="text" class="form-control" name="searchText" placeholder="Search People">
-              <span class="glyphicon glyphicon-search form-control-feedback"></span>
-            </div>
-          </div>
-        </div> -->
-
-        
+        </div>        
       </div>
     </div>
 
     <div class="col-sm-8 conversation">
       <div class="row heading">
+        <!--
         <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
           <div class="heading-avatar-icon">
             <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
           </div>
-        </div>
+        </div> 
+    -->
         <div class="col-sm-8 col-xs-7 heading-name">
           <p class="heading-name-meta">{{openChatRoomName}}</p>
         </div>
-        <!-- <div class="col-sm-1 col-xs-1  heading-dot pull-right">
-          <i class="fa fa-ellipsis-v fa-2x  pull-right" aria-hidden="true"></i>
-        </div> -->
-        <!--This commented div is just the three dots that show the options-->
       </div>
 
       <div class="row message" id="conversation" >
-        <div class="display-messages" *ngFor="let message of messages">
+        <div class="display-messages" *ngFor="let message of messagesList">
             <div class="row no-gutters">
-                <div class="chat-bubble" [ngClass]='message.display'>{{message.content}}<br>{{message.senderUsername}}</div>
+                <div class="chat-bubble" id={{messagesList.length}} [ngClass]='message.display'>{{message.content}}<br>{{message.senderUsername}}</div>
             </div>
         </div>
       </div>

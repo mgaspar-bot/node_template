@@ -6,7 +6,7 @@ const User : ModelStatic<Model> = require('../models/User');
 require('dotenv').config()
 
 async function signinPostController (req:Request, res: Response) {
-    // Get username and password from request body
+    // Get username and password from request body  
     const newUsername: string = req.body.username;
     const password: string = req.body.password;
     if (!newUsername || !password) return res.status(400).send({"msg":"username or password fields missing from body"});

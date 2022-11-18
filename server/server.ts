@@ -71,14 +71,16 @@ async function server () {
         if (usernameConnected instanceof Array || usernameConnected === undefined) return;
         console.log(usernameConnected);
         
+        // Add user that just connected to connectedUsers and broadcast actualized list
+        connectedUsers.push({"username" : usernameConnected, "socketId" : socket.id});
+        socket.broadcast.emit("userList", connectedUsers);
+        socket.emit("userList", connectedUsers);
+        
         socket.on("messageToServer", (message : message) => { // frontend message also needs to implement this interface!!
             console.log(message);
             socket.broadcast.emit("messageBroadcast", message);
         });
 
-        // Add user that just connected to connectedUsers before broadcasting
-        connectedUsers.push({"username" : usernameConnected, "socketId" : socket.id});
-        socket.broadcast.emit("userList", connectedUsers);
 
         socket.on('disconnect', (reason) => {
             console.log(`${usernameConnected} left`);
@@ -92,6 +94,7 @@ async function server () {
     //middlewares ill need: cors to share resources from a different port and urlencoded to acces urlencoded body of requests
     app.use(cors());
     app.use(express.urlencoded({extended:true}));
+    app.use(express.json());
 
     //all routes should go here
     app.use('/',globalRouter);

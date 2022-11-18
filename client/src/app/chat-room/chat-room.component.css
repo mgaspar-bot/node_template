@@ -477,6 +477,7 @@ button {
 .no-gutters{
     padding: 0;
     height: fit-content;
+    flex-direction: column;
 }
 .chat-bubble {
     padding: 10px 14px;
@@ -492,7 +493,7 @@ button {
     background: #00968700;
 }
 .mine {
-    position: right !important;
+    align-self: flex-end;
     /* something to make the bubble render to the other side */
 }
 

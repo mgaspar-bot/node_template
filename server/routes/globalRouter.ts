@@ -12,7 +12,7 @@ router.use('/signin', signinRouter );
 router.use('/login', loginRouter);
 router.get('/', authMiddleware, (req: Request, res: Response) => {
     // Get your info
-    res.send({
+    res.status(200).send({
         "msg":"i got through the middleware!"
     });
 });

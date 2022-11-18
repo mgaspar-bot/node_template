@@ -1,15 +1,60 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase } from '@angular/common/http';
 
 @Component({
-  selector: 'app-signin-form',
-  templateUrl: './signin-form.component.html',
-  styleUrls: ['./signin-form.component.css']
+    selector: 'app-signin-form',
+    templateUrl: './signin-form.component.html',
+    styleUrls: ['./signin-form.component.css']
 })
-export class SigninFormComponent implements OnInit {
+export class SigninFormComponent {
 
-  constructor() { }
+    username = '';
 
-  ngOnInit(): void {
-  }
+    password = '';
+
+    confirmPassword = '';
+
+    invalidInputMessageVisible: boolean = true; // Per alguna rao el valor d'aquesta variable fa el contrari del que jo esperaria xD
+
+    http: HttpClient;
+
+    constructor(http: HttpClient) {  // Is this how one injects dependencies?
+        this.http = http;
+    }
+
+    showInvalidInputMessage(): void {
+        this.invalidInputMessageVisible = false;
+    }
+
+    submitForm(): void {
+        console.log('im at the start of the funci');
+
+// validate inputs
+        if (!(this.username && this.password && this.confirmPassword) || this.password !== this.confirmPassword)
+            return this.showInvalidInputMessage();
+
+// send them to backend
+        this.http.post('http://localhost:3000/signin', { // Per poder accedir a aquest body des del backend cal el middleware express.json()
+            username: this.username,
+            password: this.password
+        }).subscribe((res: any) => {
+// handle succesful response in the callback
+            console.log('Im in the subscribe callback');
+            for (let key in res) { // Seems like i can only access the body with the token and the message i wrote
+                console.log(key);
+                console.log(res[key]);
+            }
+            sessionStorage["accesToken"] = res.accessToken;
+            // this.http.get()
+            
+            // store username and token here in the front somehow
+            // get the token through the middleware?? 
+            // activate chat component route
+            
+            // TODO make chat component make the request to the tcp with this username
+            // and show it in interface
+        });
+// how do i catch 40X responses, like if the user already exists?
+    }
 
 }
