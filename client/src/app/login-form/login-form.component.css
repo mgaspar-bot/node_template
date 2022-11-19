@@ -1,12 +1,16 @@
-.container {
-    background: #222D32;
+.container-fluid {
+    /* background: #222D32; */
+    background: url("../../assets/airplane-boarding.jpg") no-repeat fixed center;
+    background-size: cover;
     font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
 }
 
 .login-box {
     margin-top: 75px;
     height: auto;
-    background: #1A2226;
+    background: #1a22265f;;
     text-align: center;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -87,7 +91,7 @@ label {
 
 .form-control-label {
     font-size: 10px;
-    color: #6C6C6C;
+    color: #ffffff;
     font-weight: bold;
     letter-spacing: 1px;
 }

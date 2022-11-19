@@ -6,9 +6,10 @@ const User : ModelStatic<Model> = require('../models/User');
 require('dotenv').config();
 
 async function loginGetController (req : Request, res : Response) {
-    const username : string = req.body.username;
-    const password : string = req.body.password;
-    if (!(username && password)) return res.status(400).send({"msg":"username or password fields missing from body"})
+    const username = req.headers.username;
+    const password = req.headers.password;
+    if (!(username && password) || username instanceof Array || password instanceof Array)
+     return res.status(400).send({"msg":"username or password fields missing from body"});
 
     const user : Model | null =  await User.findOne({
         where:{

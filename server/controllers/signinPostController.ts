@@ -13,10 +13,10 @@ async function signinPostController (req:Request, res: Response) {
     // Check username is new
     let alreadyExists = await User.findOne({
         where:{
-            username:newUsername
+            username:newUsername              // This query is case insensitive apparently
         }
     });
-    if (alreadyExists !== null) return res.status(409).send({"msg":"user already exists, please log in"});
+    if (alreadyExists !== null ) return res.status(409).send({"msg":"user already exists, please log in"});
     // store user in db with hashed password
     const encryptedPassword : string = await hash(password, 10);
     try {
@@ -35,7 +35,7 @@ async function signinPostController (req:Request, res: Response) {
     const token = sign({username : newUsername, password: encryptedPassword}, process.env.AUTH_SECRET);    
     res.status(201).send({
         "msg":"user registered, here's your token",
-        "accesToken": token
+        "accessToken": token
     });
 }
 

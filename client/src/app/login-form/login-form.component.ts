@@ -1,40 +1,50 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { io } from 'socket.io-client';
 
 
 @Component({
-  selector: 'app-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.css']
 })
-export class LoginFormComponent implements OnInit, OnChanges {
+export class LoginFormComponent  {
 
-  constructor(private http : HttpClient) { }
-  connected : boolean = false;
-  loginUrl = `http://localhost:3000/login`;
-  signinUrl = `http://localhost:3000/signin`;
-
-  adminLogin() {
-    const username : string = (document.getElementById(`login`) as HTMLInputElement)?.value;
-    const socket = io(`http://localhost:3000?username=${username}`);
-    console.log(socket);
-    if(socket) this.connected = true; else this.connected = false;
-  }
-
-  signinButton() : void {
-}
-
-loginButton() : void {
-    let response = this.http.get(this.loginUrl);
+    connected : boolean = false;
+    loginUrl = `http://localhost:3000/login`;
+    signinUrl = `http://localhost:3000/signin`;
+    username = '';
+    password = '';
+    invalidInputMessageVisible: boolean = true; // Per alguna rao el valor d'aquesta variable fa el contrari del que jo esperaria xD
     
-  }
-  ngOnInit(): void {
-  }
+    constructor(private http : HttpClient, private router : Router) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
-      
-  }
+    showInvalidInputMessage(): void {
+        this.invalidInputMessageVisible = false;
+    }
+    submitForm(): void {
+        console.log('im at the start of the function');
+        if (!(this.username && this.password ))
+            return this.showInvalidInputMessage();
 
+
+        this.http.get('http://localhost:3000/login', { // Angular doesn't support get requests with a body!! I'll send username and password in headers and change the serverside code
+            headers : {
+                username : this.username,
+                password : this.password
+            }
+        }).subscribe((res: any) => {
+            console.log('Im in the subscribe callback');
+            for (let key in res) { 
+                console.log(key);
+                console.log(res[key]);
+            }
+            
+            sessionStorage["accessToken"] = res.accessToken;
+            sessionStorage['username'] = this.username;
+            
+            this.router.navigate(['chat']);
+        });
+    }
 }

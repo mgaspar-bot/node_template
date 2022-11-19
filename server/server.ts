@@ -58,7 +58,7 @@ Group.belongsToMany(User, { // despres quan vulgui afegir users a groups haure d
 
 async function server () {
     await sqlize.authenticate();
-    await sqlize.sync({"force": false});
+    await sqlize.sync({"force": true});
     
     var connectedUsers : connectedUser[] = []; // should this be a singleton? do i need to think about race conditions?
     //for now it just tells me it works
@@ -93,7 +93,7 @@ async function server () {
 
     //middlewares ill need: cors to share resources from a different port and urlencoded to acces urlencoded body of requests
     app.use(cors());
-    app.use(express.urlencoded({extended:true}));
+    app.use(express.urlencoded({extended:false}));
     app.use(express.json());
 
     //all routes should go here

@@ -35,7 +35,8 @@ export class ChatRoomComponent implements OnInit {
 
     constructor() { }
     
-    sendMessage() {    
+    sendMessage() : void {    
+        if (this.writingMessage.length === 0) return;
         // Push message to our list  
         this.messagesList.push({content: this.writingMessage, senderUsername: this.username, display:'mine'});
         // Send it to server so it broadcasts it
@@ -55,7 +56,7 @@ export class ChatRoomComponent implements OnInit {
     
     ngOnInit(): void {
         // Set username
-        this.username = `pep${Date.now() % 10000}` // how should i get the username? via http request? from the login component? 
+        this.username = sessionStorage['username']; // how should i get the username? via http request? from the login component? 
         // Connect socket
         this.socket = io(`http://localhost:3000?username=${this.username}`);
 
@@ -76,7 +77,9 @@ export class ChatRoomComponent implements OnInit {
             if (keyboardevent.key === "Enter") {
                 this.sendMessage();
             }
-        })
+        });
+        
+        
 
     }
 

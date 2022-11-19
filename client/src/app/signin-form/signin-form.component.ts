@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpResponseBase } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signin-form',
@@ -18,7 +19,7 @@ export class SigninFormComponent {
 
     http: HttpClient;
 
-    constructor(http: HttpClient) {  // Is this how one injects dependencies?
+    constructor(http: HttpClient, private router : Router) {  // Is this how one injects dependencies?
         this.http = http;
     }
 
@@ -44,15 +45,20 @@ export class SigninFormComponent {
                 console.log(key);
                 console.log(res[key]);
             }
-            sessionStorage["accesToken"] = res.accessToken;
-            // this.http.get()
+            
+            
+            sessionStorage["accessToken"] = res.accessToken;
+            sessionStorage['username'] = this.username;
+            
+            
+            
             
             // store username and token here in the front somehow
             // get the token through the middleware?? 
             // activate chat component route
+            this.router.navigate(['chat']);
             
-            // TODO make chat component make the request to the tcp with this username
-            // and show it in interface
+            // TODO make chat component receive username somehow
         });
 // how do i catch 40X responses, like if the user already exists?
     }
