@@ -71,10 +71,18 @@ async function server () {
         if (usernameConnected instanceof Array || usernameConnected === undefined) return;
         console.log(usernameConnected);
         
+        // If the same username is connecting again, i'm gonna call security before proceeding
+        let index = connectedUsers.findIndex((userInList : connectedUser) => userInList.username === usernameConnected)
+        if (index !== -1) {
+            socket.broadcast.emit("pleaseLeave", connectedUsers[index].socketId);
+        }
+                                                                    
         // Add user that just connected to connectedUsers and broadcast actualized list
         connectedUsers.push({"username" : usernameConnected, "socketId" : socket.id});
         socket.broadcast.emit("userList", connectedUsers);
         socket.emit("userList", connectedUsers);
+        console.log(connectedUsers);
+        
         
         socket.on("messageToServer", (message : message) => { // frontend message also needs to implement this interface!!
             console.log(message);
@@ -86,7 +94,8 @@ async function server () {
             console.log(`${usernameConnected} left`);
 
             let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
-            connectedUsers = connectedUsers.splice(index, 1);
+            // console.log(`index i found on disconnect: ${index}`);
+            connectedUsers.splice(index, 1);
             socket.broadcast.emit("userList", connectedUsers);
         });
     });

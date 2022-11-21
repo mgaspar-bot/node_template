@@ -35,6 +35,7 @@
             <div class="col-lg-3 col-md-2"></div>
         </div>
         <p [hidden]="invalidInputMessageVisible">Invalid input</p>
+        <p>{{errorMessage}}</p>
         <a [routerLink]="['chat']">Go to chat component</a>
         <a [routerLink]="['signin']">Go to signin component</a>
 

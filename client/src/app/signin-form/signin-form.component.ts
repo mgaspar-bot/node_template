@@ -19,6 +19,8 @@ export class SigninFormComponent {
 
     http: HttpClient;
 
+    errorMessage = '';
+
     constructor(http: HttpClient, private router : Router) {  // Is this how one injects dependencies?
         this.http = http;
     }
@@ -59,6 +61,12 @@ export class SigninFormComponent {
             this.router.navigate(['chat']);
             
             // TODO make chat component receive username somehow
+        }, (error : any) => {
+            console.log('i got the error boss!');
+            console.log(error);
+            console.log(error.error.msg);
+            this.errorMessage = error.error.msg;
+                 
         });
 // how do i catch 40X responses, like if the user already exists?
     }
