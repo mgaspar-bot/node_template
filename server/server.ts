@@ -16,7 +16,6 @@ const io = require('socket.io')(http, {
 const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
 const createdb = require('./db/createdb');
-import { connectedUser, message } from './interfaces';
 const newSocketHandler = require('./newSocketHandler');
 
 const User : ModelStatic<Model> = require('./models/User'); //No tinc gaire ide de que son aquests types, pero els objectes que exporto passen el typecheck del compilador i aqui tinc intellisense amb els metodes que vull aixi que deu estar be

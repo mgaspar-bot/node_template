@@ -11,6 +11,6 @@ const roomsRouter = require('./roomsRouter')
 router.use('/signin', signinRouter );
 router.use('/login', loginRouter);
 router.use('/rooms', roomsRouter);
-router.use('/', authMiddleware, getMessagesRouter);
+router.use('/messages', getMessagesRouter);
 
 module.exports = router;

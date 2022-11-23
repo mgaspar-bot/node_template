@@ -44,9 +44,18 @@ async function newSocketHandler (socket : Socket) {
         return {
             roomname : result.dataValues.roomname,
             roomId : result.dataValues.id
-        }
+        } // esta be que hagi d'esperar a la db aqui?
     });
-    socket.emit('roomsList', availableRooms);  
+    socket.emit('roomList', availableRooms); 
+
+    // handler per quan un usuari ha creat una room
+    socket.on('newRoom', (newRoom : room) => {
+        console.log('i received newRoom event');
+        console.log(newRoom);
+        availableRooms.push(newRoom);
+        socket.broadcast.emit('roomList', availableRooms);
+        socket.emit('roomList', availableRooms);
+    });
     
     // handler per quan ens arribi un missatge d'un user
     socket.on("messageToServer", (message : message) => {
@@ -55,14 +64,12 @@ async function newSocketHandler (socket : Socket) {
         Message.upsert({
             content : message.content,
             userId : message.userId, 
-            roomId : message.roomId 
+            roomId : message.roomId
         }); // no cal que fem await d'aquesta crida
     });
 
-
     socket.on('disconnect', (reason) => {
         console.log(`${usernameConnected} left`);
-
         let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
         // console.log(`index i found on disconnect: ${index}`);
         connectedUsers.splice(index, 1);

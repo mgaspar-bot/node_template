@@ -59,17 +59,20 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         }); // without the setTimeout, scrolling went to the penultim missatge, because it happened before the divs properties were actualized        
     }
 
-    loadRoom(newRoom : room) : void {
-        this.openChatRoom = newRoom;
+    loadRoom(newActiveRoom : room) : void {
+        this.openChatRoom = newActiveRoom;
         // we start by always putting the invisible messages in the new room
         this.messagesList = ghostMessagesArray;
         // ask for the room's messages from db, and also roomId
-        this.http.get(`http:localhost:3000?roomId=${this.openChatRoom.roomId}`)
+        this.http.get(`http://localhost:3000/messages?roomId=${this.openChatRoom.roomId}`)
         .subscribe({
             next: (response : any) => {
-                this.messagesList.push(response.messagesInRoom);
+                if (response.messagesInRoom.length > 0){
+                    this.messagesList.push(response.messagesInRoom);
+                }
             },
             error : (err : any) => {
+                console.log(err);
                 console.log(`error message from backend (loadRoom): ${err.msg}`);
             }
         });
@@ -86,15 +89,16 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         { observe: "body" })
         .subscribe({
             next : (res : any) => {
-                console.log(res.msg);
+                this.socket.emit('newRoom', res.newRoom);
             },          //  
-            error : (err: any) => {
-                console.log(`err: ${err.msg}`);
-                console.log(err);
-            },         // si falla, mostra el error per alert i retorna
+            error : (err: any) => { // si falla, mostra el error per alert i ja esta
+                window.alert(err.msg); 
+            },         
             complete : () => {
-                console.log('observable completed');
-            }             // si tot va bé, carrega la nova room
+                // setTimeout( () => { // posem el setTimeout pq el server emetra un event 'userList" despres de rebre el nostre 'newRoom', volem que aquest codi s'executi despres del handler de 'userList'
+                //     this.loadRoom()
+                // });
+            } // si tot ha anat be, carrega la nova room
         });
 
     }
@@ -141,6 +145,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         });
         // We also need a handler for roomList events, to always have an actualized list of roomnames and roomIds
         this.socket.on('roomList', (roomList : room[]) => {
+            console.log(`i received a roomList event: ${roomList}`);
+            
             this.availableRooms = roomList;
         });
         // Listen to keypresses on message writing box and send them if "enter" is pressed
