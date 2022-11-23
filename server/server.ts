@@ -1,6 +1,6 @@
 import {Express, Request, Response} from 'express' //import types
 import { Socket } from 'socket.io'
-import {Model, ModelStatic, Sequelize} from 'sequelize';
+import {Model, ModelStatic, Sequelize, UniqueConstraintError} from 'sequelize';
 import { execSync } from 'child_process';
 
 const cors = require('cors') //import libraries and shit
@@ -17,95 +17,37 @@ const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
 const createdb = require('./db/createdb');
 import { connectedUser, message } from './interfaces';
+const newSocketHandler = require('./newSocketHandler');
 
 const User : ModelStatic<Model> = require('./models/User'); //No tinc gaire ide de que son aquests types, pero els objectes que exporto passen el typecheck del compilador i aqui tinc intellisense amb els metodes que vull aixi que deu estar be
 const Message : ModelStatic<Model> = require('./models/Message');
-const Group : ModelStatic<Model> = require('./models/Group');
+const Room : ModelStatic<Model> = require('./models/Room');
 Message.belongsTo(User, {
-    as:"sender",
     foreignKey: {
-        allowNull:false
+        name : "userId",
+        allowNull : false
     }
 });
-Message.belongsTo(User, {
-    as:"receiver"
-});
-Message.belongsTo(Group, {
-    as:"groupreceiver"
-});
-User.belongsToMany(Group, {
-    through:"User_in_Group"
-});
-Group.belongsToMany(User, { // despres quan vulgui afegir users a groups haure de pensar com, pq no tinc un model per "UserinGroup"
-    through:"User_in_Group"
+Message.belongsTo(Room, {
+    foreignKey : {
+        name : "roomId",
+        allowNull: false
+    }
 });
 //Tot aquest bloc el podria colocar a models no?.
 
-/*
-// function checkEnv(): boolean {
-//     require('dotenv').config();
-//     if (process.env.DB_USERNAME 
-//     && process.env.DB_PASSWORD 
-//     && process.env.DB_NAME 
-//     && process.env.AUTH_SECRET){
-//         global.DB_USERNAME : string = process.env.DB_USERNAME;
-
-        
-//     }
  // Estaria be fer una funcio que checkejes les variables d'entorn abans de començar per no haver de fer mil checks despres
-// }*/
-
-
 async function server () {
     await sqlize.authenticate();
     await sqlize.sync({"force": true});
-    
-    var connectedUsers : connectedUser[] = []; // should this be a singleton? do i need to think about race conditions?
-    //for now it just tells me it works
-    io.on('connection', (socket : Socket) => {
-        // Can i somehow force the socket id to be equal to the userId in db?
-        console.log(`Someone connected through a socket`);
-        console.log(`See, i have their id here: ${socket.id}`);
-        
-        const usernameConnected = socket.handshake.query.username;
-        if (usernameConnected instanceof Array || usernameConnected === undefined) return;
-        console.log(usernameConnected);
-        
-        // If the same username is connecting again, i'm gonna call security before proceeding
-        let index = connectedUsers.findIndex((userInList : connectedUser) => userInList.username === usernameConnected)
-        if (index !== -1) {
-            socket.broadcast.emit("pleaseLeave", connectedUsers[index].socketId);
-        }
-                                                                    
-        // Add user that just connected to connectedUsers and broadcast actualized list
-        connectedUsers.push({"username" : usernameConnected, "socketId" : socket.id});
-        socket.broadcast.emit("userList", connectedUsers);
-        socket.emit("userList", connectedUsers);
-        console.log(connectedUsers);
-        
-        
-        socket.on("messageToServer", (message : message) => { // frontend message also needs to implement this interface!!
-            console.log(message);
-            socket.broadcast.emit("messageBroadcast", message);
-        });
+    await Room.upsert({}); // un insert buit per tenir una sala "common room i poder provar coses"
 
+    io.on('connection', newSocketHandler);
 
-        socket.on('disconnect', (reason) => {
-            console.log(`${usernameConnected} left`);
-
-            let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
-            // console.log(`index i found on disconnect: ${index}`);
-            connectedUsers.splice(index, 1);
-            socket.broadcast.emit("userList", connectedUsers);
-        });
-    });
-
-    //middlewares ill need: cors to share resources from a different port and urlencoded to acces urlencoded body of requests
     app.use(cors());
     app.use(express.urlencoded({extended:false}));
     app.use(express.json());
 
-    //all routes should go here
     app.use('/',globalRouter);
     app.use('/', (req: Request, res: Response) => {
         res.status(404).send({

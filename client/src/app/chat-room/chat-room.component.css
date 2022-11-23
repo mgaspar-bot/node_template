@@ -1,3 +1,4 @@
+/* PUT BETTER SCROLLBARS!! */
 span {
   height: 100%;
   width: 100%;
@@ -13,19 +14,19 @@ span {
 .app {
   position: relative;
   overflow: hidden;
-  top: 19px;
   height: 100%;
   margin: auto;
   padding: 0;
   background: url("../../assets/cloud-background.jpg") no-repeat fixed center;
   background-size: cover;
   /* box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2); */
+  
 }
 
 .app-one {
   /* background-color: #f7f7f7; */
   height: 100%;
-  /* width: 100%; */
+  width: 100%;
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -48,21 +49,6 @@ span {
   top: 0;
 }
 
-.side-two {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  width: 100%;
-  z-index: 2;
-  position: relative;
-  top: -100%;
-  left: -100%;
-  -webkit-transition: left 0.3s ease;
-  transition: left 0.3s ease;
-
-}
-
-
 .heading {
   padding: 10px 16px 10px 15px;
   margin: 0;
@@ -70,16 +56,16 @@ span {
   width: 100%;
   /* background-color: #222D32; */
   border: 1px solid #0DB8DE;
-
-
-
   z-index: 1000;
 }
 
 .heading-avatar {
   padding: 0;
-  cursor: pointer;
+}
 
+.heading-avatar-rooms {
+    padding : 0;
+    color: #fff;
 }
 
 .heading-avatar-icon img {
@@ -172,7 +158,7 @@ span {
   /* background-color: #222D32; */
   overflow-y: auto;
   border: 1px solid #0DB8DE;
-  height: calc(100% - 120px);
+  height: 100%;
 }
 
 .sideBar-body {

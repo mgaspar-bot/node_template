@@ -5,16 +5,10 @@ const router: Router = express.Router();
 const signinRouter = require('./signinRouter');
 const authMiddleware = require('../Middlewares/authMiddleware')
 const loginRouter = require('./loginRouter');
-
-
+const getMessagesRouter = require('./getMessagesRouter');
 
 router.use('/signin', signinRouter );
 router.use('/login', loginRouter);
-router.get('/', authMiddleware, (req: Request, res: Response) => {
-    // Get your info
-    res.status(200).send({
-        "msg":"i got through the middleware!"
-    });
-});
+router.use('/', authMiddleware, getMessagesRouter);
 
 module.exports = router;

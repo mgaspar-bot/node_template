@@ -1,11 +1,14 @@
-import { Socket } from "socket.io";
-
 export interface connectedUser {
     username : string;
+    userId: number;
     socketId : string;
 }
 
 export interface message {
     content : string;
-    senderUsername : string;
+    username : string;
+    userId : number;
+    roomname : string;
+    roomId : number;
 }
+// "ids" are for the db, and "names" are to display in frontend

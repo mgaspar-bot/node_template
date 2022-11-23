@@ -2,15 +2,16 @@ import { Sequelize, DataTypes } from "sequelize";
 
 const sqlize: Sequelize = require('../db/getSequelizeInstance');
 
-const Group = sqlize.define('Group', {
-    groupname : {
+const Room = sqlize.define('Room', {
+    roomname : {
         type: DataTypes.STRING,
         allowNull:false,
+        defaultValue : "Common Room",
         unique:true
-    },
+    }
 },{
     timestamps: true,
     updatedAt:false
 })
 
-module.exports = Group;
+module.exports = Room;

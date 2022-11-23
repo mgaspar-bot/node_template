@@ -15,7 +15,7 @@ export class SigninFormComponent {
 
     confirmPassword = '';
 
-    invalidInputMessageVisible: boolean = true; // Per alguna rao el valor d'aquesta variable fa el contrari del que jo esperaria xD
+    invalidInputMessageHidden: boolean = true;
 
     http: HttpClient;
 
@@ -26,49 +26,39 @@ export class SigninFormComponent {
     }
 
     showInvalidInputMessage(): void {
-        this.invalidInputMessageVisible = false;
+        this.invalidInputMessageHidden = false;
     }
 
     submitForm(): void {
         console.log('im at the start of the funci');
 
-// validate inputs
+            // validate inputs
         if (!(this.username && this.password && this.confirmPassword) || this.password !== this.confirmPassword)
             return this.showInvalidInputMessage();
 
-// send them to backend
+            // send them to backend
         this.http.post('http://localhost:3000/signin', { // Per poder accedir a aquest body des del backend cal el middleware express.json()
             username: this.username,
             password: this.password
-        }).subscribe((res: any) => {
-// handle succesful response in the callback
-            console.log('Im in the subscribe callback');
-            for (let key in res) { // Seems like i can only access the body with the token and the message i wrote
-                console.log(key);
-                console.log(res[key]);
-            }
-            
-            
-            sessionStorage["accessToken"] = res.accessToken;
-            sessionStorage['username'] = this.username;
-            
-            
-            
-            
-            // store username and token here in the front somehow
-            // get the token through the middleware?? 
-            // activate chat component route
-            this.router.navigate(['chat']);
-            
-            // TODO make chat component receive username somehow
-        }, (error : any) => {
-            console.log('i got the error boss!');
-            console.log(error);
-            console.log(error.error.msg);
-            this.errorMessage = error.error.msg;
-                 
+            // set up listeners for server response
+        }).subscribe({
+            next: (res: any) => {
+                console.log('Im in the subscribe callback');
+                for (let key in res) { // Seems like i can only access the body with the token and the message i wrote
+                    console.log(key);
+                    console.log(res[key]);
+                }
+                sessionStorage["accessToken"] = res.accessToken;
+                sessionStorage['username'] = this.username;
+                this.router.navigate(['chat']);
+            }, 
+            error: (error : any) => {
+                console.log('i got the error boss!');
+                console.log(error);
+                console.log(error.error.msg);
+                this.errorMessage = error.error.msg;
+            }  
         });
-// how do i catch 40X responses, like if the user already exists?
     }
 
 }
