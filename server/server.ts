@@ -40,7 +40,7 @@ Message.belongsTo(Room, {
 async function server () {
     await sqlize.authenticate();
     await sqlize.sync({"force": true});
-    await Room.upsert({}); // un insert buit per tenir una sala "common room i poder provar coses"
+    await Room.upsert({}); // un insert buit per tenir una sala "common room" i poder provar coses
 
     io.on('connection', newSocketHandler);
 

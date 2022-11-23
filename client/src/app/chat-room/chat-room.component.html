@@ -48,7 +48,7 @@
         </div> 
     -->
         <div class="col-sm-8 col-xs-7 heading-name">
-          <p class="heading-name-meta">{{openChatRoomName}}</p>
+          <p class="heading-name-meta">{{openChatRoom.roomname}}</p>
         </div>
       </div>
 
@@ -62,16 +62,16 @@
 
       <div class="row reply">
         <div class="col-sm-1 col-xs-1 reply-emojis">
-          <i class="fa fa-smile-o fa-2x"></i>
+            <i class="fa fa-smile-o fa-2x"></i>
         </div>
         <div class="col-sm-9 col-xs-9 reply-main">
-          <input type="text" class="textArea" id="textArea" [(ngModel)]="writingMessage">
+            <input type="text" class="textArea" id="textArea" [(ngModel)]="writingMessage">
         </div>
         <!-- <div class="col-sm-1 col-xs-1 reply-recording">
-          <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+            <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
         </div> -->
         <div class="col-sm-1 col-xs-1 reply-send">
-          <button class="fa fa-send fa-2x" type="button" aria-hidden="true" (click)="sendMessage()"></button>
+            <button class="fa fa-send fa-2x" type="button" aria-hidden="true" (click)="sendMessage()"></button>
         </div>
       </div>
 
@@ -82,7 +82,7 @@
         <div class="side-two">
           <div class="row heading">
             <div class="col-sm-3 col-xs-3 heading-avatar-rooms">
-              Open Rooms
+              Available Rooms
             </div>
           </div>
   
@@ -105,12 +105,14 @@
               <div class="col-sm-9 col-xs-9 sideBar-main">
                 <div class="row">
                   <div class="col-sm-8 col-xs-8 sideBar-name">
-                    <span class="name-meta">{{room}}</span>
+                    <span class="name-meta">{{room.roomname}}</span>
                   </div>
                 </div>
               </div>
             </div>  
-          
+            <div class="col-sm-1 col-xs-1 reply-send">
+                <button type="button" (click)="createRoom()">newRoom</button>
+            </div>
           </div>
         </div>
       </div>

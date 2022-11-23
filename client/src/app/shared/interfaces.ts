@@ -12,3 +12,8 @@ export interface connectedUser {
     userId: number;
     socketId : string;
 }
+
+export interface room {
+    roomname : string,
+    roomId : number
+}

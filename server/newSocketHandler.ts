@@ -1,15 +1,14 @@
 import { Socket } from 'socket.io'
 import {Model, ModelStatic, Sequelize} from 'sequelize';
 
-import { connectedUser, message } from './interfaces';
-
+import { connectedUser, message, room } from './interfaces';
 const User : ModelStatic<Model> = require('./models/User'); //No tinc gaire ide de que son aquests types, pero els objectes que exporto passen el typecheck del compilador i aqui tinc intellisense amb els metodes que vull aixi que deu estar be
 const Message : ModelStatic<Model> = require('./models/Message');
 const Room : ModelStatic<Model> = require('./models/Room');
 
 
 var connectedUsers : connectedUser[] = [];
-var availableRooms : {roomname : string, roomId : number}[] = [];
+var availableRooms : room[] = [];
 
 async function newSocketHandler (socket : Socket) {
     console.log(`Someone connected through a socket`);
@@ -47,13 +46,9 @@ async function newSocketHandler (socket : Socket) {
             roomId : result.dataValues.id
         }
     });
-    console.log(availableRooms);
+    socket.emit('roomsList', availableRooms);  
     
-    
-
-
-    
-    
+    // handler per quan ens arribi un missatge d'un user
     socket.on("messageToServer", (message : message) => {
         console.log(message);
         socket.broadcast.emit("messageBroadcast", message);

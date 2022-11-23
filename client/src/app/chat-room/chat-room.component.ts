@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { Router } from '@angular/router';
 import { io, Socket } from 'socket.io-client';
+import { HttpClient } from '@angular/common/http';
 
 import { ghostMessagesArray } from './ghostMessagesArray';
-import { message, connectedUser } from '../shared/interfaces'
-import { HttpClient } from '@angular/common/http';
-import { ReturnStatement } from '@angular/compiler';
+import { message, connectedUser, room } from '../shared/interfaces'
+
 
 
 @Component({
@@ -17,10 +17,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
     userId !: number;
 
-    openChatRoomName = 'Common Room';
+    openChatRoom : room = { roomname: "Common Room", roomId : 1}
 
-    openChatRoomId = 1;
-
+    availableRooms !: room[];
+    
     messagesList : message[] = ghostMessagesArray;
 
     writingMessage='';
@@ -30,17 +30,24 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
     connectedUsers !: connectedUser[];
 
-    availableRooms : string[] = ['Common Room'];
 
     constructor(private router : Router, private http : HttpClient) { }
     
     sendMessage() : void {    
         if (this.writingMessage.length === 0) return;
-        if (!this.userId) return;
-        // Push message to our list  
-        this.messagesList.push({content: this.writingMessage, username: this.username, userId:this.userId, display:'mine', roomname: "CommonRoom", roomId:0});
+        if (!this.userId) return; // sending a message with userId NaN or undefined would crash the server through a db error
+        let messageToSend : message = {
+            content: this.writingMessage, 
+            username: this.username, 
+            userId:this.userId, 
+            display:'mine', 
+            roomname: this.openChatRoom.roomname, 
+            roomId: this.openChatRoom.roomId
+        };
+        // Push message to our list 
+        this.messagesList.push(messageToSend);
         // Send it to server so it broadcasts it
-        this.socket.emit('messageToServer', {content: this.writingMessage, username: this.username, userId:this.userId, roomname: "CommonRoom", roomId:0});
+        this.socket.emit('messageToServer', messageToSend);
         // Clear input box
         this.writingMessage = '';
         // Scroll to message
@@ -52,21 +59,57 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         }); // without the setTimeout, scrolling went to the penultim missatge, because it happened before the divs properties were actualized        
     }
 
-    loadRoom(roomname = "Common Room") : void {
+    loadRoom(newRoom : room) : void {
+        this.openChatRoom = newRoom;
+        // we start by always putting the invisible messages in the new room
+        this.messagesList = ghostMessagesArray;
         // ask for the room's messages from db, and also roomId
+        this.http.get(`http:localhost:3000?roomId=${this.openChatRoom.roomId}`)
+        .subscribe({
+            next: (response : any) => {
+                this.messagesList.push(response.messagesInRoom);
+            },
+            error : (err : any) => {
+                console.log(`error message from backend (loadRoom): ${err.msg}`);
+            }
+        });
+    }
 
-        // put ghostMessages + room's messages in messagesList
+    createRoom() {
+        // demana al user el nom de la room a crear per prompt
+        let newRoomname = prompt('Com es diu la nova sala que vols crear?');
+        if (newRoomname === null || newRoomname.length === 0) return;
+        // fes una http post request a un endpoint /rooms que la inserti a la db
+        this.http.post(`http://localhost:3000/rooms`, {
+            newRoomname : newRoomname
+        }, 
+        { observe: "body" })
+        .subscribe({
+            next : (res : any) => {
+                console.log(res.msg);
+            },          //  
+            error : (err: any) => {
+                console.log(`err: ${err.msg}`);
+                console.log(err);
+            },         // si falla, mostra el error per alert i retorna
+            complete : () => {
+                console.log('observable completed');
+            }             // si tot va bé, carrega la nova room
+        });
 
     }
     
     ngOnInit(): void {
         // Set username
+        if (sessionStorage['username']=== undefined) this.router.navigate(['']); // If you had no username in sessionStorage is because it wasn't set in login or signin
         this.username = sessionStorage['username'];
+        // Initialize availableRooms with only the Common Room, it'll get actualized later when we receive roomList events
+        this.availableRooms = [this.openChatRoom];        
         // Connect socket
         this.socket = io(`http://localhost:3000?username=${this.username}`);
-
         // Set up event handler for incoming messages
-        this.socket.on("messageBroadcast", (message) : void => {
+        this.socket.on("messageBroadcast", (message : message) : void => {
+            message.display = "notMine";
             this.messagesList.push(message);
             setTimeout(()=>{
                 let convDiv = document.getElementById("conversation"); // would be better to have a "new unread messages" popup
@@ -96,6 +139,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
                 this.router.navigate(['']);
             }
         });
+        // We also need a handler for roomList events, to always have an actualized list of roomnames and roomIds
+        this.socket.on('roomList', (roomList : room[]) => {
+            this.availableRooms = roomList;
+        });
         // Listen to keypresses on message writing box and send them if "enter" is pressed
         let textArea = document.getElementById("textArea");
         textArea?.addEventListener?.("keyup", (keyboardevent) => {
@@ -108,5 +155,6 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     // I need to cleanup when component is destroyed
     ngOnDestroy() : void {
         this.socket.disconnect();
+       sessionStorage.clear();
     }
 }
