@@ -13,16 +13,21 @@ async function getMessagesController (req : Request, res : Response) {
         let qResult = await Message.findAll({
             where : {
                 roomId : id
+            },
+            include : { // amb el include faig els joins per portarme dades de les altres taules segons la seva foreign key
+                all : true
             }
         });
-        
+        // for (let result of qResult) {
+        //     console.log(result.dataValues);
+        // }
         // map query result to message interface (tinc la sensacio que hi ha una manera molt mes senzilla de fer aixo, pero de moment aixi funciona)
         let messagesInRoom : message[] = qResult.map((result)=> {
             return {
                 content : result.dataValues.content,
-                username : result.dataValues.username,
+                username : result.dataValues.User.username,
                 userId : result.dataValues.userId,
-                roomname :  result.dataValues.roomname, // roomname and username are not in messages table!
+                roomname :  result.dataValues.Room.roomname, // les dades que estan en una altra taula 
                 roomId : result.dataValues.roomId
             }
         });
