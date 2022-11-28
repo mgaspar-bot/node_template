@@ -30,6 +30,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
     connectedUsers !: connectedUser[];
 
+    accessToken : string = sessionStorage['accessToken']
+
 
     constructor(private router: Router, private http: HttpClient) { }
 
@@ -66,24 +68,28 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
             this.messagesList.pop(); // hi ha una forma millor de fer aixo? Amb una simple assignacio no funcionava
         }
         // ask for the room's messages from db, and also roomId
-        this.http.get(`http://localhost:3000/messages?roomId=${this.openChatRoom.roomId}`)
-            .subscribe({
-                next: (response: any) => {
-                    console.log(response.messagesInRoom);
-                    if (response.messagesInRoom.length === 0) return;
-                    for (let message1 of response.messagesInRoom) {
-                        if (message1.userId === this.userId) {
-                            message1["display"] = "mine";
-                        }
-                        this.messagesList.push(message1);
+        this.http.get(`http://localhost:3000/messages?roomId=${this.openChatRoom.roomId}`, {
+            headers :  {
+                "accessToken" : this.accessToken
+            }
+        })
+        .subscribe({
+            next: (response: any) => {
+                console.log(response.messagesInRoom);
+                if (response.messagesInRoom.length === 0) return;
+                for (let message1 of response.messagesInRoom) {
+                    if (message1.userId === this.userId) {
+                        message1["display"] = "mine";
                     }
-
-                },
-                error: (err: any) => {
-                    console.log(err);
-                    console.log(`error message from backend (loadRoom): ${err.msg}`);
+                    this.messagesList.push(message1);
                 }
-            });
+
+            },
+            error: (err: any) => {
+                console.log(err);
+                console.log(`error message from backend (loadRoom): ${err.msg}`);
+            }
+        });
     }
 
     createRoom() {
@@ -94,20 +100,23 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         this.http.post(`http://localhost:3000/rooms`, {
             newRoomname: newRoomname
         },
-            { observe: "body" })
-            .subscribe({
-                next: (res: any) => {
-                    this.socket.emit('newRoom', res.newRoom);
-                },          //  
-                error: (err: any) => { // si falla, mostra el error per alert i ja esta
-                    window.alert(err.msg);
-                },
-                complete: () => {
-                    // setTimeout( () => { // posem el setTimeout pq el server emetra un event 'userList" despres de rebre el nostre 'newRoom', volem que aquest codi s'executi despres del handler de 'userList'
-                    //     this.loadRoom()
-                    // });
-                } // si tot ha anat be, carrega la nova room
-            });
+            { observe: "body", headers : {"accessToken" : this.accessToken} 
+        })
+        .subscribe({
+            next: (res: any) => {
+                this.socket.emit('newRoom', res.newRoom);
+            },          //  
+            error: (err: any) => { // si falla, mostra el error per alert i ja esta
+                window.alert(err.msg);
+            },
+            complete: () => {
+                setTimeout( () => { // posem el setTimeout pq el server emetra un event 'userList" despres de rebre el nostre 'newRoom', volem que aquest codi s'executi despres del handler de 'userList'
+                    let newCurrentRoom = this.availableRooms.find((room)=> room.roomname===newRoomname);
+                    if (newCurrentRoom === undefined) return;
+                    this.loadRoom(newCurrentRoom);
+                }, 500);
+            } // si tot ha anat be, carrega la nova room
+        });
 
     }
 
@@ -118,7 +127,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         // Initialize availableRooms with only the Common Room, it'll get actualized later when we receive roomList events
         this.availableRooms = [this.openChatRoom];
         // Connect socket
-        this.socket = io(`http://localhost:3000?username=${this.username}`);
+        this.socket = io(`http://localhost:3000?username=${this.username}`, {
+            extraHeaders : {
+                'accesstoken' : sessionStorage['accessToken']
+            }
+        });
         // Load Common Room
         this.loadRoom(this.openChatRoom);
         // Set up event handler for incoming messages
@@ -171,6 +184,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     // I need to cleanup when component is destroyed
     ngOnDestroy(): void {
         this.socket.disconnect();
+        
         sessionStorage.clear();
     }
 }

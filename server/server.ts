@@ -17,6 +17,7 @@ const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
 const createdb = require('./db/createdb');
 const newSocketHandler = require('./newSocketHandler');
+import { authMiddlewareSocket } from './Middlewares/authMiddleware';
 
 const User : ModelStatic<Model> = require('./models/User'); //No tinc gaire ide de que son aquests types, pero els objectes que exporto passen el typecheck del compilador i aqui tinc intellisense amb els metodes que vull aixi que deu estar be
 const Message : ModelStatic<Model> = require('./models/Message');
@@ -41,6 +42,7 @@ async function server () {
     await sqlize.sync({"force": true});
     await Room.upsert({}); // un insert buit per tenir una sala "common room" i poder provar coses
 
+    io.use(authMiddlewareSocket);
     io.on('connection', newSocketHandler);
 
     app.use(cors());
