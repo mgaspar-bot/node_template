@@ -22,11 +22,11 @@
                         </div>
 
                         <div class="col-lg-12 loginbttm">
-                            <div class="col-lg-6 login-btm login-text">
-                                
-                            </div>
                             <div class="col-lg-6 login-btm login-button">
                                 <button type="button" class="btn btn-outline-primary" (click)="submitForm()">LOGIN</button>
+                            </div>
+                            <div class="col-lg-6 login-btm login-text">
+                            Not registered? <a [routerLink]="['sigin']">Sign in</a>
                             </div>
                         </div>
                     </form>
@@ -36,7 +36,7 @@
         </div>
         <p [hidden]="invalidInputMessageVisible">Invalid input</p>
         <p>{{errorMessage}}</p>
-        <a [routerLink]="['chat']">Go to chat component</a>
-        <a [routerLink]="['signin']">Go to signin component</a>
+        <!-- <a [routerLink]="['chat']">Go to chat component</a>
+        <a [routerLink]="['signin']">Go to signin component</a> -->
 
     </div>

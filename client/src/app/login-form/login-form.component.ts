@@ -42,7 +42,7 @@ export class LoginFormComponent  {
             },
             error: (error : any) => {
                 console.log(error);
-                this.errorMessage = error.error.msg; 
+                this.errorMessage = error.error.msg;
             } 
         });
     }
