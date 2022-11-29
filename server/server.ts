@@ -2,7 +2,7 @@ import {Express, Request, Response} from 'express' //import types
 import {Model, ModelStatic, Sequelize} from 'sequelize';
 // import { execSync } from 'child_process';
 
-const cors = require('cors') //import libraries and shit
+const cors = require('cors') // import libraries and shit
 const express = require('express')
 const app : Express = express()
 const http = require('http').createServer(app) //create http server with express as function manager for the routes
@@ -10,7 +10,8 @@ const io = require('socket.io')(http, {
     cors: {
         origin : '*'
     }
-})
+});
+require('dotenv').config();
 
 const globalRouter = require('./routes/globalRouter');
 const sqlize : Sequelize = require('./db/getSequelizeInstance');
@@ -33,7 +34,7 @@ Message.belongsTo(Room, {
         allowNull: false
     }
 });
-//Tot aquest bloc el podria colocar a models no?.
+// Tot aquest bloc el podria colocar a models no?.
 
  // Estaria be fer una funcio que checkejes les variables d'entorn abans de començar per no haver de fer mil checks despres
 async function server () {
@@ -60,17 +61,7 @@ async function server () {
 }
 
 // execSync('net start mysql80'); // run script as admin!!
-try {
-    createdb();
-} catch (error) {
-    console.log(error);
-    console.log('\n\n\n\n\n\n');
-    console.log(`
-        Tens un arxiu .env amb els parametres adequats? (checkeja el README del repo per saber quins son els parametres adequats)
 
-        Has ences el servidor local de mysql?
-    `);
-}
-
+createdb();
 setTimeout(() => server());
 
