@@ -61,6 +61,17 @@ async function server () {
 }
 
 // execSync('net start mysql80'); // run script as admin!!
-createdb();
+try {
+    createdb();
+} catch (error) {
+    console.log(error);
+    console.log('\n\n\n\n\n\n');
+    console.log(`
+        Tens un arxiu .env amb els parametres adequats? (checkeja el README del repo per saber quins son els parametres adequats)
+
+        Has ences el servidor local de mysql?
+    `);
+}
+
 setTimeout(() => server());
 
