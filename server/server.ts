@@ -50,6 +50,7 @@ async function server () {
     app.use(express.json());
 
     app.use('/',globalRouter);
+    app.get('app', express.static('../client/dist/client'));
     app.use('/', (req: Request, res: Response) => {
         res.status(404).send({
             "msg":"this route does not exist"

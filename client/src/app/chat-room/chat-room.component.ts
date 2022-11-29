@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { io, Socket } from 'socket.io-client';
 import { HttpClient } from '@angular/common/http';
@@ -29,6 +29,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     // el !: es com dir-li al compilador "ara mateix es undefined, pero en quant la utilitzi sera un socket, jurat"
 
     connectedUsers !: connectedUser[];
+
+    connectedUsersInMyRoom !: connectedUser[];
 
     accessToken : string = sessionStorage['accessToken']
 
@@ -63,6 +65,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
     loadRoom(newActiveRoom: room): void {
         this.openChatRoom = newActiveRoom;
+        this.socket.emit('roomChange', newActiveRoom);
         // we start by popping all rendered messages until only the invisible ones are left
         while (this.messagesList.length > 8) {
             this.messagesList.pop(); // hi ha una forma millor de fer aixo? Amb una simple assignacio no funcionava
@@ -75,11 +78,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         })
         .subscribe({
             next: (response: any) => {
-                console.log(response.messagesInRoom);
+                // console.log(response.messagesInRoom);
                 if (response.messagesInRoom.length === 0) return;
                 for (let message1 of response.messagesInRoom) {
-                    if (message1.userId === this.userId) {
-                        message1["display"] = "mine";
+                    if (message1.username == this.username) {
+                        message1.display = "mine";
                     }
                     this.messagesList.push(message1);
                 }
@@ -114,7 +117,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
                     let newCurrentRoom = this.availableRooms.find((room)=> room.roomname===newRoomname);
                     if (newCurrentRoom === undefined) return;
                     this.loadRoom(newCurrentRoom);
-                }, 500);
+                });
             } // si tot ha anat be, carrega la nova room
         });
 
@@ -148,6 +151,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         // Set up event handler for new users connecting or disconecting
         this.socket.on('userList', (connectedUsers: connectedUser[]) => {
             this.connectedUsers = connectedUsers;
+            this.connectedUsersInMyRoom = connectedUsers.filter((user) => (user.inRoom.roomId === this.openChatRoom.roomId));
         });
         // get my id in db and put it here, but only first time i receive userlist
         this.socket.once('userList', (connectedUsers: connectedUser[]) => {
@@ -155,13 +159,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
             if (meInList !== undefined) {
                 this.userId = meInList.userId;
                 console.log(this.userId);
-            } else {
-                // here i should ask for my id in db again and make sure i can set it
             }
         });
         // set up event handler for when i need to disconnect because my user connected with a different socket
         this.socket.on('pleaseLeave', (socketId: string) => {
             if (socketId === this.socket.id) {
+                this.ngOnDestroy();
                 this.socket.disconnect();
                 this.router.navigate(['']);
             }
@@ -169,7 +172,6 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         // We also need a handler for roomList events, to always have an actualized list of roomnames and roomIds
         this.socket.on('roomList', (roomList: room[]) => {
             console.log(`i received a roomList event: ${roomList}`);
-
             this.availableRooms = roomList;
         });
         // Listen to keypresses on message writing box and send them if "enter" is pressed
@@ -183,8 +185,8 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
 
     // I need to cleanup when component is destroyed
     ngOnDestroy(): void {
+        // alert(`im on OnDestroy`);
         this.socket.disconnect();
-        
         sessionStorage.clear();
     }
 }

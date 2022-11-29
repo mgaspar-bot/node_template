@@ -8,7 +8,7 @@ const Room : ModelStatic<Model> = require('./models/Room');
 
 
 var connectedUsers : connectedUser[] = [];
-var availableRooms : room[] = [];
+var availableRooms : room[] = [{roomId : 1, roomname: "Common Room"}];
 
 async function newSocketHandler (socket : Socket) {
     console.log(`Someone connected through a socket`);
@@ -28,12 +28,10 @@ async function newSocketHandler (socket : Socket) {
     let index = connectedUsers.findIndex((userInList : connectedUser) => userInList.username === usernameConnected)
     if (index !== -1) {
         socket.broadcast.emit("pleaseLeave", connectedUsers[index].socketId);
-        // I emit this event because i don't know how to recover a different socket and disconnect it from here
-        // apparently makes no sense to store the "socket object" in the connectedUsers array
     }
                                                                 
     // Add user that just connected to connectedUsers and broadcast actualized list
-    connectedUsers.push({"username":usernameConnected, "socketId":socket.id, userId:userId});
+    connectedUsers.push({"username":usernameConnected, "socketId":socket.id, userId:userId, inRoom:  {roomId : 1, roomname: "Common Room"} });
     socket.broadcast.emit("userList", connectedUsers);
     socket.emit("userList", connectedUsers);
     console.log(connectedUsers);
@@ -66,6 +64,18 @@ async function newSocketHandler (socket : Socket) {
             userId : message.userId, 
             roomId : message.roomId
         }); // no cal que fem await d'aquesta crida
+    });
+
+    // quan aquest usuari canviï de sala, actualitzem la nostra connectedUsers i broadcastejem el canvi
+    socket.on('roomChange', (newRoom : room) => {
+        connectedUsers = connectedUsers.map( (user) => {
+            if( user.socketId === socket.id) {
+                user.inRoom = newRoom;
+            }
+            return user;
+        });
+        socket.broadcast.emit('userList', connectedUsers);
+        socket.emit('userList', connectedUsers);
     });
 
     socket.on('disconnect', (reason) => {

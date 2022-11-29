@@ -10,7 +10,6 @@ import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { RouterModule } from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SigninFormComponent } from './signin-form/signin-form.component';
-import { ProvaComponent } from './prova/prova.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { ProvaComponent } from './prova/prova.component';
     ChatRoomComponent,
     NotFoundComponent,
     SigninFormComponent,
-    ProvaComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +28,6 @@ import { ProvaComponent } from './prova/prova.component';
         {path : '', component: LoginFormComponent},
         {path : 'signin', component: SigninFormComponent},
         {path : 'chat',  component: ChatRoomComponent},
-        {path : 'prova', component : ProvaComponent}, // OJO treure aquest component!!
         {path : '**', component : NotFoundComponent}
 
     ])
