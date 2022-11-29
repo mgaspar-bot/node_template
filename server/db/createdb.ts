@@ -14,5 +14,4 @@ function createdb () {
     connection.end();
 }
 
-
 module.exports = createdb

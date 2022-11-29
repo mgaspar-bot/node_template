@@ -1,7 +1,6 @@
 import {Express, Request, Response} from 'express' //import types
-import { Socket } from 'socket.io'
-import {Model, ModelStatic, Sequelize, UniqueConstraintError} from 'sequelize';
-import { execSync } from 'child_process';
+import {Model, ModelStatic, Sequelize} from 'sequelize';
+// import { execSync } from 'child_process';
 
 const cors = require('cors') //import libraries and shit
 const express = require('express')
