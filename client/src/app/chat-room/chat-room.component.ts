@@ -158,7 +158,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
             let meInList = connectedUsers.find((user) => user.socketId === this.socket.id);
             if (meInList !== undefined) {
                 this.userId = meInList.userId;
-                console.log(this.userId);
+                // console.log(this.userId);
             }
         });
         // set up event handler for when i need to disconnect because my user connected with a different socket
@@ -171,7 +171,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         });
         // We also need a handler for roomList events, to always have an actualized list of roomnames and roomIds
         this.socket.on('roomList', (roomList: room[]) => {
-            console.log(`i received a roomList event: ${roomList}`);
+            // console.log(`i received a roomList event: ${roomList}`);
             this.availableRooms = roomList;
         });
         // Listen to keypresses on message writing box and send them if "enter" is pressed

@@ -30,7 +30,7 @@ export class SigninFormComponent {
     }
 
     submitForm(): void {
-        console.log('im at the start of the funci');
+        // console.log('im at the start of the funci');
 
             // validate inputs
         if (!(this.username && this.password && this.confirmPassword) || this.password !== this.confirmPassword)
@@ -43,22 +43,17 @@ export class SigninFormComponent {
             // set up listeners for server response
         }).subscribe({
             next: (res: any) => {
-                console.log('Im in the subscribe callback');
-                for (let key in res) { // Seems like i can only access the body with the token and the message i wrote
-                    console.log(key);
-                    console.log(res[key]);
-                }
+                // console.log('Im in the subscribe callback');
                 sessionStorage["accessToken"] = res.accessToken;
                 sessionStorage['username'] = this.username;
                 this.router.navigate(['chat']);
             }, 
             error: (error : any) => {
-                console.log('i got the error boss!');
+                // console.log('i got the error boss!');
                 console.log(error);
                 console.log(error.error.msg);
                 this.errorMessage = error.error.msg;
-            }  
+            }
         });
     }
-
 }

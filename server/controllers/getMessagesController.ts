@@ -7,7 +7,7 @@ import {message} from '../interfaces'
 async function getMessagesController (req : Request, res : Response) {
     // get requested roomId from url query    
     let id = Number(req.query.roomId);
-    console.log(id);
+    // console.log(id);
     try {
         // query database for messages
         let qResult = await Message.findAll({
@@ -31,8 +31,8 @@ async function getMessagesController (req : Request, res : Response) {
                 roomId : result.dataValues.roomId
             }
         });
-        console.log(`messagesInRoom`);
-        console.log(messagesInRoom);
+        // console.log(`messagesInRoom`);
+        // console.log(messagesInRoom);
         res.status(200).send({
             "msg": "there go all messages in that room",
             "messagesInRoom": messagesInRoom

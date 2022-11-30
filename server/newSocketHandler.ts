@@ -11,8 +11,8 @@ var connectedUsers : connectedUser[] = [];
 var availableRooms : room[] = [{roomId : 1, roomname: "Common Room"}];
 
 async function newSocketHandler (socket : Socket) {
-    console.log(`Someone connected through a socket`);
-    console.log(`See, i have their id here: ${socket.id}`);
+    // console.log(`Someone connected through a socket`);
+    // console.log(`See, i have their id here: ${socket.id}`);
     
     const usernameConnected = socket.handshake.query.username;
     let userId : any = await User.findOne({ // this should never fail, i have already confirmed you are registered
@@ -22,7 +22,7 @@ async function newSocketHandler (socket : Socket) {
     });
     userId = Number(userId?.id);
     if (usernameConnected instanceof Array || usernameConnected === undefined) return;
-    console.log(usernameConnected);
+    // console.log(usernameConnected);
     
     // If the same username is connecting again, i'm gonna call security before proceeding
     let index = connectedUsers.findIndex((userInList : connectedUser) => userInList.username === usernameConnected)
@@ -34,7 +34,7 @@ async function newSocketHandler (socket : Socket) {
     connectedUsers.push({"username":usernameConnected, "socketId":socket.id, userId:userId, inRoom:  {roomId : 1, roomname: "Common Room"} });
     socket.broadcast.emit("userList", connectedUsers);
     socket.emit("userList", connectedUsers);
-    console.log(connectedUsers);
+    // console.log(connectedUsers);
 
     // tambe enviem al front una llista amb totes les sales obertes
     let qresult = await Room.findAll();
@@ -48,8 +48,8 @@ async function newSocketHandler (socket : Socket) {
 
     // handler per quan un usuari ha creat una room
     socket.on('newRoom', (newRoom : room) => {
-        console.log('i received newRoom event');
-        console.log(newRoom);
+        // console.log('i received newRoom event');
+        // console.log(newRoom);
         availableRooms.push(newRoom);
         socket.broadcast.emit('roomList', availableRooms);
         socket.emit('roomList', availableRooms);
@@ -57,7 +57,7 @@ async function newSocketHandler (socket : Socket) {
     
     // handler per quan ens arribi un missatge d'un user
     socket.on("messageToServer", (message : message) => {
-        console.log(message);
+        // console.log(message);
         socket.broadcast.emit("messageBroadcast", message);
         Message.upsert({
             content : message.content,
@@ -79,7 +79,7 @@ async function newSocketHandler (socket : Socket) {
     });
 
     socket.on('disconnect', (reason) => {
-        console.log(`${usernameConnected} left`);
+        // console.log(`${usernameConnected} left`);
         let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
         // console.log(`index i found on disconnect: ${index}`);
         connectedUsers.splice(index, 1);

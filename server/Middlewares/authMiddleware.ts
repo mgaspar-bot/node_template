@@ -6,11 +6,11 @@ const jwt = require('jsonwebtoken')
 const User : ModelStatic<Model> = require('../models/User')
 
 export async function authMiddleware (req:Request, res: Response, next : Function) : Promise<void | Response> {
-    console.log('im in the http middleware');
+    // console.log('im in the http middleware');
     // Get token from request
     let token : string | string[] | undefined = req.headers.accesstoken; // al enviar la request es peta les majuscules!!
-    console.log(token);
-    console.log(req.headers);
+    // console.log(token);
+    // console.log(req.headers);
     
     
     if ( token === undefined || token instanceof Array) return res.status(401).send({"msg":"no token, or invalid format"});
@@ -38,14 +38,13 @@ export async function authMiddleware (req:Request, res: Response, next : Functio
 }
 
 export async function authMiddlewareSocket (socket : Socket,  next : Function) : Promise<void | Response> {
-    console.log('im in the socket middleware');
+    // console.log('im in the socket middleware');
     
     // Get token from request
     let token = socket.handshake.headers['accesstoken'];
     if ( token === undefined || token instanceof Array) {
         console.log(`No token or wrong format (socket middleware)`);
         console.log(socket.handshake.headers);
-        
         socket.emit('pleaseLeave', socket.id);
         return;
     }

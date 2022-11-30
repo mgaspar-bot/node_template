@@ -23,7 +23,7 @@ export class LoginFormComponent  {
         this.invalidInputMessageVisible = false;
     }
     submitForm(): void {
-        console.log('im at the start of the function');
+        // console.log('im at the start of the function');
         if (!(this.username && this.password ))
             return this.showInvalidInputMessage();
 
