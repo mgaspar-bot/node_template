@@ -122,6 +122,16 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         });
 
     }
+    showUserChangeMessage(notification : string) : void {
+        this.messagesList.push({
+            content : notification,
+            roomId : this.openChatRoom.roomId,
+            roomname : this.openChatRoom.roomname,
+            username : "",
+            userId : 0,
+            display : "noti"
+        });
+    }
 
     ngOnInit(): void {
         // Set username
@@ -149,9 +159,15 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
             });
         });
         // Set up event handler for new users connecting or disconecting
-        this.socket.on('userList', (connectedUsers: connectedUser[]) => {
+        this.socket.on('userList', (connectedUsers: connectedUser[], roomInfo? : Array<string>) => {
             this.connectedUsers = connectedUsers;
             this.connectedUsersInMyRoom = connectedUsers.filter((user) => (user.inRoom.roomId === this.openChatRoom.roomId));
+            if (!roomInfo ) return;
+            if (roomInfo[1] === `${this.openChatRoom.roomId}`) {
+                this.showUserChangeMessage(`${roomInfo[0]} joined the room`);
+            } else if ( roomInfo[2] === `${this.openChatRoom.roomId}`) {
+                this.showUserChangeMessage(`${roomInfo[0]} left the room`);
+            }
         });
         // get my id in db and put it here, but only first time i receive userlist
         this.socket.once('userList', (connectedUsers: connectedUser[]) => {
@@ -165,7 +181,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         this.socket.on('pleaseLeave', (socketId: string) => {
             if (socketId === this.socket.id) {
                 this.ngOnDestroy();
-                this.socket.disconnect();
+                this.socket?.disconnect();
                 this.router.navigate(['']);
             }
         });

@@ -32,7 +32,7 @@ async function newSocketHandler (socket : Socket) {
                                                                 
     // Add user that just connected to connectedUsers and broadcast actualized list
     connectedUsers.push({"username":usernameConnected, "socketId":socket.id, userId:userId, inRoom:  {roomId : 1, roomname: "Common Room"} });
-    socket.broadcast.emit("userList", connectedUsers);
+    socket.broadcast.emit("userList", connectedUsers, [usernameConnected, "1"]);
     socket.emit("userList", connectedUsers);
     // console.log(connectedUsers);
 
@@ -68,13 +68,15 @@ async function newSocketHandler (socket : Socket) {
 
     // quan aquest usuari canviï de sala, actualitzem la nostra connectedUsers i broadcastejem el canvi
     socket.on('roomChange', (newRoom : room) => {
+        var previousRoomId;
         connectedUsers = connectedUsers.map( (user) => {
             if( user.socketId === socket.id) {
+                previousRoomId = `${user.inRoom.roomId}`;
                 user.inRoom = newRoom;
             }
             return user;
         });
-        socket.broadcast.emit('userList', connectedUsers);
+        socket.broadcast.emit('userList', connectedUsers, [usernameConnected, `${newRoom.roomId}`, previousRoomId]);
         socket.emit('userList', connectedUsers);
     });
 
@@ -82,8 +84,9 @@ async function newSocketHandler (socket : Socket) {
         // console.log(`${usernameConnected} left`);
         let index = connectedUsers.findIndex((element) => element.socketId === socket.id);
         // console.log(`index i found on disconnect: ${index}`);
+        let roomId = connectedUsers[index].inRoom.roomId;
         connectedUsers.splice(index, 1);
-        socket.broadcast.emit("userList", connectedUsers);
+        socket.broadcast.emit("userList", connectedUsers, [usernameConnected, "  ", `${roomId}`]);
     });
 }
 module.exports = newSocketHandler;

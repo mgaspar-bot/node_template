@@ -486,6 +486,10 @@ button {
     align-self: flex-end;
     /* something to make the bubble render to the other side */
 }
+.noti {
+    background: rgba(77, 246, 16, 0.49) !important;
+    align-self: center !important;
+}
 
 .reply-main textarea:focus {
   outline: none;
@@ -534,9 +538,14 @@ button {
   .sideBar-body {
     height: 80px;
   }
+ .thing {
+    align-self: left;
+    color : red;
+  }
   .sideBar-avatar {
     text-align: left;
     padding: 0 8px !important;
+    cursor : pointer;
   }
   .avatar-icon img {
     height: 55px;
@@ -544,6 +553,7 @@ button {
   }
   .sideBar-main {
     padding: 0 !important;
+    cursor : pointer;
   }
   .sideBar-main .row {
     padding: 0 !important;
@@ -551,6 +561,7 @@ button {
   }
   .sideBar-name {
     padding: 10px 5px !important;
+    cursor: pointer;
   }
   .name-meta {
     font-size: 16px;
