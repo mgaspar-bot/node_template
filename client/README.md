@@ -6,16 +6,16 @@ projecte
 Després de clonar el repositori cal 
 instalar els packets de node necessaris 
 amb el command
-´´´bash
+```bash
 npm install
-´´´
+```
 ## Arrencada
 Un cop instalats els paquets es pot arrencar l'aplicació amb el command 
-´´´bash
+```bash
 npm start
 ó
 ng serve -o
-´´´
+```
 En tots dos casos primer es compilarà l'aplicació, si has fet npm start pots 
 obrir-la anant a localhost:4200, si has 
 fet ng serve -o se t'obrirà 

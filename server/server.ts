@@ -39,7 +39,7 @@ Message.belongsTo(Room, {
  // Estaria be fer una funcio que checkejes les variables d'entorn abans de començar per no haver de fer mil checks despres
 async function server () {
     await sqlize.authenticate();
-    await sqlize.sync({"force": false});
+    await sqlize.sync({"force": process.env.RESET_DB==="true"});
     await Room.upsert({}); // un insert buit per tenir una sala "common room" i poder provar coses
 
     io.use(authMiddlewareSocket);

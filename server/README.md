@@ -13,9 +13,11 @@ DB_USERNAME=el_teu_nom_dusuari_mysql
 DB_PASSWORD=la_teva_contrasenya
 DB_NAME=el_nom_que_vulguis_posar-li_a_la_db_que_es_creara
 
+RESET_DB=false
+
 AUTH_SECRET=una_string_qualsevol
 ```
-El fitxer .env ha d'anar FORA DE LA CARPETA SERVER, al directori arrel del projecte, al mateix nivell que els directoris client i server.
+El fitxer .env ha d'anar FORA DE LA CARPETA SERVER, al directori arrel del projecte, al mateix nivell que els directoris client i server. Si al paràmetre RESET_DB hi escrius "true" la base de dades s'esborrarà cada cop que engeguis el servidor.
 Un cop has arrencat el servidor mysql i has escrit el fitxer .env amb el teu usuari i contrasenya, cal que vagis al directori server i instalis les dependències de node necessàries:
 ```bash
 npm install
