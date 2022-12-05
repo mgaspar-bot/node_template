@@ -1,0 +1,126 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="container-fluid app">
+  <div class="row app-one">
+    <div class="col-sm-2 side">
+      <div class="side-one">
+        <div class="row heading">
+          <div class="col-sm-3 col-xs-3 heading-avatar">
+            Active Users
+          </div>
+        </div>
+
+        <!-- <div class="row searchBox">
+          <div class="col-sm-12 searchBox-inner">
+            <div class="form-group has-feedback">
+              <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="row sideBar" >
+          <div class="row sideBar-body u" *ngFor="let user of connectedUsersInMyRoom">
+            <div class="col-sm-3 col-xs-3 sideBar-avatar">
+              <div class="avatar-icon">
+                <img src="https://www.bootdey.com/img/Content/poof_by_fairlyoddanticosmo-d48epgu.png">
+              </div>
+            </div>
+            <div class="col-sm-9 col-xs-9 sideBar-main">
+              <div class="row">
+                <div class="col-sm-8 col-xs-8 sideBar-name">
+                  <span class="name-meta">{{user.username}}</span>
+                  <div class="fa fa-user-circle fa-2x" aria-hidden="true" *ngIf="user.username === username"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-8 conversation">
+      <div class="row heading">
+        <!--
+        <div class="col-sm-2 col-md-1 col-xs-3 heading-avatar">
+          <div class="heading-avatar-icon">
+            <img src="https://bootdey.com/img/Content/avatar/avatar6.png">
+          </div>
+        </div> 
+    -->
+        <div class="col-sm-8 col-xs-7 heading-name">
+          <p class="heading-name-meta">{{openChatRoom.roomname}}</p>
+        </div>
+      </div>
+
+      <div class="row message" id="conversation" >
+        <div class="display-messages" *ngFor="let message of messagesList">
+            <div class="row no-gutters">
+                <div class="chat-bubble" [ngClass]='message.display'>{{message.content}}<br><i style="font-size: smaller;">{{message.username}}</i></div>
+            </div>
+        </div>
+      </div>
+
+      <div class="row reply">
+        <div class="col-sm-1 col-xs-1 reply-emojis">
+            <button type="button" class="fa fa-sign-out fa-2x" (click)="logOut()"></button>
+        </div>
+        <div class="col-sm-9 col-xs-9 reply-main">
+            <input type="text" class="textArea" id="textArea" [(ngModel)]="writingMessage">
+        </div>
+        <!-- <div class="col-sm-1 col-xs-1 reply-recording">
+            <i class="fa fa-microphone fa-2x" aria-hidden="true"></i>
+        </div> -->
+        <div class="col-sm-1 col-xs-1 reply-send">
+            <button class="fa fa-send fa-2x" type="button" aria-hidden="true" (click)="sendMessage()"></button>
+        </div>
+      </div>
+
+    </div>
+    <!--Conversation-->
+
+    <div class="col-sm-2 side">
+        <div class="side-two">
+          <div class="row heading">
+            <div class="col-sm-3 col-xs-3 heading-avatar-rooms">
+              Available Rooms
+            </div>
+          </div>
+  
+          <!-- <div class="row searchBox">
+            <div class="col-sm-12 searchBox-inner">
+              <div class="form-group has-feedback">
+                <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+              </div>
+            </div>
+          </div> -->
+  
+          <div class="row sideBar" >
+            <div class="row sideBar-body" *ngFor="let room of availableRooms">
+              <div class="col-sm-3 col-xs-3 sideBar-avatar" (click)="loadRoom(room)">
+                <div class="avatar-icon">
+                  <img src="https://www.bootdey.com/img/Content/poof_by_fairlyoddanticosmo-d48epgu.png">
+                </div>
+              </div>
+              <div class="col-sm-9 col-xs-9 sideBar-main" (click)="loadRoom(room)">
+                <div class="row" >
+                  <div class="col-sm-8 col-xs-8 sideBar-name">
+                    <span class="name-meta">{{room.roomname}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>  
+            <div class="col-sm-9 col-xs-9 sideBar-main">
+                <div class="row">
+                  <div class="col-sm-8 col-xs-8 sideBar-name">
+                    <button type="button" class="newRoom" (click)="createRoom()">new room</button>
+                </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>

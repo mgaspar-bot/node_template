@@ -86,3 +86,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Directory with tsc compiled files
+server/compiled/
