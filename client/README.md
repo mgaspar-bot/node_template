@@ -37,3 +37,4 @@ amb els usuaris conectats a la mateixa
 sala que tu. A la barra de la dreta 
 pots canviar de sala clicant al seu nom 
 a la llista.
+Si vols fet logout pots utilitzar el botó a l'esquerra de la caixa on escrius els missatges.

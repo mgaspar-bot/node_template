@@ -133,6 +133,12 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         });
     }
 
+    logOut() : void {
+        this.ngOnDestroy();
+        this.socket?.disconnect();
+        this.router.navigate(['']);
+    }
+
     ngOnInit(): void {
         // Set username
         if (sessionStorage['username'] === undefined) this.router.navigate(['']); // If you had no username in sessionStorage is because it wasn't set in login or signin

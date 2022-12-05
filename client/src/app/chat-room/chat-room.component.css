@@ -180,6 +180,10 @@ span {
   margin: 0 !important;
 }
 
+.u{
+    color: #0DB8DE;
+}
+
 .sideBar-body:hover {
   background-color: #93918f55;
 }
@@ -264,7 +268,6 @@ span {
 }
 .newMessage-back {
   text-align: center;
-  vertical-align: baseline;
   padding: 12px 5px !important;
   display: block;
   cursor: pointer;

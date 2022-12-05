@@ -19,7 +19,7 @@
         </div> -->
 
         <div class="row sideBar" >
-          <div class="row sideBar-body" *ngFor="let user of connectedUsersInMyRoom">
+          <div class="row sideBar-body u" *ngFor="let user of connectedUsersInMyRoom">
             <div class="col-sm-3 col-xs-3 sideBar-avatar">
               <div class="avatar-icon">
                 <img src="https://www.bootdey.com/img/Content/poof_by_fairlyoddanticosmo-d48epgu.png">
@@ -29,11 +29,11 @@
               <div class="row">
                 <div class="col-sm-8 col-xs-8 sideBar-name">
                   <span class="name-meta">{{user.username}}</span>
+                  <div class="fa fa-user-circle fa-2x" aria-hidden="true" *ngIf="user.username === username"></div>
                 </div>
               </div>
             </div>
-            <div class="thing" *ngIf="user.username === username">its a me!</div>
-          </div>  
+          </div>
         
         </div>
       </div>
@@ -56,14 +56,14 @@
       <div class="row message" id="conversation" >
         <div class="display-messages" *ngFor="let message of messagesList">
             <div class="row no-gutters">
-                <div class="chat-bubble" [ngClass]='message.display'>{{message.content}}<br>{{message.username}}</div>
+                <div class="chat-bubble" [ngClass]='message.display'>{{message.content}}<br><i style="font-size: smaller;">{{message.username}}</i></div>
             </div>
         </div>
       </div>
 
       <div class="row reply">
         <div class="col-sm-1 col-xs-1 reply-emojis">
-            <i class="fa fa-smile-o fa-2x"></i>
+            <button type="button" class="fa fa-sign-out fa-2x" (click)="logOut()"></button>
         </div>
         <div class="col-sm-9 col-xs-9 reply-main">
             <input type="text" class="textArea" id="textArea" [(ngModel)]="writingMessage">
